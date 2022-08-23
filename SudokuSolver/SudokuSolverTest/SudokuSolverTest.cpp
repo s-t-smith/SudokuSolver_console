@@ -30,8 +30,7 @@ namespace SudokuSolverTest
 			}
 
 			// Test setVal() for erroneous input:
-			Assert::ExpectException(testCell->setVal(12));
-			Assert::
+			
 
 			// Test setVal() for valid input:
 				
