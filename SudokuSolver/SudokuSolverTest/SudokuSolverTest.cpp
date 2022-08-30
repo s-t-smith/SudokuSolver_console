@@ -163,6 +163,8 @@ namespace SudokuSolverTest
 
 	TEST_CLASS(SudokuTest)
 	{
+	public:
+
 		SudokuTest()
 		{
 			Logger::WriteMessage("No tests for Sudoku class yet");

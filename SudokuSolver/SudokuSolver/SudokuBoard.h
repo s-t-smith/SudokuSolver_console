@@ -5,6 +5,11 @@
 #include <iostream>
 #include <fstream>
 
+/*
+* This class will define the game space for a session of Sudoku.
+* It will keep track of a 9x9 set of SudokuCell objects and pass user function calls down to those objects.
+*/
+
 
 class SudokuBoard
 {
