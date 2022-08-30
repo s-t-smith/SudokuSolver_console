@@ -35,6 +35,13 @@ void SudokuCell::setNote(int index) {
 	notes[index] = true;
 }
 
+void SudokuCell::clearNote(int index) {
+	// Eliminate a possible solution, prevent out-of-bounds access.
+	if (index < 0 || index > 9)
+		throw std::out_of_range("Index invalid");
+	notes[index] = false;
+}
+
 bool SudokuCell::getNote(int index) {
 	// Report a possible solution, prevent out-of-range access.
 	if (index < 0 || index > 9)

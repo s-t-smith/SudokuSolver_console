@@ -33,3 +33,11 @@
 
 # Ignore .vs thingy
 SudokuSolver/.vs
+
+# Ignore test images
+images/*
+
+# Ignore test programs
+*Test.cpp
+SudokuSolver/Debug/*
+SudokuSolver/SudokuSolver/Debug/*
