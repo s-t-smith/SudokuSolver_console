@@ -96,9 +96,68 @@ namespace SudokuSolverTest
 
 	TEST_CLASS(SudokuBoardTest)
 	{
+	public:
+
 		SudokuBoardTest()
 		{
-			Logger::WriteMessage("No tests for SudokuBoard class yet.");
+			Logger::WriteMessage("Beginning Sudoku Board test...");
+		}
+
+		~SudokuBoardTest()
+		{
+			Logger::WriteMessage("Completed Sudoku Board test.");
+		}
+
+		TEST_METHOD(EmptyBoardTest)
+		{
+			SudokuBoard* emptyBoard = new SudokuBoard();
+
+			for (int r = 1; r < 10; r++) {
+				for (int c = 1; c < 10; c++) {
+					Assert::AreEqual(emptyBoard->getCellVal(r, c), 0);
+					for (int n = 1; n < 10; n++) {
+						Assert::IsFalse(emptyBoard->getCellNote(r, c, n));
+					}
+				}
+			}
+
+			emptyBoard->setCellNote(1, 2, 8);
+			Assert::IsTrue(emptyBoard->getCellNote(1, 2, 8));
+
+			emptyBoard->setCellVal(4, 4, 3);
+			Assert::AreEqual(emptyBoard->getCellVal(4, 4), 3);
+			for (int n = 1; n < 10; n++) {
+				Assert::IsFalse(emptyBoard->getCellNote(4, 4, n));
+			}
+
+			delete emptyBoard;
+		}
+
+		TEST_METHOD(StartingBoardTest)
+		{
+			SudokuBoard* easyOne = new SudokuBoard("../../inputFiles/easy1.txt");
+
+			Assert::AreEqual(easyOne->getCellVal(2, 3), 6);
+			Assert::AreNotEqual(easyOne->getCellVal(9, 7), 2);
+			Assert::AreEqual(easyOne->getCellVal(5, 1), 9);
+
+			delete easyOne;
+
+			SudokuBoard* easyTwo = new SudokuBoard("../../inputFiles/easy2.txt");
+
+			Assert::AreEqual(easyTwo->getCellVal(4, 9), 1);
+			Assert::AreNotEqual(easyTwo->getCellVal(9, 6), 9);
+			Assert::AreEqual(easyTwo->getCellVal(1, 6), 9);
+
+			delete easyTwo;
+
+			SudokuBoard* easyThree = new SudokuBoard("../../inputFiles/easy3.txt");
+
+			Assert::AreEqual(easyThree->getCellVal(1, 1), 1);
+			Assert::AreNotEqual(easyThree->getCellVal(8, 4), 3);
+			Assert::AreEqual(easyThree->getCellVal(1, 9), 4);
+
+			delete easyThree;
 		}
 	};
 

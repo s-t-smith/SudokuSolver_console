@@ -12,13 +12,13 @@ class SudokuBoard
 	* Public functions:
 	* SudokuBoard() - Default constructor; makes an empty board object with no values written to any cells.
 	* SudokuBoard(string inputPath) - Explicit constructor; makes a board object pre-populated with some cell values.
-	* *** should I talk about input file formatting here? ***
 	* ~SudokuBoard() - Default desctructor - might not have much use for this.
 	* setCellVal - writes a solution to a cell by way of the underlying object's function.
 	* getCellVal - returns a solution written in a cell by way of the underlying object's function.
 	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
 	* clearCellNote - sets the 'index' note on a cell to false, uses the underlyiing object's function.
 	* getCellNote - returns the state of the underlying object's 'index' note.
+	* boardSolved - returns the isSolved flag.
 	*/
 public:
 	SudokuBoard();
@@ -29,6 +29,7 @@ public:
 	void setCellNote(int row, int col, int index);
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
+	bool boardSolved();
 
 	/*
 	* Private members:
@@ -68,11 +69,14 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 		throw std::runtime_error("Could not open file.");
 	}
 
+	// Input files should be .txt where each line is as follows:
+	// <row #> <col #> <number (1..9)>
+	// The following loop will extract each value and use them to call the setVal() of the relevant cell.
 	while (!file.eof()) {
 		file >> row;
 		file >> col;
 		file >> val;
-		board[row][col]->setVal(val);
+		setCellVal(row, col, val);
 	}
 
 	isSolved = false;
@@ -109,4 +113,8 @@ void SudokuBoard::clearCellNote(int row, int col, int index) {
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	// Coordinates are assumed as input in user format (1..9) while array references are machine indexed (0..8)
 	return board[row - 1][col - 1]->getNote(index - 1);
+}
+
+bool SudokuBoard::boardSolved() {
+	return isSolved;
 }

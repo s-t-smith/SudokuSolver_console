@@ -38,6 +38,6 @@ SudokuSolver/.vs
 images/*
 
 # Ignore test programs
-*Test.cpp
+fileInputTest.cpp
 SudokuSolver/Debug/*
 SudokuSolver/SudokuSolver/Debug/*
