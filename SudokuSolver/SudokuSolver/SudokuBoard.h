@@ -34,17 +34,16 @@ public:
 	void setCellNote(int row, int col, int index);
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
-	bool boardSolved();
 
 	/*
 	* Private members:
 	* board - a 9x9 array of SudokuCell objects.
 	*	In a later implementation, this could be adjusted for scalability and/or additional dimensions.
-	* isSolved - a check flag to quickly determine if all cells contain a valid solution; mostly useful for some higher-layer check.
 	*/
 private:
 	SudokuCell* board[9][9];
-	bool isSolved;
+	// bool isSolved;
+	// - not useful
 };
 
 
@@ -55,8 +54,6 @@ SudokuBoard::SudokuBoard() {
 			board[r][c] = new SudokuCell();
 		}
 	}
-
-	isSolved = false;
 }
 
 SudokuBoard::SudokuBoard(std::string inputPath) {
@@ -83,8 +80,6 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 		file >> val;
 		setCellVal(row, col, val);
 	}
-
-	isSolved = false;
 }
 
 SudokuBoard::~SudokuBoard() {
@@ -118,8 +113,4 @@ void SudokuBoard::clearCellNote(int row, int col, int index) {
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	// Coordinates are assumed as input in user format (1..9) while array references are machine indexed (0..8)
 	return board[row - 1][col - 1]->getNote(index - 1);
-}
-
-bool SudokuBoard::boardSolved() {
-	return isSolved;
 }
