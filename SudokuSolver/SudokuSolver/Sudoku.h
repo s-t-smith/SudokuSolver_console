@@ -1,7 +1,7 @@
 #pragma once
 
+#include "SudokuCell.h"
 #include "SudokuBoard.h"
-#include <map>
 
 using namespace std;
 
@@ -19,13 +19,13 @@ class Sudoku
 	* Sudoku(startingFile) - Explicit constructor begins a session with a prepopulated sukoku board.
 	* 
 	* Board functions:
-	* setBoardCellVal - 
-	* getBoardCellVal - 
-	* setBoardCellNote - 
-	* getBoardCellNote - 
+	* setBoardCellVal - Passes a value down to the board to be written to a cell.
+	* getBoardCellVal - Returns the value written to a cell on the board.
+	* setBoardCellNote - Marks a note on a board's cell for a possible solution.
+	* getBoardCellNote - Returns a note for a solution on a cell from the board.
 	* 
 	* Game functions:
-	* printBoard - 
+	* printBoard - Output the values written to the board in a 9x9 format to the console.
 	*/
 public:
 	Sudoku();
@@ -39,8 +39,8 @@ public:
 
 	/*
 	* Private members:
-	* gameBoard - 
-	* gameOver - check flag that can be used to terminate the session.
+	* gameBoard - The SudokuBoard object that contains the array of cells.
+	* gameOver - Check flag that can be used to terminate the session.
 	*/
 private:
 	SudokuBoard* gameBoard;
@@ -93,7 +93,14 @@ void Sudoku::printBoard() {
 	for (int r = 1; r < 10; r++) {
 		cout << "|";
 		for (int c = 1; c < 10; c++) {
-			cout << "| " << getBoardCellVal(r, c) << " |";
+			int cellVal = getBoardCellVal(r, c);
+			if (cellVal != 0) {
+				cout << "| " << cellVal << " |";
+			}
+			else {
+				cout << "|   |";
+			}
+			
 		}
 		cout << "|" << endl;
 	}

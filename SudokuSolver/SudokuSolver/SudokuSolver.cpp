@@ -1,23 +1,53 @@
-// SudokuSolver.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include "Sudoku.h"
-#include <iostream>
-
 /*
-int main()
-{
-    std::cout << "Hello World!\n";
-}
+* SudokuSolver.cpp : This file contains the 'main' function. Program execution begins and ends there.
+* The program will make use of the Sudoku classes to create a 9x9 game board and input solutions until the board has all digits (1..9) in each row, column and 3x3 block.
+* The algorithm will follow these steps:
+* - Eliminate possible solution notes in a row
+* - Eliminate possible solution notes in a column
+* - Eliminate possible solution notes in a block
+* - Iterate through each row to find singular solution notes, write solutions where applicable
+* - Iterate through each column to find singular solution notes, write solutions where applicable
+* - Iterate through each block to find singular solution notes, write solutions where applicable
+* - Continue until all cells have solutions written
 */
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+#include "SudokuCell.h"
+#include "SudokuBoard.h"
+#include "Sudoku.h"
+#include <iostream>
+using namespace std;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// Function declarations:
+/*
+* [put some explanations here]
+*/
+void clearRowNotes(int val, int row);
+void clearColNotes(int val, int col);
+void clearBlockNotes(int val, int blk);
+bool isWrittenRow(int val, int row);
+bool isWrittenCol(int val, int col);
+bool isWrittenBlock(int val, int blk);
+void placeSolution(int val, int row, int col);
+
+
+// Main:
+int main()
+{
+    cout << "Main program not yet written." << endl;
+}
+
+
+// Funciton definitions:
+void clearRowNotes(int val, int row) {}
+
+void clearColNotes(int val, int col) {}
+
+void clearBlockNotes(int val, int blk) {}
+
+bool isWrittenRow(int val, int row) {}
+
+bool isWrittenCol(int val, int col) {}
+
+bool isWrittenBlock(int val, int blk) {}
+
+void placeSolution(int val, int row, int col) {}
