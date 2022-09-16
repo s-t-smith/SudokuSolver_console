@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <map>
 
 /*
 * This class will define the game space for a session of Sudoku.
@@ -23,7 +24,7 @@ class SudokuBoard
 	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
 	* clearCellNote - sets the 'index' note on a cell to false, uses the underlyiing object's function.
 	* getCellNote - returns the state of the underlying object's 'index' note.
-	* boardSolved - returns the isSolved flag.
+	* printBoard - outputs the board in a 9x9 format to the console.
 	*/
 public:
 	SudokuBoard();
@@ -34,22 +35,31 @@ public:
 	void setCellNote(int row, int col, int index);
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
+	void printBoard();
+	bool checkSolved();
+		// might want a return type for this
 
 	/*
 	* Private members:
 	* board - a 9x9 array of SudokuCell objects.
-	*	In a later implementation, this could be adjusted for scalability and/or additional dimensions.
+	*	- In a later implementation, this could be adjusted for scalability and/or additional dimensions.
+	* solutionProgress - keeps track of how many solutions exist on the board; a complete board will have 9 of each digit.
 	*/
 private:
 	SudokuCell* board[9][9];
-	// bool isSolved;
-	// - not useful
+	map<int, int> solutionProgress;
 };
 
 
 SudokuBoard::SudokuBoard() {
 	// Creates a 9x9 set of empty SudokuCell objects.
 	for (int r = 0; r < 9; r++) {
+		
+		// Create a tracker for each digit:
+		solutionProgress.emplace(r + 1);
+		solutionProgress[r + 1] = 0;
+		
+		// Create empty cells:
 		for (int c = 0; c < 9; c++) {
 			board[r][c] = new SudokuCell();
 		}
@@ -59,6 +69,11 @@ SudokuBoard::SudokuBoard() {
 SudokuBoard::SudokuBoard(std::string inputPath) {
 	// Creates a blank 9x9 board like the default constructor...
 	for (int r = 0; r < 9; r++) {
+
+		// Create a tracker for each digit:
+		solutionProgress.emplace(r + 1);
+		solutionProgress[r + 1] = 0;
+
 		for (int c = 0; c < 9; c++) {
 			board[r][c] = new SudokuCell();
 		}
@@ -79,6 +94,7 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 		file >> col;
 		file >> val;
 		setCellVal(row, col, val);
+		solutionProgress.at(val)++;
 	}
 }
 
@@ -93,6 +109,10 @@ SudokuBoard::~SudokuBoard() {
 void SudokuBoard::setCellVal(int row, int col, int val) {
 	// Coordinates are assumed as input in user format (1..9) while array references are machine indexed (0..8)
 	board[row - 1][col - 1]->setVal(val);
+
+	// Update the solution list:
+	solutionProgress.at(val)++;
+		// thought about adding a conditional check for removing a solution, but the algorithm will only be additive in this case.
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
@@ -113,4 +133,34 @@ void SudokuBoard::clearCellNote(int row, int col, int index) {
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	// Coordinates are assumed as input in user format (1..9) while array references are machine indexed (0..8)
 	return board[row - 1][col - 1]->getNote(index - 1);
+}
+
+void SudokuBoard::printBoard() {
+	int cellVal = 0;
+	cout << endl;
+	cout << "Current board:" << endl;
+	for (int c = 0; c < 9; c++) {
+		cout << "|";
+		for (int r = 0; r < 9; r++) {
+			cellVal = board[r][c]->getVal();
+			if (cellVal == 0) {
+				cout << "| |";
+			}
+			else {
+				cout << "|" << cellVal << "|";
+			}
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
+bool SudokuBoard::checkSolved() {
+	auto mapIt = solutionProgress.begin;
+	while (mapIt != solutionProgress.end) {
+		if (solutionProgress.mapIt != 9) {
+			return false;
+		}
+	}
+	return true;
 }

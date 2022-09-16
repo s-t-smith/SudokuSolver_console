@@ -2,7 +2,6 @@
 #include "CppUnitTest.h"
 #include "../SudokuSolver/SudokuCell.h"
 #include "../SudokuSolver/SudokuBoard.h"
-// #include "../SudokuSolver/Sudoku.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -130,6 +129,8 @@ namespace SudokuSolverTest
 				Assert::IsFalse(emptyBoard->getCellNote(4, 4, n));
 			}
 
+			Assert::AreSame(false, emptyBoard->checkSolved());
+
 			delete emptyBoard;
 		}
 
@@ -141,6 +142,8 @@ namespace SudokuSolverTest
 			Assert::AreNotEqual(easyOne->getCellVal(9, 7), 2);
 			Assert::AreEqual(easyOne->getCellVal(5, 1), 9);
 
+			Assert::AreSame(false, easyOne->checkSolved());
+
 			delete easyOne;
 
 			SudokuBoard* easyTwo = new SudokuBoard("../../inputFiles/easy2.txt");
@@ -148,6 +151,8 @@ namespace SudokuSolverTest
 			Assert::AreEqual(easyTwo->getCellVal(4, 9), 1);
 			Assert::AreNotEqual(easyTwo->getCellVal(9, 6), 9);
 			Assert::AreEqual(easyTwo->getCellVal(1, 6), 9);
+
+			Assert::AreSame(false, easyTwo->checkSolved());
 
 			delete easyTwo;
 
@@ -157,17 +162,22 @@ namespace SudokuSolverTest
 			Assert::AreNotEqual(easyThree->getCellVal(8, 4), 3);
 			Assert::AreEqual(easyThree->getCellVal(1, 9), 4);
 
+			Assert::AreSame(false, easyThree->checkSolved());
+
 			delete easyThree;
 		}
-	};
 
-	TEST_CLASS(SudokuTest)
-	{
-	public:
-
-		SudokuTest()
+		TEST_METHOD(SolvedBoardTest)
 		{
-			Logger::WriteMessage("No tests for Sudoku class yet");
+			SudokuBoard* testSolved = new SudokuBoard("../../inputFiles/badSolution.txt");
+
+			Assert::AreEqual(testSolved->getCellVal(1, 1), 1);
+			Assert::AreEqual(testSolved->getCellVal(9, 9), 9);
+			Assert::AreEqual(testSolved->getCellVal(4, 4), 4);
+
+			Assert::AreSame(testSolved->checkSolved(), true);
+
+			delete testSolved;
 		}
 	};
 }
