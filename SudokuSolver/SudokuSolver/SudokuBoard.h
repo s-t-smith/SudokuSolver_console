@@ -6,6 +6,8 @@
 #include <fstream>
 #include <map>
 
+using namespace std;
+
 /*
 * This class will define the game space for a session of Sudoku.
 * It will keep track of a 9x9 set of SudokuCell objects and pass user function calls down to those objects.
@@ -156,11 +158,12 @@ void SudokuBoard::printBoard() {
 }
 
 bool SudokuBoard::checkSolved() {
-	auto mapIt = solutionProgress.begin;
-	while (mapIt != solutionProgress.end) {
-		if (solutionProgress.mapIt != 9) {
+	map<int, int>::iterator checkVal = solutionProgress.begin();
+	while (checkVal != solutionProgress.end()) {
+		if (checkVal->second != 9) {
 			return false;
 		}
+		checkVal++;
 	}
 	return true;
 }
