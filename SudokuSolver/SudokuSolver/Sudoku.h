@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SudokuCell.h"
 #include "SudokuBoard.h"
 
 using namespace std;
@@ -36,6 +35,17 @@ public:
 	void setBoardCellNote(bool set, int index, int row, int col);
 	bool getBoardCellNote(int index, int row, int col);
 	void printBoard();
+	// Function declarations taken from the main cpp:
+/*
+* [put some explanations here]
+*/
+	void clearRowNotes(int val, int row);
+	void clearColNotes(int val, int col);
+	void clearBlockNotes(int val, int blk);
+	bool isWrittenRow(int val, int row);
+	bool isWrittenCol(int val, int col);
+	bool isWrittenBlock(int val, int blk);
+	void placeSolution(int val, int row, int col);
 
 	/*
 	* Private members:

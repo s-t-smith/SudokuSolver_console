@@ -11,42 +11,12 @@
 * - Continue until all cells have solutions written
 */
 
-#include "SudokuCell.h"
-#include "SudokuBoard.h"
+#include "Sudoku.h"
 #include <iostream>
 using namespace std;
-
-// Function declarations:
-/*
-* [put some explanations here]
-*/
-void clearRowNotes(int val, int row);
-void clearColNotes(int val, int col);
-void clearBlockNotes(int val, int blk);
-bool isWrittenRow(int val, int row);
-bool isWrittenCol(int val, int col);
-bool isWrittenBlock(int val, int blk);
-void placeSolution(int val, int row, int col);
-
 
 // Main:
 int main()
 {
     cout << "Main program not yet written." << endl;
 }
-
-
-// Funciton definitions:
-void clearRowNotes(int val, int row) {}
-
-void clearColNotes(int val, int col) {}
-
-void clearBlockNotes(int val, int blk) {}
-
-bool isWrittenRow(int val, int row) {}
-
-bool isWrittenCol(int val, int col) {}
-
-bool isWrittenBlock(int val, int blk) {}
-
-void placeSolution(int val, int row, int col) {}

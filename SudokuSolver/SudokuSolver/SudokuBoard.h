@@ -39,7 +39,6 @@ public:
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
 	bool checkSolved();
-		// might want a return type for this
 
 	/*
 	* Private members:
@@ -59,7 +58,7 @@ SudokuBoard::SudokuBoard() {
 		
 		// Create a tracker for each digit:
 		solutionProgress.emplace(r + 1);
-		solutionProgress[r + 1] = 0;
+		solutionProgress.at(r + 1) = 0;
 		
 		// Create empty cells:
 		for (int c = 0; c < 9; c++) {
@@ -74,7 +73,7 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 
 		// Create a tracker for each digit:
 		solutionProgress.emplace(r + 1);
-		solutionProgress[r + 1] = 0;
+		solutionProgress.at(r + 1) = 0;
 
 		for (int c = 0; c < 9; c++) {
 			board[r][c] = new SudokuCell();
@@ -82,10 +81,10 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 	}
 	// ...then populates cells based on the input file.
 	int row, col, val = 0;
-	std::ifstream file(inputPath);
+	ifstream file(inputPath);
 
 	if (!file.is_open()) {
-		throw std::runtime_error("Could not open file.");
+		throw runtime_error("Could not open file.");
 	}
 
 	// Input files should be .txt where each line is as follows:
