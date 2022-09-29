@@ -144,6 +144,7 @@
     <ClCompile Include="SudokuSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sudoku.h" />
     <ClInclude Include="SudokuBoard.h" />
     <ClInclude Include="SudokuCell.h" />
   </ItemGroup>

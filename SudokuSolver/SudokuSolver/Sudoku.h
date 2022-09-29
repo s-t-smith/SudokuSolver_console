@@ -7,6 +7,8 @@ using namespace std;
 /*
 * This class will define the game state for a session of Sudoku.
 * It will contain one SudokuBoard object and pass user IO to the lower objects.
+* 
+* This class will also contain some functions that can be called by the main.cpp to implement the solving algorithm.
 */
 
 
@@ -35,10 +37,6 @@ public:
 	void setBoardCellNote(bool set, int index, int row, int col);
 	bool getBoardCellNote(int index, int row, int col);
 	void printBoard();
-	// Function declarations taken from the main cpp:
-/*
-* [put some explanations here]
-*/
 	void clearRowNotes(int val, int row);
 	void clearColNotes(int val, int col);
 	void clearBlockNotes(int val, int blk);
@@ -115,4 +113,25 @@ void Sudoku::printBoard() {
 		cout << "|" << endl;
 	}
 	cout << endl;
+}
+
+void Sudoku::clearRowNotes(int val, int row) {
+}
+
+void Sudoku::clearColNotes(int val, int col) {
+}
+
+void Sudoku::clearBlockNotes(int val, int blk) {
+}
+
+bool Sudoku::isWrittenRow(int val, int row) {
+}
+
+bool Sudoku::isWrittenCol(int val, int col) {
+}
+
+bool Sudoku::isWrittenBlock(int val, int blk) {
+}
+
+void Sudoku::placeSolution(int val, int row, int col) {
 }
