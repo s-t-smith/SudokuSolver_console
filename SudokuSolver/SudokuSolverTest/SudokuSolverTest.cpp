@@ -93,6 +93,16 @@ namespace SudokuSolverTest
 		}
 	};
 
+	TEST_CLASS(SudokuBlockTest)
+	{
+	public:
+
+		SudokuBlockTest()
+		{
+			Logger::WriteMessage("No Block test written.");
+		}
+	};
+
 	TEST_CLASS(SudokuBoardTest)
 	{
 	public:
@@ -129,8 +139,6 @@ namespace SudokuSolverTest
 				Assert::IsFalse(emptyBoard->getCellNote(4, 4, n));
 			}
 
-			Assert::AreSame(false, emptyBoard->checkSolved());
-
 			delete emptyBoard;
 		}
 
@@ -142,8 +150,6 @@ namespace SudokuSolverTest
 			Assert::AreNotEqual(easyOne->getCellVal(9, 7), 2);
 			Assert::AreEqual(easyOne->getCellVal(5, 1), 9);
 
-			Assert::AreSame(false, easyOne->checkSolved());
-
 			delete easyOne;
 
 			SudokuBoard* easyTwo = new SudokuBoard("../../inputFiles/easy2.txt");
@@ -152,8 +158,6 @@ namespace SudokuSolverTest
 			Assert::AreNotEqual(easyTwo->getCellVal(9, 6), 9);
 			Assert::AreEqual(easyTwo->getCellVal(1, 6), 9);
 
-			Assert::AreSame(false, easyTwo->checkSolved());
-
 			delete easyTwo;
 
 			SudokuBoard* easyThree = new SudokuBoard("../../inputFiles/easy3.txt");
@@ -161,8 +165,6 @@ namespace SudokuSolverTest
 			Assert::AreEqual(easyThree->getCellVal(1, 1), 1);
 			Assert::AreNotEqual(easyThree->getCellVal(8, 4), 3);
 			Assert::AreEqual(easyThree->getCellVal(1, 9), 4);
-
-			Assert::AreSame(false, easyThree->checkSolved());
 
 			delete easyThree;
 		}
@@ -174,8 +176,6 @@ namespace SudokuSolverTest
 			Assert::AreEqual(testSolved->getCellVal(1, 1), 1);
 			Assert::AreEqual(testSolved->getCellVal(9, 9), 9);
 			Assert::AreEqual(testSolved->getCellVal(4, 4), 4);
-
-			Assert::AreSame(testSolved->checkSolved(), true);
 
 			delete testSolved;
 		}

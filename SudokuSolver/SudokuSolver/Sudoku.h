@@ -26,12 +26,12 @@ class Sudoku
 	* getBoardCellNote - Returns a note for a solution on a cell from the board.
 	* 
 	* Board functions:
-	* clearRowNotes - 
-	* clearColNotes - 
-	* clearBlockNotes - 
-	* isWrittenRow - 
-	* isWrittenCol - 
-	* isWrittenBlock - 
+	* clearRowNotes - Removes all notes for a value along a given row.
+	* clearColNotes - Removes all notes for a value along a given column.
+	* clearBlockNotes - Removes all notes for a value in a given 3x3 block.
+	* isWrittenRow - Checks to see if a solution is present in a given row.
+	* isWrittenCol - Checks to see if a solution is present in a given column.
+	* isWrittenBlock - Checks to see if a solution is present in a given 3x3 block.
 	* 
 	* Game functions:
 	* printBoard - Output the values written to the board in a 9x9 format to the console.
@@ -86,6 +86,9 @@ Sudoku::~Sudoku()
 
 void Sudoku::setBoardCellVal(int val, int row, int col) {
 	gameBoard->setCellVal(row, col, val);
+	clearRowNotes(row, val);
+	clearColNotes(col, val);
+	// clearBlockNotes();
 }
 
 int Sudoku::getBoardCellVal(int row, int col) {
@@ -106,6 +109,7 @@ bool Sudoku::getBoardCellNote(int index, int row, int col) {
 }
 
 void Sudoku::printBoard() {
+	// Lists normally start at 0, but for some reason, I thought it would be a good idea to abstract that at this level.
 	for (int r = 1; r < 10; r++) {
 		cout << "|";
 		for (int c = 1; c < 10; c++) {
@@ -124,18 +128,36 @@ void Sudoku::printBoard() {
 }
 
 void Sudoku::clearRowNotes(int val, int row) {
+	for (int c = 1; c < 10; c++) {
+		gameBoard->clearCellNote(row, c, val);
+	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
+	for (int r = 1; r < 10; r++) {
+		gameBoard->clearCellNote(r, col, val);
+	}
 }
 
 void Sudoku::clearBlockNotes(int val, int blk) {
 }
 
 bool Sudoku::isWrittenRow(int val, int row) {
+	for (int c = 1; c < 10; c++) {
+		if (gameBoard->getCellVal(row, c) == val) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Sudoku::isWrittenCol(int val, int col) {
+	for (int r = 1; r < 10; r++) {
+		if (gameBoard->getCellVal(r, col) == val) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Sudoku::isWrittenBlock(int val, int blk) {

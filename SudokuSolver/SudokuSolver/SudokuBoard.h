@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SudokuCell.h"
+#include "SudokuBlock.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -46,7 +46,7 @@ public:
 	* solutionProgress - keeps track of how many solutions exist on the board; a complete board will have 9 of each digit.
 	*/
 private:
-	SudokuCell* board[9][9];
+	SudokuBlock* board[3][3];
 		// If I change to vectors, this could scale better, and I could use iterators, which might be handy for blocks.
 };
 
