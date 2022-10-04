@@ -19,14 +19,23 @@ class Sudoku
 	* Sudoku - Default constructor begins a session with a blank sudoku board.
 	* Sudoku(startingFile) - Explicit constructor begins a session with a prepopulated sukoku board.
 	* 
-	* Board functions:
+	* Cell functions:
 	* setBoardCellVal - Passes a value down to the board to be written to a cell.
 	* getBoardCellVal - Returns the value written to a cell on the board.
 	* setBoardCellNote - Marks a note on a board's cell for a possible solution.
 	* getBoardCellNote - Returns a note for a solution on a cell from the board.
 	* 
+	* Board functions:
+	* clearRowNotes - 
+	* clearColNotes - 
+	* clearBlockNotes - 
+	* isWrittenRow - 
+	* isWrittenCol - 
+	* isWrittenBlock - 
+	* 
 	* Game functions:
 	* printBoard - Output the values written to the board in a 9x9 format to the console.
+	* solveBoard - The actual meat-and-potatoes algorithm to put all solutions in their cells.
 	*/
 public:
 	Sudoku();
@@ -43,7 +52,6 @@ public:
 	bool isWrittenRow(int val, int row);
 	bool isWrittenCol(int val, int col);
 	bool isWrittenBlock(int val, int blk);
-	void placeSolution(int val, int row, int col);
 
 	/*
 	* Private members:
@@ -131,7 +139,4 @@ bool Sudoku::isWrittenCol(int val, int col) {
 }
 
 bool Sudoku::isWrittenBlock(int val, int blk) {
-}
-
-void Sudoku::placeSolution(int val, int row, int col) {
 }

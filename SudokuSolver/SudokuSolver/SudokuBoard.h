@@ -38,7 +38,6 @@ public:
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
-	bool checkSolved();
 
 	/*
 	* Private members:
@@ -48,17 +47,13 @@ public:
 	*/
 private:
 	SudokuCell* board[9][9];
-	map<int, int> solutionProgress;
+		// If I change to vectors, this could scale better, and I could use iterators, which might be handy for blocks.
 };
 
 
 SudokuBoard::SudokuBoard() {
 	// Creates a 9x9 set of empty SudokuCell objects.
 	for (int r = 0; r < 9; r++) {
-		
-		// Create a tracker for each digit:
-		solutionProgress.emplace(r + 1);
-		solutionProgress.at(r + 1) = 0;
 		
 		// Create empty cells:
 		for (int c = 0; c < 9; c++) {
@@ -70,10 +65,6 @@ SudokuBoard::SudokuBoard() {
 SudokuBoard::SudokuBoard(std::string inputPath) {
 	// Creates a blank 9x9 board like the default constructor...
 	for (int r = 0; r < 9; r++) {
-
-		// Create a tracker for each digit:
-		solutionProgress.emplace(r + 1);
-		solutionProgress.at(r + 1) = 0;
 
 		for (int c = 0; c < 9; c++) {
 			board[r][c] = new SudokuCell();
@@ -95,7 +86,6 @@ SudokuBoard::SudokuBoard(std::string inputPath) {
 		file >> col;
 		file >> val;
 		setCellVal(row, col, val);
-		solutionProgress.at(val)++;
 	}
 }
 
@@ -110,10 +100,6 @@ SudokuBoard::~SudokuBoard() {
 void SudokuBoard::setCellVal(int row, int col, int val) {
 	// Coordinates are assumed as input in user format (1..9) while array references are machine indexed (0..8)
 	board[row - 1][col - 1]->setVal(val);
-
-	// Update the solution list:
-	solutionProgress.at(val)++;
-		// thought about adding a conditional check for removing a solution, but the algorithm will only be additive in this case.
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
@@ -154,15 +140,4 @@ void SudokuBoard::printBoard() {
 		cout << endl;
 	}
 	cout << endl;
-}
-
-bool SudokuBoard::checkSolved() {
-	map<int, int>::iterator checkVal = solutionProgress.begin();
-	while (checkVal != solutionProgress.end()) {
-		if (checkVal->second != 9) {
-			return false;
-		}
-		checkVal++;
-	}
-	return true;
 }
