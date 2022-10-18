@@ -101,6 +101,8 @@ namespace SudokuSolverTest
 		{
 			Logger::WriteMessage("No Block test written.");
 		}
+
+		// work in progress
 	};
 
 	TEST_CLASS(SudokuBoardTest)
@@ -144,40 +146,12 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(StartingBoardTest)
 		{
-			SudokuBoard* easyOne = new SudokuBoard("../../inputFiles/easy1.txt");
-
-			Assert::AreEqual(easyOne->getCellVal(2, 3), 6);
-			Assert::AreNotEqual(easyOne->getCellVal(9, 7), 2);
-			Assert::AreEqual(easyOne->getCellVal(5, 1), 9);
-
-			delete easyOne;
-
-			SudokuBoard* easyTwo = new SudokuBoard("../../inputFiles/easy2.txt");
-
-			Assert::AreEqual(easyTwo->getCellVal(4, 9), 1);
-			Assert::AreNotEqual(easyTwo->getCellVal(9, 6), 9);
-			Assert::AreEqual(easyTwo->getCellVal(1, 6), 9);
-
-			delete easyTwo;
-
-			SudokuBoard* easyThree = new SudokuBoard("../../inputFiles/easy3.txt");
-
-			Assert::AreEqual(easyThree->getCellVal(1, 1), 1);
-			Assert::AreNotEqual(easyThree->getCellVal(8, 4), 3);
-			Assert::AreEqual(easyThree->getCellVal(1, 9), 4);
-
-			delete easyThree;
+			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
 		}
 
 		TEST_METHOD(SolvedBoardTest)
 		{
-			SudokuBoard* testSolved = new SudokuBoard("../../inputFiles/badSolution.txt");
-
-			Assert::AreEqual(testSolved->getCellVal(1, 1), 1);
-			Assert::AreEqual(testSolved->getCellVal(9, 9), 9);
-			Assert::AreEqual(testSolved->getCellVal(4, 4), 4);
-
-			delete testSolved;
+			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
 		}
 	};
 }

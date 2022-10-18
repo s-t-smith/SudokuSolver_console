@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SudokuBoard.h"
+#include <fstream>
 
 using namespace std;
 
@@ -9,6 +10,9 @@ using namespace std;
 * It will contain one SudokuBoard object and pass user IO to the lower objects.
 * 
 * This class will also contain some functions that can be called by the main.cpp to implement the solving algorithm.
+* 
+* This class shall also serve as the index-interpretation layer;
+* inputs from SudokuSolver will be 1-indexed and human-readable, while the board layer will be 0-indexed.
 */
 
 
@@ -48,7 +52,6 @@ public:
 	void printBoard();
 	void clearRowNotes(int val, int row);
 	void clearColNotes(int val, int col);
-	void clearBlockNotes(int val, int blk);
 	bool isWrittenRow(int val, int row);
 	bool isWrittenCol(int val, int col);
 	bool isWrittenBlock(int val, int blk);
@@ -73,7 +76,24 @@ Sudoku::Sudoku()
 
 Sudoku::Sudoku(std::string startingFile)
 {
-	gameBoard = new SudokuBoard(startingFile);
+	gameBoard = new SudokuBoard();
+
+	int row, col, val = 0;
+	ifstream file(startingFile);
+
+	if (!file.is_open()) {
+		throw runtime_error("Could not open file.");
+	}
+
+	// Input files should be .txt where each line is as follows:
+	// <row #> <col #> <number (1..9)>
+	// The following loop will extract each value and use them to call the setVal() of the relevant cell.
+	while (!file.eof()) {
+		file >> row;
+		file >> col;
+		file >> val;
+		setBoardCellVal(val, row-1, col-1);
+	}
 	
 	gameOver = false;
 	
@@ -86,9 +106,8 @@ Sudoku::~Sudoku()
 
 void Sudoku::setBoardCellVal(int val, int row, int col) {
 	gameBoard->setCellVal(row, col, val);
-	clearRowNotes(row, val);
-	clearColNotes(col, val);
-	// clearBlockNotes();
+	clearRowNotes(val, row);
+	clearColNotes(val, col);
 }
 
 int Sudoku::getBoardCellVal(int row, int col) {
@@ -105,46 +124,28 @@ void Sudoku::setBoardCellNote(bool set, int index, int row, int col) {
 }
 
 bool Sudoku::getBoardCellNote(int index, int row, int col) {
-	gameBoard->getCellNote(row, col, index);
+	return gameBoard->getCellNote(row, col, index);
 }
 
 void Sudoku::printBoard() {
-	// Lists normally start at 0, but for some reason, I thought it would be a good idea to abstract that at this level.
-	for (int r = 1; r < 10; r++) {
-		cout << "|";
-		for (int c = 1; c < 10; c++) {
-			int cellVal = getBoardCellVal(r, c);
-			if (cellVal != 0) {
-				cout << "| " << cellVal << " |";
-			}
-			else {
-				cout << "|   |";
-			}
-			
-		}
-		cout << "|" << endl;
-	}
-	cout << endl;
+	gameBoard->printBoard();
 }
 
 void Sudoku::clearRowNotes(int val, int row) {
-	for (int c = 1; c < 10; c++) {
-		gameBoard->clearCellNote(row, c, val);
+	for (int c = 0; c < 9; c++) {
+		setBoardCellNote(false, val, row, c);
 	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
-	for (int r = 1; r < 10; r++) {
-		gameBoard->clearCellNote(r, col, val);
+	for (int r = 0; r < 9; r++) {
+		setBoardCellNote(false, val, r, col);
 	}
 }
 
-void Sudoku::clearBlockNotes(int val, int blk) {
-}
-
 bool Sudoku::isWrittenRow(int val, int row) {
-	for (int c = 1; c < 10; c++) {
-		if (gameBoard->getCellVal(row, c) == val) {
+	for (int c = 0; c < 9; c++) {
+		if (getBoardCellVal(row, c) == val) {
 			return true;
 		}
 	}
@@ -153,7 +154,7 @@ bool Sudoku::isWrittenRow(int val, int row) {
 
 bool Sudoku::isWrittenCol(int val, int col) {
 	for (int r = 1; r < 10; r++) {
-		if (gameBoard->getCellVal(r, col) == val) {
+		if (getBoardCellVal(r, col) == val) {
 			return true;
 		}
 	}
@@ -161,4 +162,6 @@ bool Sudoku::isWrittenCol(int val, int col) {
 }
 
 bool Sudoku::isWrittenBlock(int val, int blk) {
+	// work in progress
+	return false;
 }

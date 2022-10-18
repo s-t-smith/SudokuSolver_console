@@ -37,7 +37,7 @@ public:
 };
 
 SudokuCell::SudokuCell() {
-	// Default constructor sets the cellVal to "0" (unsolved) and clears the notes array.
+	// Default constructor sets the cellVal to "0" (unsolved) and loads the notes array.
 	setVal(0);
 }
 
@@ -51,8 +51,15 @@ void SudokuCell::setVal(int val) {
 	if (val < 0 || val > 9)
 		throw std::out_of_range("Value not accepted");
 	cellVal = val;
-	for (int i = 0; i < 9; i++) {
-		notes[i] = false;
+	if (cellVal == 0){
+		for (int i = 0; i < 9; i++) {
+			notes[i] = true;
+		}
+	}
+	else {
+		for (int i = 0; i < 9; i++) {
+			notes[i] = false;
+		}
 	}
 }
 
