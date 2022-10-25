@@ -47,10 +47,11 @@ SudokuCell::SudokuCell(int val) {
 }
 
 void SudokuCell::setVal(int val) {
-	// Write a solution digit to the cellVal, prevent out-of-range values.
+	// Write a solution digit to the cellVal, prevent out-of-range values:
 	if (val < 0 || val > 9)
 		throw std::out_of_range("Value not accepted");
 	cellVal = val;
+	// Clear or set notes as appropriate for the value set:
 	if (cellVal == 0){
 		for (int i = 0; i < 9; i++) {
 			notes[i] = true;

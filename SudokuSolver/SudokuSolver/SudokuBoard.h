@@ -22,6 +22,7 @@ class SudokuBoard
 	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
 	* clearCellNote - sets the 'index' note on a cell to false, uses the underlyiing object's function.
 	* getCellNote - returns the state of the underlying object's 'index' note.
+	* checkBlockVal - returns whether a value is present in a 3x3 block.
 	* printBoard - outputs the board in a 9x9 format to the console.
 	*/
 public:
@@ -32,6 +33,7 @@ public:
 	void setCellNote(int row, int col, int index);
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
+	bool checkBlockVal(int blockRow, int blockCol, int val);
 	void printBoard();
 
 	/*
@@ -82,6 +84,10 @@ void SudokuBoard::clearCellNote(int row, int col, int index) {
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	return board[row / 3][col / 3]->getBlockCellNote(row % 3, col % 3, index);
+}
+
+bool SudokuBoard::checkBlockVal(int blockRow, int blockCol, int val) {
+	return board[blockRow][blockCol]->blockValPresent(val);
 }
 
 void SudokuBoard::printBoard() {

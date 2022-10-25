@@ -153,7 +153,7 @@ bool Sudoku::isWrittenRow(int val, int row) {
 }
 
 bool Sudoku::isWrittenCol(int val, int col) {
-	for (int r = 1; r < 10; r++) {
+	for (int r = 0; r < 9; r++) {
 		if (getBoardCellVal(r, col) == val) {
 			return true;
 		}
@@ -162,6 +162,57 @@ bool Sudoku::isWrittenCol(int val, int col) {
 }
 
 bool Sudoku::isWrittenBlock(int val, int blk) {
-	// work in progress
+	// This is a bit of a brute-force way of checking blocks; I imagine there's a more elegant solution, but it evades me for the time being.
+	
+	if (blk < 0 || blk > 9){
+		throw std::out_of_range("Invalid block reference");
+	}
+
+	int row_init, col_init = 0;
+
+	switch (blk)
+	{
+	case 1:
+		row_init = 0;
+		col_init = 0;
+		break;
+	case 2:
+		row_init = 0;
+		col_init = 3;
+		break;
+	case 3:
+		row_init = 0;
+		col_init = 6;
+		break;
+	case 4:
+		row_init = 3;
+		col_init = 0;
+		break;
+	case 5:
+		row_init = 3;
+		col_init = 3;
+		break;
+	case 6:
+		row_init = 3;
+		col_init = 6;
+		break;
+	case 7:
+		row_init = 6;
+		col_init = 0;
+		break;
+	case 8:
+		row_init = 6;
+		col_init = 3;
+		break;
+	case 9:
+		row_init = 6;
+		col_init = 6;
+		break;
+	default:
+		return false;
+	}
+
+	// block check
+
 	return false;
 }
