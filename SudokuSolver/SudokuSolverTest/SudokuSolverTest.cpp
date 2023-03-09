@@ -34,7 +34,8 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Testing default constructor...");
 			SudokuCell* defaultCell = new SudokuCell();
 			Assert::AreEqual(0, defaultCell->getVal());
-			for (int i = 0; i < 9; i++)
+			int noteSize = defaultCell->getSize();
+			for (int i = 0; i < noteSize; i++)
 			{
 				Assert::IsFalse(defaultCell->getNote(i));
 			}
@@ -44,9 +45,18 @@ namespace SudokuSolverTest
 		TEST_METHOD(ExplicitConstructor)
 		{
 			Logger::WriteMessage("Testing explicit constructor...");
-			SudokuCell* explicitCell = new SudokuCell(5);
+			SudokuCell* explicitCell = new SudokuCell(5, 9);
 			Assert::AreEqual(5, explicitCell->getVal());
-			for (int i = 0; i < 9; i++)
+			int noteSize = explicitCell->getSize();
+			for (int i = 0; i < noteSize; i++)
+			{
+				Assert::IsFalse(explicitCell->getNote(i));
+			}
+			delete explicitCell;
+			explicitCell = new SudokuCell(3, 16);
+			Assert::AreEqual(3, explicitCell->getVal());
+			noteSize = explicitCell->getSize();
+			for (int i = 0; i < noteSize; i++)
 			{
 				Assert::IsFalse(explicitCell->getNote(i));
 			}
@@ -56,10 +66,12 @@ namespace SudokuSolverTest
 		TEST_METHOD(SetVal)
 		{
 			Logger::WriteMessage("Testing setter and getter...");
-			SudokuCell* newCell = new SudokuCell(1);
+			SudokuCell* newCell = new SudokuCell(1, 25);
 			Assert::AreEqual(1, newCell->getVal());
+			Assert::AreEqual(25, newCell->getSize());
 			newCell->setVal(3);
 			Assert::AreEqual(3, newCell->getVal());
+			Assert::AreEqual(25, newCell->getSize());
 			delete newCell;
 		}
 
@@ -67,6 +79,8 @@ namespace SudokuSolverTest
 		{
 			SudokuCell* newCell = new SudokuCell();
 			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setVal(22); });
+			Assert::AreEqual(0, newCell->getVal());
+			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setVal(-4); });
 			Assert::AreEqual(0, newCell->getVal());
 			delete newCell;
 		}
@@ -85,6 +99,11 @@ namespace SudokuSolverTest
 		{
 			SudokuCell* newCell = new SudokuCell();
 			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(-3); });
+			for (int i = 0; i < 9; i++)
+			{
+				Assert::IsFalse(newCell->getNote(i));
+			}
+			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(15); });
 			for (int i = 0; i < 9; i++)
 			{
 				Assert::IsFalse(newCell->getNote(i));

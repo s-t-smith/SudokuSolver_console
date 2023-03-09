@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <vector>
 
 /*
 * This will be the base-most class for the Sudoku Solver.
@@ -10,12 +11,12 @@
 class SudokuCell {
 /*
 * Private members:
-* cellVal- Where the cell solution can be written. Can be a digit 0..9.
+* cellVal- Where the cell solution can be written. Can be a digit 0..<max>.
 * notes- Where the possible solutions can be recorded. A 'true' value at an index represents a possible solution of <index>+1.
 */
 private:
 	int cellVal;
-	bool notes[9];
+	std::vector<bool> notes;
 /*
 * Public functions:
 * SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'false'.
@@ -27,39 +28,33 @@ private:
 * getNote - Returns the solution index requested.
 */
 public:
-	SudokuCell();
-	SudokuCell(int val);
+	// Default constructor assumes 9x9 board:
+	SudokuCell() : cellVal(0) { notes.resize(9); }
+	// Explicit constructor allocates for maximum board size (default to 9x9):
+	SudokuCell(int val, int size = 9) : cellVal(val) { notes.resize(size); }
 	void setVal(int val);
 	int getVal();
+	int getSize();
 	void setNote(int index);
 	void clearNote(int index);
 	bool getNote(int index);
 };
 
-SudokuCell::SudokuCell() {
-	// Default constructor sets the cellVal to "0" (unsolved) and loads the notes array.
-	setVal(0);
-}
-
-SudokuCell::SudokuCell(int val) {
-	// Explicit constructor sets the cellVal to the requested digit and clears the notes array.
-	setVal(val);
-}
-
 void SudokuCell::setVal(int val) {
 	// Write a solution digit to the cellVal, prevent out-of-range values:
-	if (val < 0 || val > 9)
+	if (val < 0 || val > notes.size())
 		throw std::out_of_range("Value not accepted");
+	// Set valid value to private member:
 	cellVal = val;
 	// Clear or set notes as appropriate for the value set:
 	if (cellVal == 0){
-		for (int i = 0; i < 9; i++) {
-			notes[i] = true;
+		for (auto i : notes) {
+			i = true;
 		}
 	}
 	else {
-		for (int i = 0; i < 9; i++) {
-			notes[i] = false;
+		for (auto i : notes) {
+			i = false;
 		}
 	}
 }
@@ -68,23 +63,27 @@ int SudokuCell::getVal() {
 	return cellVal;
 }
 
+int SudokuCell::getSize() {
+	return notes.size();
+}
+
 void SudokuCell::setNote(int index) {
 	// Record a possible solution, prevent out-of-bounds access.
-	if (index < 0 || index > 9)
+	if (index < 0 || index > notes.size())
 		throw std::out_of_range("Index invalid");
 	notes[index] = true;
 }
 
 void SudokuCell::clearNote(int index) {
 	// Eliminate a possible solution, prevent out-of-bounds access.
-	if (index < 0 || index > 9)
+	if (index < 0 || index > notes.size())
 		throw std::out_of_range("Index invalid");
 	notes[index] = false;
 }
 
 bool SudokuCell::getNote(int index) {
 	// Report a possible solution, prevent out-of-range access.
-	if (index < 0 || index > 9)
+	if (index < 0 || index > notes.size())
 		throw std::out_of_range("Note unavailable");
 	return notes[index];
 }
