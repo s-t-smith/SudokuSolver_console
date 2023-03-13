@@ -20,7 +20,7 @@ class SudokuBoard
 	* setCellVal - writes a solution to a cell by way of the underlying object's function.
 	* getCellVal - returns a solution written in a cell by way of the underlying object's function.
 	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
-	* clearCellNote - sets the 'index' note on a cell to false, uses the underlyiing object's function.
+	* clearCellNote - sets the 'index' note on a cell to false, uses the underlying object's function.
 	* getCellNote - returns the state of the underlying object's 'index' note.
 	* checkBlockVal - returns whether a value is present in a 3x3 block.
 	* printBoard - outputs the board in a 9x9 format to the console.

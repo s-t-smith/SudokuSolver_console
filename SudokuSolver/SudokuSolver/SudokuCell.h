@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <vector>
 
 /*
 * This will be the base-most class for the Sudoku Solver.
