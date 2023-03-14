@@ -1,6 +1,8 @@
 #pragma once
 
-#include "SudokuBlock.h"
+//#include "SudokuBoard.h"
+//	This scalable implementation won't use the board class.
+#include "SudokuCell.h"
 #include <string>
 #include <iostream>
 
@@ -8,7 +10,6 @@ using namespace std;
 
 /*
 * This class will define the game space for a session of Sudoku.
-* It will keep track of a 9x9 set of SudokuCell objects and pass user function calls down to those objects.
 */
 
 class SudokuBoard
@@ -16,87 +17,113 @@ class SudokuBoard
 	/*
 	* Public functions:
 	* SudokuBoard() - Default constructor; makes an empty board object with no values written to any cells.
-	* ~SudokuBoard() - Default desctructor - might not have much use for this.
+	* SudokuBoard(int size) - Explicit constructor; makes an empty board with a user-provider number of rows and columns.
+	* ~SudokuBoard() - Default desctructor; frees pointer memory from cell objects.
+	* getBoardSize() - returns the row/column/max value for the board.
 	* setCellVal - writes a solution to a cell by way of the underlying object's function.
 	* getCellVal - returns a solution written in a cell by way of the underlying object's function.
 	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
 	* clearCellNote - sets the 'index' note on a cell to false, uses the underlyiing object's function.
 	* getCellNote - returns the state of the underlying object's 'index' note.
-	* checkBlockVal - returns whether a value is present in a 3x3 block.
 	* printBoard - outputs the board in a 9x9 format to the console.
 	*/
 public:
-	SudokuBoard();
+	// SudokuBoard();
+	SudokuBoard(int size = 9);
 	~SudokuBoard();
+	int getBoardSize();
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index);
 	void clearCellNote(int row, int col, int index);
 	bool getCellNote(int row, int col, int index);
-	bool checkBlockVal(int blockRow, int blockCol, int val);
 	void printBoard();
 
 	/*
 	* Private members:
-	* board - a 9x9 array of SudokuCell objects.
-	*	- In a later implementation, this could be adjusted for scalability and/or additional dimensions.
-	* solutionProgress - keeps track of how many solutions exist on the board; a complete board will have 9 of each digit.
+	* board - an array of SudokuCell objects.
+	* valMax - the maximum value of cell solutions; also the number of rows and columns.
 	*/
 private:
-	SudokuBlock* board[3][3];
-		// If I change to vectors, this could scale better, and I could use iterators, which might be handy for blocks.
+	int valMax;
+	vector<vector<SudokuCell*>> board;
 };
 
 
-SudokuBoard::SudokuBoard() {
-	// Creates a 9x9 set of empty SudokuCell objects.
-	for (int r = 0; r < 3; r++) {	
-		// Create empty cells:
-		for (int c = 0; c < 3; c++) {
-			board[r][c] = new SudokuBlock();
+/*SudokuBoard::SudokuBoard() {
+	// Set a default board size of 9x9:
+	valMax = 9;
+	board.resize(9);
+	for (auto i : board) {
+		i.resize(9);
+		for (auto j : i) {
+			j = new SudokuCell();
+		}
+	}
+}*/
+
+SudokuBoard::SudokuBoard(int size) {
+	// Set a user-given size:
+	valMax = size;
+	board.resize(size);
+	for (auto i : board) {
+		i.resize(size);
+		for (auto j : i) {
+			j = new SudokuCell();
 		}
 	}
 }
 
 SudokuBoard::~SudokuBoard() {
-	for (int r = 0; r < 3; r++) {
-		for (int c = 0; c < 3; c++) {
-			delete board[r][c];
+	// Clear memory from board:
+	for (auto r : board) {
+		for (auto c : r) {
+			delete c;
 		}
 	}
 }
 
+int SudokuBoard::getBoardSize() {
+	// Returns the board's maximum value/row size:
+	return valMax;
+}
+
 void SudokuBoard::setCellVal(int row, int col, int val) {
-	board[row / 3][col / 3]->setBlockCellVal(row % 3, col % 3, val);
+	// Write a value to a cell; invalid values will be discarded:
+	if (val < 0 || val > valMax) {
+		throw out_of_range("Value not accepted");
+	}
+	board[row][col]->setVal(val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
-	return board[row / 3][col / 3]->getBlockCellVal(row % 3, col % 3);
+	// Read the value from a cell:
+	return board[row][col]->getVal();
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index) {
-	board[row / 3][col / 3]->setBlockCellNote(row % 3, col % 3, index);
+	// Write a possible solution to a cell:
+	board[row][col]->setNote(index);
 }
 
 void SudokuBoard::clearCellNote(int row, int col, int index) {
-	board[row / 3][col / 3]->clearBlockCellNote(row % 3, col % 3, index);
+	// Discard a possible solution from a cell:
+	board[row][col]->clearNote(index);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
-	return board[row / 3][col / 3]->getBlockCellNote(row % 3, col % 3, index);
-}
-
-bool SudokuBoard::checkBlockVal(int blockRow, int blockCol, int val) {
-	return board[blockRow][blockCol]->blockValPresent(val);
+	// Read a possible solution on a cell:
+	return board[row][col]->getNote(index);
 }
 
 void SudokuBoard::printBoard() {
-	int cellVal = 0;
+	// Display the cell values at time of call:
 	cout << endl;
 	cout << "Current board:" << endl;
-	for (int row = 0; row < 9; row++) {
-		for (int col = 0; col < 9; col++) {
-			cout << getCellVal(row, col);
+	for (auto r : board) {
+		cout << "|";
+		for (auto c : r) {
+			cout << c->getVal() << "|";
 		}
 		cout << endl;
 	}

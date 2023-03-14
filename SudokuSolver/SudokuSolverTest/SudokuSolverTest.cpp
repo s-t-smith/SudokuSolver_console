@@ -112,7 +112,7 @@ namespace SudokuSolverTest
 		}
 	};
 
-	TEST_CLASS(SudokuBlockTest)
+	/*TEST_CLASS(SudokuBlockTest)
 	{
 	public:
 
@@ -121,8 +121,8 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("No Block test written.");
 		}
 
-		// work in progress
-	};
+		// Block not being used for this implementation.
+	};*/
 
 	TEST_CLASS(SudokuBoardTest)
 	{
@@ -155,6 +155,7 @@ namespace SudokuSolverTest
 			Assert::IsTrue(emptyBoard->getCellNote(1, 2, 8));
 
 			emptyBoard->setCellVal(4, 4, 3);
+			Assert::ExpectException<std::out_of_range>([&emptyBoard]() {emptyBoard->setCellVal(4, 4, 23); });
 			Assert::AreEqual(emptyBoard->getCellVal(4, 4), 3);
 			for (int n = 1; n < 10; n++) {
 				Assert::IsFalse(emptyBoard->getCellNote(4, 4, n));
@@ -164,11 +165,6 @@ namespace SudokuSolverTest
 		}
 
 		TEST_METHOD(StartingBoardTest)
-		{
-			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
-		}
-
-		TEST_METHOD(SolvedBoardTest)
 		{
 			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
 		}

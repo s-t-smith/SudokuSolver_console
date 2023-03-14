@@ -1,2 +1,6 @@
 ﻿  SudokuSolver.cpp
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(45,21): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(72,25): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(79,25): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(86,25): warning C4018: '>': signed/unsigned mismatch
   SudokuSolver.vcxproj -> C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\Debug\SudokuSolver.exe

@@ -144,7 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sudoku.h" />
-    <ClInclude Include="SudokuBlock.h" />
     <ClInclude Include="SudokuBoard.h" />
     <ClInclude Include="SudokuCell.h" />
   </ItemGroup>
