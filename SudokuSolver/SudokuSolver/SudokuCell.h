@@ -20,7 +20,7 @@ private:
 /*
 * Public functions:
 * SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'false'.
-* SudokuCell(int val) - Explicit constructor; initializes the cell with the given digit.
+* SudokuCell(int val, int size) - Explicit constructor; initializes the cell with the given digit and sets the number of notes.
 * setVal - Records a digit in the cell's cellVal field.
 * getVal - Returns the digit recorded in the cell's cellVal field.
 * setNote - Marks a possible solution index as 'true'.
