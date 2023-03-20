@@ -20,7 +20,7 @@ private:
 /*
 * Public functions:
 * SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'false'.
-* SudokuCell(int val) - Explicit constructor; initializes the cell with the given digit.
+* SudokuCell(int val, int size) - Explicit constructor; initializes the cell with the given digit and notes list.
 * setVal - Records a digit in the cell's cellVal field.
 * getVal - Returns the digit recorded in the cell's cellVal field.
 * setNote - Marks a possible solution index as 'true'.
@@ -29,9 +29,9 @@ private:
 */
 public:
 	// Default constructor assumes 9x9 board:
-	SudokuCell() : cellVal(0) { notes.resize(9); }
+	SudokuCell();
 	// Explicit constructor allocates for maximum board size (default to 9x9):
-	SudokuCell(int val, int size = 9) : cellVal(val) { notes.resize(size); }
+	SudokuCell(int val, int size = 9);
 	void setVal(int val);
 	int getVal();
 	int getSize();
@@ -39,6 +39,22 @@ public:
 	void clearNote(int index);
 	bool getNote(int index);
 };
+
+SudokuCell::SudokuCell() {
+	cellVal = 0;
+	notes.resize(9);
+	for (auto i : notes) {
+		notes[i] = true;
+	}
+}
+
+SudokuCell::SudokuCell(int val, int size = 9) {
+	cellVal = val;
+	notes.resize(size);
+	for (auto i : notes) {
+		notes[i] = false;
+	}
+}
 
 void SudokuCell::setVal(int val) {
 	// Write a solution digit to the cellVal, prevent out-of-range values:
