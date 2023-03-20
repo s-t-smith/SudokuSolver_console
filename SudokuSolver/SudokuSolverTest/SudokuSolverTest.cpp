@@ -166,7 +166,14 @@ namespace SudokuSolverTest
 		{
 			SudokuBoard* emptyBoard = new SudokuBoard();
 
-			// need to test an empty board made by the default constructor.
+			// Check default board size:
+			Assert::AreEqual(9, emptyBoard->getBoardSize());
+			// Check default cell values:
+			for (int i = 0; i < emptyBoard->getBoardSize(); i++) {
+				for (int j = 0; j < emptyBoard->getBoardSize(); j++) {
+					Assert::AreEqual(0, emptyBoard->getCellVal(i, j));
+				}
+			}
 
 			delete emptyBoard;
 		}

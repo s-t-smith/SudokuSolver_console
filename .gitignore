@@ -1,6 +1,17 @@
 # Prerequisites
 *.d
 
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
 # Compiled Object files
 *.slo
 *.lo

@@ -1,10 +1,11 @@
 #pragma once
 
-//#include "SudokuBoard.h"
-//	This scalable implementation won't use the board class.
+//#include "SudokuBlock.h"
+//	This scalable implementation won't use the block class.
 #include "SudokuCell.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -16,8 +17,8 @@ class SudokuBoard
 {
 	/*
 	* Public functions:
-	* SudokuBoard() - Default constructor; makes an empty board object with no values written to any cells.
 	* SudokuBoard(int size) - Explicit constructor; makes an empty board with a user-provider number of rows and columns.
+	* SudokuBoard(string fileName) - Explicit consturctor; makes a board using a text file to populate cell values.
 	* ~SudokuBoard() - Default desctructor; frees pointer memory from cell objects.
 	* getBoardSize() - returns the row/column/max value for the board.
 	* setCellVal - writes a solution to a cell by way of the underlying object's function.
@@ -30,6 +31,7 @@ class SudokuBoard
 public:
 	// SudokuBoard();
 	SudokuBoard(int size = 9);
+	SudokuBoard(string fileName);
 	~SudokuBoard();
 	int getBoardSize();
 	void setCellVal(int row, int col, int val);
@@ -63,13 +65,38 @@ private:
 }*/
 
 SudokuBoard::SudokuBoard(int size) {
-	// Set a user-given size:
+	// Create a square array of <size>:
 	valMax = size;
 	board.resize(size);
 	for (auto i : board) {
 		i.resize(size);
 		for (auto j : i) {
-			j = new SudokuCell();
+			j = new SudokuCell(0, size);
+		}
+	}
+}
+
+SudokuBoard::SudokuBoard(string fileName) {
+	int inputSize, inputRow, inputCol, inputVal;
+	ifstream inputFile (fileName);
+	if (inputFile.is_open()) {
+		// First character should be the board size/max value:
+		inputFile >> inputSize;
+		// Create empty board:
+		valMax = inputSize;
+		board.resize(inputSize);
+		for (auto i : board) {
+			i.resize(inputSize);
+			for (auto j : i) {
+				j = new SudokuCell(0, inputSize);
+			}
+		}
+		// Populate cell values:
+		while (!inputFile.eof()) {
+			inputFile >> inputRow;
+			inputFile >> inputCol;
+			inputFile >> inputVal;
+			setCellVal(inputRow, inputCol, inputVal);
 		}
 	}
 }
@@ -93,27 +120,28 @@ void SudokuBoard::setCellVal(int row, int col, int val) {
 	if (val < 0 || val > valMax) {
 		throw out_of_range("Value not accepted");
 	}
-	board[row][col]->setVal(val);
+	// Row and column must be 0-ref, arguments may be read from a file as 1-ref:
+	board[row-1][col-1]->setVal(val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
 	// Read the value from a cell:
-	return board[row][col]->getVal();
+	return board[row-1][col-1]->getVal();
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index) {
 	// Write a possible solution to a cell:
-	board[row][col]->setNote(index);
+	board[row-1][col-1]->setNote(index);
 }
 
 void SudokuBoard::clearCellNote(int row, int col, int index) {
 	// Discard a possible solution from a cell:
-	board[row][col]->clearNote(index);
+	board[row-1][col-1]->clearNote(index);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	// Read a possible solution on a cell:
-	return board[row][col]->getNote(index);
+	return board[row-1][col-1]->getNote(index);
 }
 
 void SudokuBoard::printBoard() {

@@ -31,7 +31,7 @@ public:
 	// Default constructor assumes 9x9 board:
 	SudokuCell();
 	// Explicit constructor allocates for maximum board size (default to 9x9):
-	SudokuCell(int val, int size = 9);
+	SudokuCell(int val, int size);
 	void setVal(int val);
 	int getVal();
 	int getSize();
