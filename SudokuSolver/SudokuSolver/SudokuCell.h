@@ -19,12 +19,8 @@ private:
 	std::vector<bool> notes;
 /*
 * Public functions:
-* SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'false'.
-<<<<<<< HEAD
-* SudokuCell(int val, int size) - Explicit constructor; initializes the cell with the given digit and notes list.
-=======
+* SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'true'.
 * SudokuCell(int val, int size) - Explicit constructor; initializes the cell with the given digit and sets the number of notes.
->>>>>>> 5a609475a273212b5f5d35f4b1fbbe2080164a92
 * setVal - Records a digit in the cell's cellVal field.
 * getVal - Returns the digit recorded in the cell's cellVal field.
 * setNote - Marks a possible solution index as 'true'.
@@ -45,19 +41,13 @@ public:
 };
 
 SudokuCell::SudokuCell() {
-	cellVal = 0;
 	notes.resize(9);
-	for (auto i : notes) {
-		notes[i] = true;
-	}
+	setVal(0);
 }
 
 SudokuCell::SudokuCell(int val, int size = 9) {
-	cellVal = val;
 	notes.resize(size);
-	for (auto i : notes) {
-		notes[i] = false;
-	}
+	setVal(val);
 }
 
 void SudokuCell::setVal(int val) {
