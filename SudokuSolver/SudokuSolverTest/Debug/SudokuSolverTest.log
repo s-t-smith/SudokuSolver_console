@@ -1,2 +1,7 @@
 ﻿  SudokuSolverTest.cpp
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(45,21): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(72,25): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(79,25): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(86,25): warning C4018: '>': signed/unsigned mismatch
+     Creating library C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\Debug\SudokuSolverTest.lib and object C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\Debug\SudokuSolverTest.exp
   SudokuSolverTest.vcxproj -> C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\Debug\SudokuSolverTest.dll

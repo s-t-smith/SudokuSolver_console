@@ -137,7 +137,7 @@ namespace SudokuSolverTest
 		}
 	};
 
-	TEST_CLASS(SudokuBlockTest)
+	/*TEST_CLASS(SudokuBlockTest)
 	{
 	public:
 
@@ -146,7 +146,12 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("No Block test written; Blocks depricated for this branch.\n\n");
 		}
 
+<<<<<<< HEAD
 	};
+=======
+		// Block not being used for this implementation.
+	};*/
+>>>>>>> 5a609475a273212b5f5d35f4b1fbbe2080164a92
 
 	TEST_CLASS(SudokuBoardTest)
 	{
@@ -166,17 +171,33 @@ namespace SudokuSolverTest
 		{
 			SudokuBoard* emptyBoard = new SudokuBoard();
 
+<<<<<<< HEAD
 			// need to test an empty board made by the default constructor.
+=======
+			for (int r = 1; r < 10; r++) {
+				for (int c = 1; c < 10; c++) {
+					Assert::AreEqual(emptyBoard->getCellVal(r, c), 0);
+					for (int n = 1; n < 10; n++) {
+						Assert::IsFalse(emptyBoard->getCellNote(r, c, n));
+					}
+				}
+			}
+
+			emptyBoard->setCellNote(1, 2, 8);
+			Assert::IsTrue(emptyBoard->getCellNote(1, 2, 8));
+
+			emptyBoard->setCellVal(4, 4, 3);
+			Assert::ExpectException<std::out_of_range>([&emptyBoard]() {emptyBoard->setCellVal(4, 4, 23); });
+			Assert::AreEqual(emptyBoard->getCellVal(4, 4), 3);
+			for (int n = 1; n < 10; n++) {
+				Assert::IsFalse(emptyBoard->getCellNote(4, 4, n));
+			}
+>>>>>>> 5a609475a273212b5f5d35f4b1fbbe2080164a92
 
 			delete emptyBoard;
 		}
 
 		TEST_METHOD(StartingBoardTest)
-		{
-			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
-		}
-
-		TEST_METHOD(SolvedBoardTest)
 		{
 			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
 		}
