@@ -18,5 +18,10 @@ using namespace std;
 // Main:
 int main()
 {
-    cout << "Main program not yet written." << endl;
+    // cout << "Main program not yet written." << endl;
+    cout << "Testing empty board...\n";
+    SudokuBoard* emptyBoard = new SudokuBoard();
+    emptyBoard->printBoard();
+
+    return 0;
 }

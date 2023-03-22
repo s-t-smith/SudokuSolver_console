@@ -74,7 +74,7 @@ int SudokuCell::getVal() {
 }
 
 int SudokuCell::getSize() {
-	return notes.size();
+	return (int) notes.size();
 }
 
 void SudokuCell::setNote(int index) {

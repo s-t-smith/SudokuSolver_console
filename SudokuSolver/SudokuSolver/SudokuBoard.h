@@ -29,8 +29,8 @@ class SudokuBoard
 	* printBoard - outputs the board in a 9x9 format to the console.
 	*/
 public:
-	// SudokuBoard();
-	SudokuBoard(int size = 9);
+	SudokuBoard();
+	SudokuBoard(int size);
 	SudokuBoard(string fileName);
 	~SudokuBoard();
 	int getBoardSize();
@@ -52,17 +52,17 @@ private:
 };
 
 
-/*SudokuBoard::SudokuBoard() {
+SudokuBoard::SudokuBoard() {
 	// Set a default board size of 9x9:
 	valMax = 9;
-	board.resize(9);
+	board.resize(valMax);
 	for (auto i : board) {
-		i.resize(9);
+		i.resize(valMax);
 		for (auto j : i) {
 			j = new SudokuCell();
 		}
 	}
-}*/
+}
 
 SudokuBoard::SudokuBoard(int size) {
 	// Create a square array of <size>:
@@ -120,28 +120,46 @@ void SudokuBoard::setCellVal(int row, int col, int val) {
 	if (val < 0 || val > valMax) {
 		throw out_of_range("Value not accepted");
 	}
+	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
+	int adjustedRow = row - 1;
+	int adjustedCol = col - 1;
 	// Row and column must be 0-ref, arguments may be read from a file as 1-ref:
-	board[row-1][col-1]->setVal(val);
+	board[adjustedRow][adjustedCol]->setVal(val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
+	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
+	int adjustedRow = row - 1;
+	int adjustedCol = col - 1;
 	// Read the value from a cell:
-	return board[row-1][col-1]->getVal();
+	return board[adjustedRow][adjustedCol]->getVal();
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index) {
+	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
+	int adjustedRow = row - 1;
+	int adjustedCol = col - 1;
+	int adjustedIndex = index - 1;
 	// Write a possible solution to a cell:
-	board[row-1][col-1]->setNote(index);
+	board[adjustedRow][adjustedCol]->setNote(adjustedIndex);
 }
 
 void SudokuBoard::clearCellNote(int row, int col, int index) {
+	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
+	int adjustedRow = row - 1;
+	int adjustedCol = col - 1;
+	int adjustedIndex = index - 1;
 	// Discard a possible solution from a cell:
-	board[row-1][col-1]->clearNote(index);
+	board[adjustedRow][adjustedCol]->clearNote(adjustedIndex);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
+	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
+	int adjustedRow = row - 1;
+	int adjustedCol = col - 1;
+	int adjustedIndex = index - 1;
 	// Read a possible solution on a cell:
-	return board[row-1][col-1]->getNote(index);
+	return board[adjustedRow][adjustedCol]->getNote(adjustedIndex);
 }
 
 void SudokuBoard::printBoard() {

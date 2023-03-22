@@ -119,15 +119,17 @@ void Sudoku::clearColNotes(int val, int col) {
 
 bool Sudoku::checkRow(int val, int row) {
 	// Look for a value along a given row, return 'true' when the value is present.
+	return true;	// Placeholder
 }
 
 bool Sudoku::checkCol(int val, int col) {
 	// Look for a value along a given column, return 'true' when the value is present.
+	return true;	// Placeholder
 }
 
 bool Sudoku::checkBlock(int val, int blk) {
 	// Look for a value within a given sub-array of the board, return true when the value is present.
-
+	return true;	// Placeholder
 	/*
 	* This was previously facilitated with a separate class that subdivided the game board, but that layer has been removed in the interest of scalability.
 	* Need to come up with a solution for traversing a subarray that can be referential to the orignial array's size.
