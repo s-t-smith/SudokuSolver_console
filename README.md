@@ -6,19 +6,22 @@ Thought about doing this as an exercise to brush up on some basic coding skills.
 ## Assumptions:
 To help keep the project focused, I'll be assuming some limitations:
 - The sudoku puzzles will be 9x9.
+	- This has been changed; I created a new branch to make a more scalable version that isn't limited to 9x9.
 - Starting boards will be arranged by an input text file where the lines represent as cell as such; [row] [column] [digit].
 
 ## Process:
 Here's how the program will solve a sudoku puzzle:
 - A Sudoku board with some cells prepopulated with digits is given.
-- Make a pass across each empty cell on the board and check that cell's row, column and 3x3 block, recording possible solutions on that cell's notes.
-- After a pass over the notes, make another pass and find cells where only one possibility exists, write that solution to that cell.
-- When a solution is written to a cell, make another pass to each empty cell and eliminate solutions invalidated by the previously written solution.
+- Check each written cell and eliminate possibilities.
+	- If a digit is written somewhere, all the cells in that row, column and block can have their notes for that digit cleared.
+- Check each blank cell, writing solutions where the notes hold only one possibility.
 - Repeat until the puzzle is solved.
 
 ## Stretch:
-If the project reaches a satisfactory state in a reasonable amount of time, I'll add some of these features:
+Some features I would like to add, but only after the core function is achieved:
 
 - Variable board size; let the program handle puzzles bigger or smaller than 9x9.
+	- Already started this with the scalable branch.
 - Branching solve- instead of the brute force note-taking method, I'll change the algorithm to take branches on possibilities and find a solution through trial-and error. This might be a fun way to compare performance between my human method and the computer's method.
 - Logging function to show the process the computer takes to solve the puzzle, along with error logging.
+- GUI- take this out of console space and create a window to show the board while the program works.
