@@ -56,10 +56,17 @@ SudokuBoard::SudokuBoard() {
 	// Set a default board size of 9x9:
 	valMax = 9;
 	board.resize(valMax);
-	for (auto i : board) {
+	// No workie:
+	/*for (auto i : board) {
 		i.resize(valMax);
 		for (auto j : i) {
 			j = new SudokuCell();
+		}
+	}*/
+	for (int i = 0; i < valMax; i++) {
+		board[i].resize(valMax);
+		for (int j = 0; j < valMax; j++) {
+			board[i][j] = new SudokuCell();
 		}
 	}
 }
@@ -68,10 +75,16 @@ SudokuBoard::SudokuBoard(int size) {
 	// Create a square array of <size>:
 	valMax = size;
 	board.resize(size);
-	for (auto i : board) {
+	/*for (auto i : board) {
 		i.resize(size);
 		for (auto j : i) {
 			j = new SudokuCell(0, size);
+		}
+	}*/
+	for (int i = 0; i < size; i++) {
+		board[i].resize(valMax);
+		for (int j = 0; j < size; j++) {
+			board[i][j] = new SudokuCell(0, valMax);
 		}
 	}
 }
@@ -85,10 +98,16 @@ SudokuBoard::SudokuBoard(string fileName) {
 		// Create empty board:
 		valMax = inputSize;
 		board.resize(inputSize);
-		for (auto i : board) {
+		/*for (auto i : board) {
 			i.resize(inputSize);
 			for (auto j : i) {
 				j = new SudokuCell(0, inputSize);
+			}
+		}*/
+		for (int i = 0; i < valMax; i++) {
+			board[i].resize(valMax);
+			for (int j = 0; j < valMax; j++) {
+				board[i][j] = new SudokuCell(0, valMax);
 			}
 		}
 		// Populate cell values:
