@@ -91,7 +91,8 @@ SudokuBoard::SudokuBoard(int size) {
 
 SudokuBoard::SudokuBoard(string fileName) {
 	int inputSize, inputRow, inputCol, inputVal;
-	ifstream inputFile (fileName);
+	ifstream inputFile;
+	inputFile.open(fileName);
 	if (inputFile.is_open()) {
 		// First character should be the board size/max value:
 		inputFile >> inputSize;
@@ -115,8 +116,12 @@ SudokuBoard::SudokuBoard(string fileName) {
 			inputFile >> inputRow;
 			inputFile >> inputCol;
 			inputFile >> inputVal;
-			setCellVal(inputRow, inputCol, inputVal);
+			setCellVal(inputRow-1, inputCol-1, inputVal);
 		}
+	}
+	else {
+		/*throw invalid_argument("File unavailable.");
+		SudokuBoard();*/
 	}
 }
 

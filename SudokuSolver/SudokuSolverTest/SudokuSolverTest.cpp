@@ -171,7 +171,8 @@ namespace SudokuSolverTest
 			// Check default cell values:
 			for (int i = 0; i < emptyBoard->getBoardSize(); i++) {
 				for (int j = 0; j < emptyBoard->getBoardSize(); j++) {
-					Assert::AreEqual(0, emptyBoard->getCellVal(i, j));
+					// Have to adjust the indexes up one to compensate for the board layer:
+					Assert::AreEqual(0, emptyBoard->getCellVal(i+1, j+1));
 				}
 			}
 
@@ -180,7 +181,14 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(StartingBoardTest)
 		{
-			// need to rewrite this for the new architecture; Sudoku class now builds starting boards.
+			SudokuBoard* startingBoard = new SudokuBoard("../inputFiles/easy1.txt");
+
+			// Check board size:
+			Assert::AreEqual(9, startingBoard->getBoardSize());
+			// Spot-check cell values:
+			Assert::AreEqual(4, startingBoard->getCellVal(1, 4));
+			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
+			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
 		}
 	};
 }
