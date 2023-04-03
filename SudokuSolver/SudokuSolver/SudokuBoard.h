@@ -89,7 +89,7 @@ SudokuBoard::SudokuBoard(int size) {
 	}
 }
 
-SudokuBoard::SudokuBoard(string fileName) {
+SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 	int inputSize, inputRow, inputCol, inputVal;
 	ifstream inputFile;
 	inputFile.open(fileName);

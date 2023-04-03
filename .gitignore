@@ -50,4 +50,4 @@ images/*
 
 # Ignore test programs
 fileInputTest.cpp
-*/Debug/*
+SudokuSolver/*/Debug/*
