@@ -20,7 +20,7 @@ int main()
 {
     // cout << "Main program not yet written." << endl;
     cout << "Testing sudoku board...\n";
-    SudokuBoard* startingBoard = new SudokuBoard("../inputFiles/easy1.txt");
+    SudokuBoard* startingBoard = new SudokuBoard("../../inputFiles/easy1.txt");
     startingBoard->printBoard();
 
     return 0;

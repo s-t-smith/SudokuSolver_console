@@ -116,12 +116,13 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 			inputFile >> inputRow;
 			inputFile >> inputCol;
 			inputFile >> inputVal;
-			setCellVal(inputRow-1, inputCol-1, inputVal);
+			setCellVal(inputRow, inputCol, inputVal);
 		}
+		inputFile.close();
 	}
 	else {
-		/*throw invalid_argument("File unavailable.");
-		SudokuBoard();*/
+		throw invalid_argument("Failed to read file.");
+		// SudokuBoard();
 	}
 }
 

@@ -45,6 +45,9 @@
 # Ignore .vs thingy
 SudokuSolver/.vs
 
+# Ignore unnecessary directories
+*/x64/*
+
 # Ignore test images
 images/*
 

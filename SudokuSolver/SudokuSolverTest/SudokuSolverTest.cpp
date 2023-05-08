@@ -181,7 +181,7 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(StartingBoardTest)
 		{
-			SudokuBoard* startingBoard = new SudokuBoard("../inputFiles/easy1.txt");
+			SudokuBoard* startingBoard = new SudokuBoard("../../inputFiles/easy1.txt");
 
 			// Check board size:
 			Assert::AreEqual(9, startingBoard->getBoardSize());
