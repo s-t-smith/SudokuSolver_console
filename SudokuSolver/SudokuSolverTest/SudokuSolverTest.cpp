@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "../SudokuSolver/SudokuCell.h"
 #include "../SudokuSolver/SudokuBoard.h"
+#include "../SudokuSolver/Sudoku.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -181,7 +182,7 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(StartingBoardTest)
 		{
-			SudokuBoard* startingBoard = new SudokuBoard("../../inputFiles/easy1.txt");
+			SudokuBoard* startingBoard = new SudokuBoard("C:/Users/u208682/OneDrive - L3Harris Technologies Inc/Desktop/EWeek/Personal Projects/SudokuSolver_console/inputFiles/easy1.txt");
 
 			// Check board size:
 			Assert::AreEqual(9, startingBoard->getBoardSize());

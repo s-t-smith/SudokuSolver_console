@@ -121,7 +121,7 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 		inputFile.close();
 	}
 	else {
-		throw invalid_argument("Failed to read file.");
+		// throw invalid_argument("Failed to read file.");
 		// SudokuBoard();
 	}
 }
@@ -199,4 +199,7 @@ void SudokuBoard::printBoard() {
 		cout << endl;
 	}
 	cout << endl;
+
+	// To do:
+	// Add extra lines at 3rd rows and columns.
 }
