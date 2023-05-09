@@ -66,6 +66,7 @@ private:
 Sudoku::Sudoku()
 {
 	gameBoard = new SudokuBoard();
+	gameBoard->printBoard();
 	gameOver = false;
 	
 }
@@ -73,6 +74,7 @@ Sudoku::Sudoku()
 Sudoku::Sudoku(std::string startingFile)
 {
 	gameBoard = new SudokuBoard(startingFile);
+	gameBoard->printBoard();
 	gameOver = false;
 	
 }
