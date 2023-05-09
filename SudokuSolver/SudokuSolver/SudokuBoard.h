@@ -192,22 +192,22 @@ void SudokuBoard::printBoard() {
 	// Display the cell values at time of call:
 	cout << endl;
 	cout << "Current board:" << endl;
-	cout << "-----------------------" << endl;
+	cout << endl;
 	for (auto r : board) {
-		cout << "||";
+		cout << "|";
 		for (auto c : r) {
 			++counter;
 			cout << c->getVal();
-			if (counter % 3 == 0) {
-				cout << "||";
+			if (counter % (int)sqrt(valMax) == 0) {
+				cout << "|";
 			}
 			else {
-				cout << "|";
+				cout << " ";
 			}
 		}
 		cout << endl;
-		if (counter % 27 == 0) {
-			cout << "-----------------------" << endl;
+		if (counter % ((int)sqrt(valMax)*valMax) == 0) {
+			cout << endl;
 		}
 	}
 	cout << endl;
