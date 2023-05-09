@@ -188,15 +188,27 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 }
 
 void SudokuBoard::printBoard() {
+	int counter = 0;
 	// Display the cell values at time of call:
 	cout << endl;
 	cout << "Current board:" << endl;
+	cout << "-----------------------" << endl;
 	for (auto r : board) {
-		cout << "|";
+		cout << "||";
 		for (auto c : r) {
-			cout << c->getVal() << "|";
+			++counter;
+			cout << c->getVal();
+			if (counter % 3 == 0) {
+				cout << "||";
+			}
+			else {
+				cout << "|";
+			}
 		}
 		cout << endl;
+		if (counter % 27 == 0) {
+			cout << "-----------------------" << endl;
+		}
 	}
 	cout << endl;
 
