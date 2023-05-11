@@ -3,4 +3,7 @@ C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\Sudok
 C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(82,25): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(89,25): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuCell.h(96,25): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuSolver.cpp(35,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuSolver.cpp(44,38): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\SudokuSolver\SudokuSolver.cpp(52,39): warning C4018: '>': signed/unsigned mismatch
   SudokuSolver.vcxproj -> C:\Users\Smith\source\repos\SudokuSolver_console\SudokuSolver\Debug\SudokuSolver.exe

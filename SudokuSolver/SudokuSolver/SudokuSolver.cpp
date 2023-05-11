@@ -18,11 +18,6 @@ using namespace std;
 
 int main()
 {
-    // Going to use this for manual debugging for the time being, until the actual main() gets made:
-
-    // List the available boards:
-    // filesystem::path workingDir = filesystem::current_path();
-    
         // Take two steps out from the program's working directory, then navigate to the input files:
     filesystem::path sourceDir = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
     
@@ -32,22 +27,29 @@ int main()
         boardFiles.push_back(itr);
     }
 
+    int userPick = 0;
+    Sudoku* currentGame = NULL;
+    do {
+        // List available files:
+        cout << "Select starting board:" << endl;
+        for (int i = 0; i < boardFiles.size(); i++) {
+            cout << i + 1 << ": " << boardFiles.at(i).filename() << endl;
+        }
+        cout << "0: Quit" << endl << endl;
+        
         // Select a file to create the working board object:
-    cout << "Select starting board:" << endl;
-    for (int i = 0; i < boardFiles.size(); i++) {
-        cout << i+1 << ": " << boardFiles.at(i).filename() << endl;
-    }
-    cout << "0: Quit" << endl << endl;
-    int userPick;
-    cin >> userPick;
+        cin >> userPick;
         // Sanitize input:
-    userPick = (int)userPick - 1;
-    if (userPick < 0 || userPick > boardFiles.size()) {
-        return 0;
-    }
+        userPick = (int)userPick - 1;
+        if (userPick < 0 || userPick > boardFiles.size()) {
+            break;
+        }
+
         // Pick starting file:
-    SudokuBoard* gameBoard = new SudokuBoard(boardFiles.at(userPick).string());
-    gameBoard->printBoard();
+        currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
+            // Maybe I should adjust the class to construct from a directory instead of a string.
+
+    } while (userPick < 0 || userPick > boardFiles.size());
 
     return 0;
 }

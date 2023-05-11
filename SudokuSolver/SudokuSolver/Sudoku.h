@@ -113,6 +113,9 @@ void Sudoku::printBoard() {
 
 void Sudoku::clearRowNotes(int val, int row) {
 	// Set all notes to 'false' along a given row.
+	for (int i : gameBoard->getBoardSize()) {
+		gameBoard->clearCellNote(row, i, val);
+	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
@@ -133,7 +136,7 @@ bool Sudoku::checkBlock(int val, int blk) {
 	// Look for a value within a given sub-array of the board, return true when the value is present.
 	return true;	// Placeholder
 	/*
-	* This was previously facilitated with a separate class that subdivided the game board, but that layer has been removed in the interest of scalability.
+	* This was previously done with a separate class that subdivided the game board, but that layer has been removed in the interest of scalability.
 	* Need to come up with a solution for traversing a subarray that can be referential to the orignial array's size.
 	*/
 }
