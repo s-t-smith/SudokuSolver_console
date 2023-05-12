@@ -3,6 +3,7 @@
 #include "../SudokuSolver/SudokuCell.h"
 #include "../SudokuSolver/SudokuBoard.h"
 #include "../SudokuSolver/Sudoku.h"
+#include <filesystem>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -182,7 +183,9 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(StartingBoardTest)
 		{
-			SudokuBoard* startingBoard = new SudokuBoard("C:/Users/u208682/OneDrive - L3Harris Technologies Inc/Desktop/EWeek/Personal Projects/SudokuSolver_console/inputFiles/easy1.txt");
+			// Get a path to the test files:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			SudokuBoard* startingBoard = new SudokuBoard(filePath.string() + "\\easy1.txt");
 
 			// Check board size:
 			Assert::AreEqual(9, startingBoard->getBoardSize());
@@ -190,6 +193,49 @@ namespace SudokuSolverTest
 			Assert::AreEqual(4, startingBoard->getCellVal(1, 4));
 			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
 			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
+		}
+	};
+
+	TEST_CLASS(SudokuClassTest)
+	{
+	public:
+		SudokuClassTest()
+		{
+			Logger::WriteMessage("Beginning Sudoku class test...\n");
+		}
+
+		~SudokuClassTest()
+		{
+			Logger::WriteMessage("Completed Sudoku class test.\n\n");
+		}
+
+		TEST_METHOD(DefaultConstructor)
+		{
+			Logger::WriteMessage("Testing class without starting file...\n");
+			Sudoku* testGame = new Sudoku();
+		}
+
+		TEST_METHOD(ExplicitConstructor)
+		{
+			Logger::WriteMessage("Testing class with starting file...\n");
+			// Get a path to the test files:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
+		}
+
+		TEST_METHOD(CellValTest)
+		{
+			Logger::WriteMessage("Testing cell access methods...\n");
+		}
+
+		TEST_METHOD(CellNoteTest)
+		{
+			Logger::WriteMessage("Testing cell notes methods...\n");
+		}
+
+		TEST_METHOD(ValCheckTest)
+		{
+			Logger::WriteMessage("Testing board check methods...\n");
 		}
 	};
 }
