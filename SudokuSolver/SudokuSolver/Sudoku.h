@@ -128,22 +128,22 @@ void Sudoku::printBoard() {
 
 void Sudoku::clearRowNotes(int val, int row) {
 	// Set all notes to 'false' along a given row.
-	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
-		gameBoard->clearCellNote(row, i + 1, val);
+	for (int i = 0; i < getBoardSize(); i++) {
+		setBoardCellNote(0, val, row, i + 1);
 	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
 	// Set all notes to 'false' along a given column.
-	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
-		gameBoard->clearCellNote(i + 1, col, val);
+	for (int i = 0; i < getBoardSize(); i++) {
+		getBoardCellNote(i + 1, col, val);
 	}
 }
 
 bool Sudoku::checkRow(int val, int row) {
 	// Look for a value along a given row, return 'true' when the value is present.
-	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
-		if (gameBoard->getCellVal(row, i + 1) == val) {
+	for (int i = 0; i < getBoardSize(); i++) {
+		if (getBoardCellVal(row, i + 1) == val) {
 			return true;
 		}
 	}
@@ -152,8 +152,8 @@ bool Sudoku::checkRow(int val, int row) {
 
 bool Sudoku::checkCol(int val, int col) {
 	// Look for a value along a given column, return 'true' when the value is present.
-	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
-		if (gameBoard->getCellVal(i + 1, col) == val) {
+	for (int i = 0; i < getBoardSize(); i++) {
+		if (getBoardCellVal(i + 1, col) == val) {
 			return true;
 		}
 	}
@@ -177,14 +177,14 @@ void Sudoku::checkState() {
 	}
 		// Get new counts:
 	for (int r = 0; r < gameBoard->getBoardSize(); r++) {
-		for (int c = 0; c < gameBoard->getBoardSize(); c++) {
-			int checkVal = gameBoard->getCellVal(r + 1, c + 1);
+		for (int c = 0; c < getBoardSize(); c++) {
+			int checkVal = getBoardCellVal(r + 1, c + 1);
 			boardVals->at(checkVal)++;
 		}
 	}
 		// If all values are present, the game is over:
 	for (map<int, int>::iterator val = boardVals->begin(); val != boardVals->end(); val++) {
-		if (val->second != gameBoard->getBoardSize()) {
+		if (val->second != getBoardSize()) {
 			// Any time the count is less than the board max (or greater than, for whatever reason), the game cannot be over:
 			gameOver = false;
 			return;
