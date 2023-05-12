@@ -55,6 +55,7 @@ public:
 	bool checkBlock(int val, int blk);
 	void checkState();
 	bool checkGO();
+	int getBoardSize();
 
 	/*
 	* Private members:
@@ -195,4 +196,8 @@ void Sudoku::checkState() {
 
 bool Sudoku::checkGO() {
 	return gameOver;
+}
+
+int Sudoku::getBoardSize() {
+	return gameBoard->getBoardSize();
 }

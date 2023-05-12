@@ -28,6 +28,7 @@ int main()
     }
 
     int userPick = 0;
+    int passCount = 0;
     Sudoku* currentGame = NULL;
     do {
         // List available files:
@@ -55,7 +56,8 @@ int main()
         *   don't want this thing just spinning off into infinity.
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
-        while (!currentGame->checkGO())
+        passCount = 0;
+        while (!currentGame->checkGO() && passCount <= currentGame->getBoardSize())
         {
             // Check notes for singular values:
 
@@ -64,8 +66,16 @@ int main()
             // Clear notes:
 
             // Show game state:
-            currentGame->printBoard();
+            passCount++;
             currentGame->checkState();
+            if (currentGame->checkGO()) {
+                cout << "Solution found:" << endl;
+            }
+            currentGame->printBoard();
+        }
+
+        if (passCount >= currentGame->getBoardSize()) {
+            cout << "Solution not found." << endl << endl;
         }
 
     } while (userPick < 0 || userPick > boardFiles.size());
