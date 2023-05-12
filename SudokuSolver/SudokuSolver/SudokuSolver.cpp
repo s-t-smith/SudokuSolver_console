@@ -49,6 +49,25 @@ int main()
         currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
 
+        /*
+        * IMPORTANT!
+        * I should make a limit on the number of passes this loop can make before it gives up;
+        *   don't want this thing just spinning off into infinity.
+        * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
+        */
+        while (!currentGame->checkGO())
+        {
+            // Check notes for singular values:
+
+            // Write singular solutions:
+
+            // Clear notes:
+
+            // Show game state:
+            currentGame->printBoard();
+            currentGame->checkState();
+        }
+
     } while (userPick < 0 || userPick > boardFiles.size());
 
     return 0;
