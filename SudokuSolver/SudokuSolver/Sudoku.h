@@ -127,21 +127,21 @@ void Sudoku::printBoard() {
 
 void Sudoku::clearRowNotes(int val, int row) {
 	// Set all notes to 'false' along a given row.
-	for (auto& i : gameBoard->getBoardSize()) {
+	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
 		gameBoard->clearCellNote(row, i + 1, val);
 	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
 	// Set all notes to 'false' along a given column.
-	for (auto& i : gameBoard->getBoardSize()) {
+	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
 		gameBoard->clearCellNote(i + 1, col, val);
 	}
 }
 
 bool Sudoku::checkRow(int val, int row) {
 	// Look for a value along a given row, return 'true' when the value is present.
-	for (auto& i : gameBoard->getBoardSize()) {
+	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
 		if (gameBoard->getCellVal(row, i + 1) == val) {
 			return true;
 		}
@@ -151,7 +151,7 @@ bool Sudoku::checkRow(int val, int row) {
 
 bool Sudoku::checkCol(int val, int col) {
 	// Look for a value along a given column, return 'true' when the value is present.
-	for (auto& i : gameBoard->getBoardSize()) {
+	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
 		if (gameBoard->getCellVal(i + 1, col) == val) {
 			return true;
 		}
@@ -171,8 +171,8 @@ bool Sudoku::checkBlock(int val, int blk) {
 void Sudoku::checkState() {
 	// Count the number of values currently on the board, set the gameOver state based on result:
 		// Clear the current counts for a clean read:
-	for (auto& val = boardVals->begin(); val != boardVals->end(); val++) {
-		boardVals->at(val) = 0;
+	for (map<int, int>::iterator val = boardVals->begin(); val != boardVals->end(); val++) {
+		val->second = 0;
 	}
 		// Get new counts:
 	for (int r = 0; r < gameBoard->getBoardSize(); r++) {
@@ -182,9 +182,9 @@ void Sudoku::checkState() {
 		}
 	}
 		// If all values are present, the game is over:
-	for (auto& val = boardVals->begin(); val != boardVals->end(); val++) {
-		if (boardVals->at(val) != gameBoard->getBoardSize()) {
-			// Any time the count is less than the board max, the game cannot be over:
+	for (map<int, int>::iterator val = boardVals->begin(); val != boardVals->end(); val++) {
+		if (val->second != gameBoard->getBoardSize()) {
+			// Any time the count is less than the board max (or greater than, for whatever reason), the game cannot be over:
 			gameOver = false;
 			return;
 		}

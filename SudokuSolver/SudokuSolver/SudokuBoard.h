@@ -211,7 +211,4 @@ void SudokuBoard::printBoard() {
 		}
 	}
 	cout << endl;
-
-	// To do:
-	// Add extra lines at 3rd rows and columns.
 }

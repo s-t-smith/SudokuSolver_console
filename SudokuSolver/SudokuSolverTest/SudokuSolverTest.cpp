@@ -193,6 +193,8 @@ namespace SudokuSolverTest
 			Assert::AreEqual(4, startingBoard->getCellVal(1, 4));
 			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
 			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
+
+			delete startingBoard;
 		}
 	};
 
@@ -213,6 +215,20 @@ namespace SudokuSolverTest
 		{
 			Logger::WriteMessage("Testing class without starting file...\n");
 			Sudoku* testGame = new Sudoku();
+
+			// Default board should be 9x9 and all 0s:
+			Assert::AreEqual(0, testGame->getBoardCellVal(1, 1));
+			Assert::AreEqual(0, testGame->getBoardCellVal(3, 3));
+			Assert::AreEqual(0, testGame->getBoardCellVal(9, 9));
+			Assert::ExpectException<std::out_of_range>([&testGame]() {testGame->getBoardCellVal(11, 2); });
+
+			// Default board should not be "complete":
+			Assert::IsFalse(testGame->checkGO());
+			// Re-checking shouldn't change the state:
+			testGame->checkState();
+			Assert::IsFalse(testGame->checkGO());
+
+			delete testGame;
 		}
 
 		TEST_METHOD(ExplicitConstructor)
@@ -220,22 +236,57 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Testing class with starting file...\n");
 			// Get a path to the test files:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			// Test an unsolved board:
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
+				// To do: check the board and game state.
+
+			// Test a solved board:
+			delete testGame;
+			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
+				// To do: check the board and game state.
+
+			delete testGame;
 		}
 
 		TEST_METHOD(CellValTest)
 		{
 			Logger::WriteMessage("Testing cell access methods...\n");
+			// Get a path to the test files:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			// Test an unsolved board:
+			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 		}
 
 		TEST_METHOD(CellNoteTest)
 		{
 			Logger::WriteMessage("Testing cell notes methods...\n");
+			// Get a path to the test files:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			// Test an unsolved board:
+			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 		}
 
 		TEST_METHOD(ValCheckTest)
 		{
 			Logger::WriteMessage("Testing board check methods...\n");
+			// To do: test the checkRow and checkCol methods.
+		}
+
+		TEST_METHOD(CheckStateTest)
+		{
+			Logger::WriteMessage("Testing solution check method...\n");
+			// Get a path to the test files:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			// Test an unsolved board:
+			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
+			// To do: check the game state.
+
+		// Test a solved board:
+			delete testGame;
+			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
+			// To do: check the game state.
+
+			delete testGame;
 		}
 	};
 }
