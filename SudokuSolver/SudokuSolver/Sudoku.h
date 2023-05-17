@@ -138,27 +138,27 @@ bool Sudoku::getBoardCellNote(int index, int row, int col) {
 }
 
 void Sudoku::printBoard() {
-	gameBoard->printBoard();	// Might pull this up from the board class to implement here, need to consider if that's necessary/worth it.
+	gameBoard->printBoard();
 }
 
 void Sudoku::clearRowNotes(int val, int row) {
 	// Set all notes to 'false' along a given row.
-	for (int i = 0; i < getBoardSize(); i++) {
-		setBoardCellNote(0, val, row, i + 1);
+	for (int i = 1; i <= getBoardSize(); i++) {
+		setBoardCellNote(0, val, row, i);
 	}
 }
 
 void Sudoku::clearColNotes(int val, int col) {
 	// Set all notes to 'false' along a given column.
-	for (int i = 0; i < getBoardSize(); i++) {
-		getBoardCellNote(i + 1, col, val);
+	for (int i = 1; i <= getBoardSize(); i++) {
+		setBoardCellNote(0, val, i, col);
 	}
 }
 
 bool Sudoku::checkRow(int val, int row) {
 	// Look for a value along a given row, return 'true' when the value is present.
-	for (int i = 0; i < getBoardSize(); i++) {
-		if (getBoardCellVal(row, i + 1) == val) {
+	for (int i = 1; i <= getBoardSize(); i++) {
+		if (getBoardCellVal(row, i) == val) {
 			return true;
 		}
 	}
@@ -167,8 +167,8 @@ bool Sudoku::checkRow(int val, int row) {
 
 bool Sudoku::checkCol(int val, int col) {
 	// Look for a value along a given column, return 'true' when the value is present.
-	for (int i = 0; i < getBoardSize(); i++) {
-		if (getBoardCellVal(i + 1, col) == val) {
+	for (int i = 1; i <= getBoardSize(); i++) {
+		if (getBoardCellVal(i, col) == val) {
 			return true;
 		}
 	}
@@ -176,8 +176,22 @@ bool Sudoku::checkCol(int val, int col) {
 }
 
 bool Sudoku::checkBlock(int val, int blk) {
+	if (blk <= 0 || blk > pow(getBoardSize(), 2)) {
+		return false;
+	}
+	// Set the offset values based on block requested:
+	int rowOffset = 0;
+	int colOffset = 0;
+		// To do: figure this out.
 	// Look for a value within a given sub-array of the board, return true when the value is present.
-	return true;	// Placeholder
+	for (int r = 1; r <= (int)sqrt(getBoardSize()); r++) {
+		for (int c = 1; c <= (int) sqrt(getBoardSize()); c++) {
+			if (getBoardCellVal(r + rowOffset, c + colOffset) == val) {
+				return true;
+			}
+		}
+	}
+	return false;
 	/*
 	* This was previously done with a separate class that subdivided the game board, but that layer has been removed in the interest of scalability.
 	* Need to come up with a solution for traversing a subarray that can be referential to the orignial array's size.

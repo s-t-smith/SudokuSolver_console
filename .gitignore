@@ -2,7 +2,8 @@
 SudokuSolver/.vs
 
 # Ignore unnecessary directories
-*/x64/*
+*/x64/
+SudokuSolver/SudokuSolverTest/*
 
 # Ignore test images
 images/*

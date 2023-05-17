@@ -59,19 +59,21 @@ int main()
         passCount = 0;
         while (!currentGame->checkGO() && passCount <= currentGame->getBoardSize())
         {
+            currentGame->checkState();
+            if (currentGame->checkGO()) {
+                cout << "Solution found:" << endl;
+                currentGame->printBoard();
+                break;
+            }
+            
             // Check notes for singular values:
 
             // Write singular solutions:
 
             // Clear notes:
 
-            // Show game state:
+            // Continue:
             passCount++;
-            currentGame->checkState();
-            if (currentGame->checkGO()) {
-                cout << "Solution found:" << endl;
-            }
-            currentGame->printBoard();
         }
 
         if (passCount >= currentGame->getBoardSize()) {
