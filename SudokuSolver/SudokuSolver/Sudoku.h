@@ -60,11 +60,16 @@ public:
 	/*
 	* Private members:
 	* gameBoard - The SudokuBoard object that contains the 2D array of cells.
+	* bockable - Used to enable the checkBlock() method.
 	* gameOver - Check flag that can be used to terminate the session.
+	* solved - Used in tandem with the gameOver flag; a game can be over but not solved.
+	* boardVals - Used to track the solutions on the board.
 	*/
 private:
 	SudokuBoard* gameBoard;
+	bool blockable;
 	bool gameOver;
+	bool solved;	// To do: implement this in the checkState() method.
 	map<int, int>* boardVals;
 };
 
@@ -72,25 +77,35 @@ Sudoku::Sudoku()
 {
 	gameBoard = new SudokuBoard();
 	gameBoard->printBoard();
+	if (getBoardSize() % (int) sqrt(getBoardSize()) == 0) {
+		blockable = true;
+	}
+	else {
+		blockable = false;
+	}
 	gameOver = false;
 	boardVals = new map<int, int>;
 	for (int i = 0; i < 9; i++) {
 		boardVals->emplace(i + 1, 0);
 	}
-	
 }
 
 Sudoku::Sudoku(std::string startingFile)
 {
 	gameBoard = new SudokuBoard(startingFile);
 	gameBoard->printBoard();
+	if (getBoardSize() % (int)sqrt(getBoardSize()) == 0) {
+		blockable = true;
+	}
+	else {
+		blockable = false;
+	}
 	gameOver = false;
 	boardVals = new map<int, int>;
-	for (int i = 0; i < gameBoard->getBoardSize(); i++) {
+	for (int i = 0; i < getBoardSize(); i++) {
 		boardVals->emplace(i + 1, 0);
 	}
 	checkState();
-	
 }
 
 Sudoku::~Sudoku()
@@ -170,20 +185,23 @@ bool Sudoku::checkBlock(int val, int blk) {
 }
 
 void Sudoku::checkState() {
+	
+	map<int, int>::iterator val;
 	// Count the number of values currently on the board, set the gameOver state based on result:
 		// Clear the current counts for a clean read:
-	for (map<int, int>::iterator val = boardVals->begin(); val != boardVals->end(); val++) {
+	for (val = boardVals->begin(); val != boardVals->end(); val++) {
 		val->second = 0;
 	}
 		// Get new counts:
-	for (int r = 0; r < gameBoard->getBoardSize(); r++) {
-		for (int c = 0; c < getBoardSize(); c++) {
-			int checkVal = getBoardCellVal(r + 1, c + 1);
-			boardVals->at(checkVal)++;
+	for (int r = 1; r <= getBoardSize(); r++) {
+		for (int c = 1; c <= getBoardSize(); c++) {
+			int checkVal = getBoardCellVal(r, c);
+			if(checkVal!=0){ 
+				boardVals->at(checkVal)++; }
 		}
 	}
 		// If all values are present, the game is over:
-	for (map<int, int>::iterator val = boardVals->begin(); val != boardVals->end(); val++) {
+	for (val = boardVals->begin(); val != boardVals->end(); val++) {
 		if (val->second != getBoardSize()) {
 			// Any time the count is less than the board max (or greater than, for whatever reason), the game cannot be over:
 			gameOver = false;

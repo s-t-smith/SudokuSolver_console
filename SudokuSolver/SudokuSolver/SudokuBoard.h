@@ -197,7 +197,12 @@ void SudokuBoard::printBoard() {
 		cout << "|";
 		for (auto c : r) {
 			++counter;
-			cout << c->getVal();
+			if(c->getVal() != 0){ 
+				cout << c->getVal();
+			}
+			else {
+				cout << "-";
+			}
 			if (counter % (int)sqrt(valMax) == 0) {
 				cout << "|";
 			}

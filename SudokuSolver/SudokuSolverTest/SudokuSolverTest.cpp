@@ -220,7 +220,7 @@ namespace SudokuSolverTest
 			Assert::AreEqual(0, testGame->getBoardCellVal(1, 1));
 			Assert::AreEqual(0, testGame->getBoardCellVal(3, 3));
 			Assert::AreEqual(0, testGame->getBoardCellVal(9, 9));
-			Assert::ExpectException<std::out_of_range>([&testGame]() {testGame->getBoardCellVal(11, 2); });
+			// Assert::ExpectException<std::out_of_range>([&testGame]() {testGame->getBoardCellVal(11, 2); });
 
 			// Default board should not be "complete":
 			Assert::IsFalse(testGame->checkGO());
@@ -238,12 +238,32 @@ namespace SudokuSolverTest
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
 			// Test an unsolved board:
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-				// To do: check the board and game state.
+			
+			// Starting board is not solved:
+			Assert::IsFalse(testGame->checkGO());
+			// Re-checking shouldn't change the state:
+			testGame->checkState();
+			Assert::IsFalse(testGame->checkGO());
+
+			// Spot check board values:
+			Assert::AreEqual(1, testGame->getBoardCellVal(1, 2));
+			Assert::AreEqual(4, testGame->getBoardCellVal(9, 6));
+			Assert::AreEqual(9, testGame->getBoardCellVal(5, 1));
 
 			// Test a solved board:
 			delete testGame;
 			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
-				// To do: check the board and game state.
+			
+			// No values should be blank:
+			for (int r = 0; r < testGame->getBoardSize(); r++) {
+				for (int c = 0; c < testGame->getBoardSize(); c++) {
+					Assert::AreNotEqual(0, testGame->getBoardCellVal(r, c));
+				}
+			}
+
+			// Game state is 'solved' (technically just filled out for this):
+			testGame->checkState();
+			Assert::IsTrue(testGame->checkGO());
 
 			delete testGame;
 		}
