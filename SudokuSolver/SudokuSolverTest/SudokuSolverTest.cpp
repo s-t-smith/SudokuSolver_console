@@ -114,7 +114,7 @@ namespace SudokuSolverTest
 			Assert::AreEqual(0, newCell->getVal());
 			// Check default note, change state, re-check:
 			Assert::IsTrue(newCell->getNote(2));
-			newCell->clearNote(2);
+			newCell->setNote(2, false);
 			Assert::IsFalse(newCell->getNote(2));
 			delete newCell;
 		}
@@ -124,13 +124,13 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Testing notes setter exceptions...\n");
 			SudokuCell* newCell = new SudokuCell();
 			// Check setting negative index:
-			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(-3); });
+			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(-3, true); });
 			for (int i = 0; i < 9; i++)
 			{
 				Assert::IsTrue(newCell->getNote(i));
 			}
 			// Check setting oversized index:
-			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(15); });
+			Assert::ExpectException<std::out_of_range>([&newCell]() {newCell->setNote(15, false); });
 			for (int i = 0; i < 9; i++)
 			{
 				Assert::IsTrue(newCell->getNote(i));

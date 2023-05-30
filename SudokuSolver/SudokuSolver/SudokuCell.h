@@ -35,8 +35,7 @@ public:
 	void setVal(int val);
 	int getVal();
 	int getSize();
-	void setNote(int index);
-	void clearNote(int index);
+	void setNote(int index, bool set);
 	bool getNote(int index);
 };
 
@@ -77,18 +76,11 @@ int SudokuCell::getSize() {
 	return (int) notes.size();
 }
 
-void SudokuCell::setNote(int index) {
+void SudokuCell::setNote(int index, bool set) {
 	// Record a possible solution, prevent out-of-bounds access.
 	if (index < 0 || index > notes.size())
 		throw std::out_of_range("Index invalid");
-	notes[index] = true;
-}
-
-void SudokuCell::clearNote(int index) {
-	// Eliminate a possible solution, prevent out-of-bounds access.
-	if (index < 0 || index > notes.size())
-		throw std::out_of_range("Index invalid");
-	notes[index] = false;
+	notes[index] = set;
 }
 
 bool SudokuCell::getNote(int index) {

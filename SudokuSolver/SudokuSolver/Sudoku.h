@@ -125,12 +125,7 @@ int Sudoku::getBoardCellVal(int row, int col) {
 }
 
 void Sudoku::setBoardCellNote(bool set, int index, int row, int col) {
-	if (set) {
-		gameBoard->setCellNote(row, col, index);
-	}
-	else {
-		gameBoard->clearCellNote(row, col, index);
-	}
+	gameBoard->setCellNote(row, col, index, set);
 }
 
 bool Sudoku::getBoardCellNote(int index, int row, int col) {

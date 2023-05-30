@@ -36,8 +36,7 @@ public:
 	int getBoardSize();
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
-	void setCellNote(int row, int col, int index);
-	void clearCellNote(int row, int col, int index);
+	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
 
@@ -160,22 +159,13 @@ int SudokuBoard::getCellVal(int row, int col) {
 	return board[adjustedRow][adjustedCol]->getVal();
 }
 
-void SudokuBoard::setCellNote(int row, int col, int index) {
+void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
 	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
 	int adjustedIndex = index - 1;
 	// Write a possible solution to a cell:
-	board[adjustedRow][adjustedCol]->setNote(adjustedIndex);
-}
-
-void SudokuBoard::clearCellNote(int row, int col, int index) {
-	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
-	int adjustedRow = row - 1;
-	int adjustedCol = col - 1;
-	int adjustedIndex = index - 1;
-	// Discard a possible solution from a cell:
-	board[adjustedRow][adjustedCol]->clearNote(adjustedIndex);
+	board[adjustedRow][adjustedCol]->setNote(adjustedIndex, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
