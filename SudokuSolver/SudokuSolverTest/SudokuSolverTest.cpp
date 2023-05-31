@@ -139,17 +139,29 @@ namespace SudokuSolverTest
 		}
 	};
 
-	// Depricated
-	/*TEST_CLASS(SudokuBlockTest)
+	TEST_CLASS(SudokuBlockTest)
 	{
 	public:
 
 		SudokuBlockTest()
 		{
-			Logger::WriteMessage("No Block test written; Blocks depricated for this branch.\n\n");
+			Logger::WriteMessage("Beginning Sudoku Block test...\n");
+		}
+		~SudokuBlockTest()
+		{
+			Logger::WriteMessage("Completed Sudoku Block test.\n\n");
 		}
 
-	};*/
+		TEST_METHOD(ConstructorTest)
+		{}
+
+		TEST_METHOD(CellValTest)
+		{}
+
+		TEST_METHOD(CellNoteTest)
+		{}
+
+	};
 
 	TEST_CLASS(SudokuBoardTest)
 	{
