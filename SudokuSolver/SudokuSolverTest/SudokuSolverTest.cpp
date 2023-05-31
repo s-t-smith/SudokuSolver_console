@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../SudokuSolver/SudokuCell.h"
+#include "../SudokuSolver/SudokuBlock.h"
 #include "../SudokuSolver/SudokuBoard.h"
 #include "../SudokuSolver/Sudoku.h"
 #include <filesystem>
@@ -153,13 +154,57 @@ namespace SudokuSolverTest
 		}
 
 		TEST_METHOD(ConstructorTest)
-		{}
+		{
+			// Default constructor:
+			SudokuBlock* testBlock = new SudokuBlock();
+			Assert::IsFalse(testBlock->getBlockCellVal(0, 0) == 2);
+			Assert::AreEqual(testBlock->getBlockCellVal(1, 2), 0);
+			Assert::IsFalse(testBlock->getBlockCellVal(4, 0));
+
+			// Explicit constructor:
+			delete testBlock;
+			testBlock = new SudokuBlock(5);
+			Assert::IsFalse(testBlock->getBlockCellVal(1, 4) == 8);
+			Assert::AreEqual(testBlock->getBlockCellVal(3, 3), 0);
+			Assert::IsFalse(testBlock->getBlockCellVal(-2, 2));
+
+		}
 
 		TEST_METHOD(CellValTest)
-		{}
+		{
+			SudokuBlock* littleBlock = new SudokuBlock(2);
+			littleBlock->setBlockCellVal(1, 1, 1);
+			littleBlock->setBlockCellVal(0, 0, 1);
+			littleBlock->setBlockCellVal(0, 1, 2);
+
+			Assert::AreEqual(littleBlock->getBlockCellVal(0, 0), 1);
+			Assert::AreNotEqual(littleBlock->getBlockCellVal(1, 1), 3);
+			Assert::AreEqual(littleBlock->getBlockCellVal(0, 1), 2);
+			Assert::AreNotEqual(littleBlock->getBlockCellVal(1, 0), 2);
+		}
 
 		TEST_METHOD(CellNoteTest)
-		{}
+		{
+			SudokuBlock* bigBlock = new SudokuBlock(5);
+			bigBlock->setBlockCellVal(2, 2, 2);
+			bigBlock->setBlockCellVal(3, 3, 3);
+			Assert::IsFalse(bigBlock->getBlockCellNote(2, 2, 1));
+			Assert::IsTrue(bigBlock->getBlockCellNote(0, 0, 2));
+
+			for (int i = 0; i < 5; i++) {
+				if (i % 2 == 0) {
+					bigBlock->setBlockCellNote(4, 4, i, false);
+				}
+			}
+			for (int j = 0; j < 5; j++) {
+				if (j % 2 == 0) {
+					Assert::IsFalse(bigBlock->getBlockCellNote(4, 4, j));
+				}
+				else {
+					Assert::IsTrue(bigBlock->getBlockCellNote(4, 4, j));
+				}
+			}
+		}
 
 	};
 
