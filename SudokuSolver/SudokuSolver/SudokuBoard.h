@@ -2,7 +2,7 @@
 
 //#include "SudokuBlock.h"
 //	This scalable implementation won't use the block class.
-#include "SudokuCell.h"
+#include "SudokuBlock.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -47,14 +47,14 @@ public:
 	*/
 private:
 	int valMax;
-	vector<vector<SudokuCell*>> board;
+	vector<vector<SudokuBlock*>> board;
 };
 
 
 SudokuBoard::SudokuBoard() {
 	// Set a default board size of 9x9:
 	valMax = 9;
-	board.resize(valMax);
+	board.resize(3);
 	// No workie:
 	/*for (auto i : board) {
 		i.resize(valMax);
@@ -62,30 +62,17 @@ SudokuBoard::SudokuBoard() {
 			j = new SudokuCell();
 		}
 	}*/
-	for (int i = 0; i < valMax; i++) {
-		board[i].resize(valMax);
-		for (int j = 0; j < valMax; j++) {
-			board[i][j] = new SudokuCell();
+	for (int i = 0; i < 3; i++) {
+		board[i].resize(3);
+		for (int j = 0; j < 3; j++) {
+			board[i][j] = new SudokuBlock();
 		}
 	}
 }
 
 SudokuBoard::SudokuBoard(int size) {
 	// Create a square array of <size>:
-	valMax = size;
-	board.resize(size);
-	/*for (auto i : board) {
-		i.resize(size);
-		for (auto j : i) {
-			j = new SudokuCell(0, size);
-		}
-	}*/
-	for (int i = 0; i < size; i++) {
-		board[i].resize(valMax);
-		for (int j = 0; j < size; j++) {
-			board[i][j] = new SudokuCell(0, valMax);
-		}
-	}
+	
 }
 
 SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
@@ -141,22 +128,16 @@ int SudokuBoard::getBoardSize() {
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
 	// Write a value to a cell; invalid values will be discarded:
-	if (val < 0 || val > valMax) {
-		throw out_of_range("Value not accepted");
-	}
-	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
-	// Row and column must be 0-ref, arguments may be read from a file as 1-ref:
-	board[adjustedRow][adjustedCol]->setVal(val);
+	// TODO: rewrite this to incorporate blocks.
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
 	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
-	// Read the value from a cell:
-	return board[adjustedRow][adjustedCol]->getVal();
+	// TODO: rewrite this to incorporate blocks.
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
@@ -164,8 +145,7 @@ void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
 	int adjustedIndex = index - 1;
-	// Write a possible solution to a cell:
-	board[adjustedRow][adjustedCol]->setNote(adjustedIndex, set);
+	// TODO: rewrite this to incorporate blocks.
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
@@ -173,37 +153,9 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
 	int adjustedIndex = index - 1;
-	// Read a possible solution on a cell:
-	return board[adjustedRow][adjustedCol]->getNote(adjustedIndex);
+	// TODO: rewrite this to incorporate blocks.
 }
 
 void SudokuBoard::printBoard() {
-	int counter = 0;
-	// Display the cell values at time of call:
-	cout << endl;
-	cout << "Current board:" << endl;
-	cout << endl;
-	for (auto r : board) {
-		cout << "|";
-		for (auto c : r) {
-			++counter;
-			if(c->getVal() != 0){ 
-				cout << c->getVal();
-			}
-			else {
-				cout << "-";
-			}
-			if (counter % (int)sqrt(valMax) == 0) {
-				cout << "|";
-			}
-			else {
-				cout << " ";
-			}
-		}
-		cout << endl;
-		if (counter % ((int)sqrt(valMax)*valMax) == 0) {
-			cout << endl;
-		}
-	}
-	cout << endl;
+	// TODO: rewrite this to incorporate blocks.
 }
