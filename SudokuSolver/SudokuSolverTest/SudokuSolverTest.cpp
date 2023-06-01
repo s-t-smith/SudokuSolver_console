@@ -159,14 +159,14 @@ namespace SudokuSolverTest
 			SudokuBlock* testBlock = new SudokuBlock();
 			Assert::IsFalse(testBlock->getBlockCellVal(0, 0) == 2);
 			Assert::AreEqual(testBlock->getBlockCellVal(1, 2), 0);
-			Assert::IsFalse(testBlock->getBlockCellVal(4, 0));
+			Assert::AreEqual(testBlock->getBlockCellVal(4, 0), -1);
 
 			// Explicit constructor:
 			delete testBlock;
 			testBlock = new SudokuBlock(5);
 			Assert::IsFalse(testBlock->getBlockCellVal(1, 4) == 8);
 			Assert::AreEqual(testBlock->getBlockCellVal(3, 3), 0);
-			Assert::IsFalse(testBlock->getBlockCellVal(-2, 2));
+			Assert::AreEqual(testBlock->getBlockCellVal(-2, 2), -1);
 
 		}
 

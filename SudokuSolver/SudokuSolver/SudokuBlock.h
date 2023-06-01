@@ -25,6 +25,7 @@ public:
 	bool rowValPresent(int row, int val);
 	bool colValPresent(int col, int val);
 	void printBlock();
+	void printRow(int row);
 
 private:
 	vector<vector<SudokuCell*>> blockCells;
@@ -32,6 +33,7 @@ private:
 
 SudokuBlock::SudokuBlock() {
 	// Default to 3x3 block:
+	blockCells.resize(3);
 	for (int r = 0; r < 3; r++) {
 		blockCells[r].resize(3);
 		for (int c = 0; c < 3; c++) {
@@ -42,6 +44,7 @@ SudokuBlock::SudokuBlock() {
 
 SudokuBlock::SudokuBlock(int size) {
 	// Construct an NxN 2D array of cells:
+	blockCells.resize(size);
 	for (int r = 0; r < size; r++) {
 		blockCells[r].resize(size);
 		for (int c = 0; c < size; c++) {
@@ -60,7 +63,7 @@ SudokuBlock::~SudokuBlock() {
 
 void SudokuBlock::setBlockCellVal(int row, int col, int val) {
 	// Skip invalid ranges:
-	if ((row<0 || row>blockCells.size()) || (col<0 || col> blockCells.size())) {
+	if ((row < 0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
 		return;
 	}
 	// Ignore invalid inputs:
@@ -72,7 +75,7 @@ void SudokuBlock::setBlockCellVal(int row, int col, int val) {
 
 int SudokuBlock::getBlockCellVal(int row, int col) {
 	// Skip invalid ranges:
-	if ((row<0 || row>blockCells.size()) || (col<0 || col> blockCells.size())) {
+	if ((row < 0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
 		return -1;
 	}
 	return blockCells[row][col]->getVal();
@@ -80,7 +83,7 @@ int SudokuBlock::getBlockCellVal(int row, int col) {
 
 void SudokuBlock::setBlockCellNote(int row, int col, int idx, bool set) {
 	// Skip invalid ranges:
-	if ((row<0 || row>blockCells.size()) || (col<0 || col> blockCells.size())) {
+	if ((row<0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
 		return;
 	}
 	blockCells[row][col]->setNote(idx, set);
@@ -88,7 +91,7 @@ void SudokuBlock::setBlockCellNote(int row, int col, int idx, bool set) {
 
 bool SudokuBlock::getBlockCellNote(int row, int col, int idx) {
 	// Skip invalid ranges:
-	if ((row<0 || row>blockCells.size()) || (col<0 || col> blockCells.size())) {
+	if ((row<0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
 		return false;
 	}
 	return blockCells[row][col]->getNote(idx);
@@ -96,7 +99,7 @@ bool SudokuBlock::getBlockCellNote(int row, int col, int idx) {
 
 bool SudokuBlock::blockValPresent(int val) {
 	// Skip invalid ranges:
-	if (val<0 || val>blockCells.size()) {
+	if (val < 0 || val > (int) blockCells.size()) {
 		return false;
 	}
 	// If a value is present in a 2D array
@@ -111,10 +114,10 @@ bool SudokuBlock::blockValPresent(int val) {
 
 bool SudokuBlock::rowValPresent(int row, int val) {
 	// Skip invalid ranges:
-	if (row<0 || row>blockCells.size()) {
+	if (row < 0 || row > (int) blockCells.size()) {
 		return false;
 	}
-	for (int col = 0; col < blockCells.size(); col++) {
+	for (int col = 0; col < (int) blockCells.size(); col++) {
 		if (blockCells[row][col]->getVal() == val) {
 			return true;
 		}
@@ -124,10 +127,10 @@ bool SudokuBlock::rowValPresent(int row, int val) {
 
 bool SudokuBlock::colValPresent(int col, int val) {
 	// Skip invalid ranges:
-	if (col<0 || col>blockCells.size()) {
+	if (col < 0 || col > (int) blockCells.size()) {
 		return false;
 	}
-	for (int row = 0; row < blockCells.size(); row++) {
+	for (int row = 0; row < (int) blockCells.size(); row++) {
 		if (blockCells[row][col]->getVal() == val) {
 			return true;
 		}
@@ -135,6 +138,7 @@ bool SudokuBlock::colValPresent(int col, int val) {
 	return false;
 }
 
+// Probably only usesful for debugging:
 void SudokuBlock::printBlock() {
 	for (auto r : blockCells) {
 		cout << "|";
@@ -142,5 +146,13 @@ void SudokuBlock::printBlock() {
 			cout << c->getVal() << "|";
 		}
 		cout << endl;
+	}
+}
+
+// Used for the upper layer'ss print function:
+void SudokuBlock::printRow(int row) {
+	cout << "|";
+	for (int i = 0; i < (int) blockCells.size(); i++) {
+		cout << blockCells[row][i]->getVal() << "|";
 	}
 }

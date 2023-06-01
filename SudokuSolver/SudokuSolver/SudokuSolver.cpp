@@ -33,7 +33,7 @@ int main()
     do {
         // List available files:
         cout << "Select starting board:" << endl;
-        for (int i = 0; i < boardFiles.size(); i++) {
+        for (int i = 0; i < (int) boardFiles.size(); i++) {
             cout << i + 1 << ": " << boardFiles.at(i).filename() << endl;
         }
         cout << "0: Quit" << endl << endl;
@@ -42,7 +42,7 @@ int main()
         cin >> userPick;
         // Sanitize input:
         userPick = (int)userPick - 1;
-        if (userPick < 0 || userPick > boardFiles.size()) {
+        if (userPick < 0 || userPick > (int) boardFiles.size()) {
             break;
         }
 
@@ -80,7 +80,7 @@ int main()
             cout << "Solution not found." << endl << endl;
         }
 
-    } while (userPick < 0 || userPick > boardFiles.size());
+    } while (userPick < 0 || userPick > (int) boardFiles.size());
 
     return 0;
 }
