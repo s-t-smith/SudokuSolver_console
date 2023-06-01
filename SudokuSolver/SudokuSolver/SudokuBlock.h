@@ -24,33 +24,26 @@ public:
 	bool blockValPresent(int val);
 	bool rowValPresent(int row, int val);
 	bool colValPresent(int col, int val);
+	int getBlockSize();
+	void initBlock();
 	void printBlock();
 	void printRow(int row);
 
 private:
+	int blockSize;
 	vector<vector<SudokuCell*>> blockCells;
 };
 
 SudokuBlock::SudokuBlock() {
 	// Default to 3x3 block:
-	blockCells.resize(3);
-	for (int r = 0; r < 3; r++) {
-		blockCells[r].resize(3);
-		for (int c = 0; c < 3; c++) {
-			blockCells[r][c] = new SudokuCell();
-		}
-	}
+	blockSize = 3;
+	initBlock();
 }
 
 SudokuBlock::SudokuBlock(int size) {
+	blockSize = size;
 	// Construct an NxN 2D array of cells:
-	blockCells.resize(size);
-	for (int r = 0; r < size; r++) {
-		blockCells[r].resize(size);
-		for (int c = 0; c < size; c++) {
-			blockCells[r][c] = new SudokuCell();
-		}
-	}
+	initBlock();
 }
 
 SudokuBlock::~SudokuBlock() {
@@ -136,6 +129,21 @@ bool SudokuBlock::colValPresent(int col, int val) {
 		}
 	}
 	return false;
+}
+
+int SudokuBlock::getBlockSize() {
+	return blockSize;
+}
+
+// Constructor helper:
+void SudokuBlock::initBlock() {
+	blockCells.resize(blockSize);
+	for (int r = 0; r < blockSize; r++) {
+		blockCells[r].resize(blockSize);
+		for (int c = 0; c < blockSize; c++) {
+			blockCells[r][c] = new SudokuCell();
+		}
+	}
 }
 
 // Probably only usesful for debugging:

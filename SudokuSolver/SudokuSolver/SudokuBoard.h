@@ -33,6 +33,7 @@ public:
 	SudokuBoard(int size);
 	SudokuBoard(string fileName);
 	~SudokuBoard();
+	void initBoard(int max, int block);
 	int getBoardSize();
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
@@ -52,26 +53,19 @@ private:
 
 
 SudokuBoard::SudokuBoard() {
-	// Set a default board size of 9x9:
-	valMax = 9;
-	board.resize(3);
-	// No workie:
-	/*for (auto i : board) {
-		i.resize(valMax);
-		for (auto j : i) {
-			j = new SudokuCell();
-		}
-	}*/
-	for (int i = 0; i < 3; i++) {
-		board[i].resize(3);
-		for (int j = 0; j < 3; j++) {
-			board[i][j] = new SudokuBlock();
-		}
-	}
+	initBoard(9, 3);
 }
 
 SudokuBoard::SudokuBoard(int size) {
 	// Create a square array of <size>:
+	double checkSR = sqrt(size);
+	if (ceil(checkSR) == floor(checkSR)) {
+		initBoard(size, (int) checkSR);
+	}
+	else {
+		// If the given size isn't a perfect square, default to a 9x9 board:
+		initBoard(9, 3);
+	}
 	
 }
 
@@ -83,26 +77,16 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 		// First character should be the board size/max value:
 		inputFile >> inputSize;
 		// Create empty board:
-		valMax = inputSize;
-		board.resize(inputSize);
-		/*for (auto i : board) {
-			i.resize(inputSize);
-			for (auto j : i) {
-				j = new SudokuCell(0, inputSize);
+		double checkSR = sqrt(inputSize);
+		if (ceil(checkSR) == floor(checkSR)) {
+			initBoard(inputSize, (int)checkSR);
+			// Populate cell values:
+			while (!inputFile.eof()) {
+				inputFile >> inputRow;
+				inputFile >> inputCol;
+				inputFile >> inputVal;
+				setCellVal(inputRow, inputCol, inputVal);
 			}
-		}*/
-		for (int i = 0; i < valMax; i++) {
-			board[i].resize(valMax);
-			for (int j = 0; j < valMax; j++) {
-				board[i][j] = new SudokuCell(0, valMax);
-			}
-		}
-		// Populate cell values:
-		while (!inputFile.eof()) {
-			inputFile >> inputRow;
-			inputFile >> inputCol;
-			inputFile >> inputVal;
-			setCellVal(inputRow, inputCol, inputVal);
 		}
 		inputFile.close();
 	}
@@ -121,6 +105,26 @@ SudokuBoard::~SudokuBoard() {
 	}
 }
 
+// Constructor helper:
+void SudokuBoard::initBoard(int max, int block) {
+	// Set a default board size of 9x9:
+	valMax = max;
+	board.resize(block);
+	// No workie:
+	/*for (auto i : board) {
+		i.resize(valMax);
+		for (auto j : i) {
+			j = new SudokuCell();
+		}
+	}*/
+	for (int i = 0; i < block; i++) {
+		board[i].resize(block);
+		for (int j = 0; j < block; j++) {
+			board[i][j] = new SudokuBlock(block);
+		}
+	}
+}
+
 int SudokuBoard::getBoardSize() {
 	// Returns the board's maximum value/row size:
 	return valMax;
@@ -131,6 +135,9 @@ void SudokuBoard::setCellVal(int row, int col, int val) {
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
 	// TODO: rewrite this to incorporate blocks.
+	// TODO: dereference a block from the row/col provided.
+	// TODO: pass down block-level row/col.
+	
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
@@ -138,6 +145,7 @@ int SudokuBoard::getCellVal(int row, int col) {
 	int adjustedRow = row - 1;
 	int adjustedCol = col - 1;
 	// TODO: rewrite this to incorporate blocks.
+	return 0;	// placeholder
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
@@ -154,6 +162,7 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 	int adjustedCol = col - 1;
 	int adjustedIndex = index - 1;
 	// TODO: rewrite this to incorporate blocks.
+	return false;	// placeholder
 }
 
 void SudokuBoard::printBoard() {
