@@ -35,6 +35,7 @@ public:
 	~SudokuBoard();
 	void initBoard(int max, int block);
 	int getBoardSize();
+	SudokuCell& targetCell(int row, int col);
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
@@ -91,8 +92,8 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 		inputFile.close();
 	}
 	else {
-		// throw invalid_argument("Failed to read file.");
-		// SudokuBoard();
+		// If the file fails, create an empty 9x9:
+		initBoard(9, 3);
 	}
 }
 
@@ -130,39 +131,29 @@ int SudokuBoard::getBoardSize() {
 	return valMax;
 }
 
+// Helps dereference a cell from the 1-ref row and col values:
+SudokuCell& SudokuBoard::targetCell(int row, int col) {
+	// TODO: figure this out.
+}
+
 void SudokuBoard::setCellVal(int row, int col, int val) {
-	// Write a value to a cell; invalid values will be discarded:
-	int adjustedRow = row - 1;
-	int adjustedCol = col - 1;
-	// TODO: rewrite this to incorporate blocks.
-	// TODO: dereference a block from the row/col provided.
-	// TODO: pass down block-level row/col.
-	
+	SudokuCell* target = targetCell(row, col);
+	target->setVal(val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
-	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
-	int adjustedRow = row - 1;
-	int adjustedCol = col - 1;
-	// TODO: rewrite this to incorporate blocks.
-	return 0;	// placeholder
+	SudokuCell* target = targetCell(row, col);
+	return target->getVal();
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
-	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
-	int adjustedRow = row - 1;
-	int adjustedCol = col - 1;
-	int adjustedIndex = index - 1;
-	// TODO: rewrite this to incorporate blocks.
+	SudokuCell* target = targetCell(row, col);
+	target->setNote(index, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
-	// Inputs are 1-ref, arrays are 0-ref; adjust the input for the lower layers:
-	int adjustedRow = row - 1;
-	int adjustedCol = col - 1;
-	int adjustedIndex = index - 1;
-	// TODO: rewrite this to incorporate blocks.
-	return false;	// placeholder
+	SudokuCell* target = targetCell(row, col);
+	return target->getNote(index);
 }
 
 void SudokuBoard::printBoard() {
