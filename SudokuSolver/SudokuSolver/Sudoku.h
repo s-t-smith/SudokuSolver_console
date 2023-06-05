@@ -93,7 +93,6 @@ Sudoku::Sudoku()
 Sudoku::Sudoku(std::string startingFile)
 {
 	gameBoard = new SudokuBoard(startingFile);
-	gameBoard->printBoard();
 	if (getBoardSize() % (int)sqrt(getBoardSize()) == 0) {
 		blockable = true;
 	}

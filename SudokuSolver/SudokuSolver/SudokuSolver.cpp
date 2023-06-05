@@ -49,6 +49,9 @@ int main()
         // Pick starting file:
         currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
+        cout << "Starting board:" << endl;
+        currentGame->printBoard();
+        cout << endl;
 
         /*
         * IMPORTANT!
@@ -59,6 +62,7 @@ int main()
         passCount = 0;
         while (!currentGame->checkGO() && passCount <= currentGame->getBoardSize())
         {
+            cout << "Solution pass #" << passCount + 1 << "..." << endl;
             currentGame->checkState();
             if (currentGame->checkGO()) {
                 cout << "Solution found:" << endl;
@@ -66,11 +70,13 @@ int main()
                 break;
             }
             
+            // Clear notes based on written values:
+            
             // Check notes for singular values:
 
-            // Write singular solutions:
+            // Write note-isolated solutions:
 
-            // Clear notes:
+            // Write board-isolated solutions:
 
             // Continue:
             passCount++;
