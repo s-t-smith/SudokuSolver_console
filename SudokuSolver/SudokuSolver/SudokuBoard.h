@@ -35,7 +35,8 @@ public:
 	~SudokuBoard();
 	void initBoard(int max, int block);
 	int getBoardSize();
-	SudokuCell& targetCell(int row, int col);
+	int getBlockSize();
+	void coordMod(int& row, int& col);
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
@@ -49,6 +50,7 @@ public:
 	*/
 private:
 	int valMax;
+	int blockSize;
 	vector<vector<SudokuBlock*>> board;
 };
 
@@ -67,7 +69,6 @@ SudokuBoard::SudokuBoard(int size) {
 		// If the given size isn't a perfect square, default to a 9x9 board:
 		initBoard(9, 3);
 	}
-	
 }
 
 SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
@@ -110,6 +111,7 @@ SudokuBoard::~SudokuBoard() {
 void SudokuBoard::initBoard(int max, int block) {
 	// Set a default board size of 9x9:
 	valMax = max;
+	blockSize = block;
 	board.resize(block);
 	// No workie:
 	/*for (auto i : board) {
@@ -131,31 +133,44 @@ int SudokuBoard::getBoardSize() {
 	return valMax;
 }
 
+int SudokuBoard::getBlockSize() {
+	// Return the size of a block on the board:
+	return blockSize;
+}
+
 // Helps dereference a cell from the 1-ref row and col values:
-SudokuCell& SudokuBoard::targetCell(int row, int col) {
-	// TODO: figure this out.
+void SudokuBoard::coordMod(int& row, int& col) {
+	row = (row - 1) % blockSize;
+	col = (col - 1) % blockSize;
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
-	SudokuCell* target = targetCell(row, col);
-	target->setVal(val);
+	coordMod(row, col);
+	board[row][col]->setBlockCellVal(row, col, val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
-	SudokuCell* target = targetCell(row, col);
-	return target->getVal();
+	coordMod(row, col);
+	return board[row][col]->getBlockCellVal(row, col);
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
-	SudokuCell* target = targetCell(row, col);
-	target->setNote(index, set);
+	coordMod(row, col);
+	board[row][col]->setBlockCellNote(row, col, index, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
-	SudokuCell* target = targetCell(row, col);
-	return target->getNote(index);
+	coordMod(row, col);
+	return board[row][col]->getBlockCellNote(row, col, index);
 }
 
 void SudokuBoard::printBoard() {
-	// TODO: rewrite this to incorporate blocks.
+	for (int blockRow = 0; blockRow < getBlockSize(); blockRow++) {
+		for (int blockCol = 0; blockCol < getBlockSize(); blockCol++) {
+			for (int cellRow = 0; cellRow < getBlockSize(); cellRow++) {
+				board[blockRow][blockCol]->printRow(cellRow);
+			}
+			cout << endl;
+		}
+	}
 }

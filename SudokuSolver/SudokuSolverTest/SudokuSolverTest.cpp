@@ -155,32 +155,61 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(ConstructorTest)
 		{
+			// Reroute stdout:
+			streambuf* cout_restore;
+			cout_restore = cout.rdbuf();
+			stringstream cout_stream;
+			cout.rdbuf(cout_stream.rdbuf());
+			
 			// Default constructor:
 			SudokuBlock* testBlock = new SudokuBlock();
+			cout << "Default constructor test block:" << endl;
+			testBlock->printBlock();
+			Logger::WriteMessage(cout_stream.str().c_str());
 			Assert::IsFalse(testBlock->getBlockCellVal(0, 0) == 2);
 			Assert::AreEqual(testBlock->getBlockCellVal(1, 2), 0);
 			Assert::AreEqual(testBlock->getBlockCellVal(4, 0), -1);
 
+			// Flush stream:
+			cout_stream.flush();
+
 			// Explicit constructor:
 			delete testBlock;
 			testBlock = new SudokuBlock(5);
+			cout << "Explicit constructor test block:" << endl;
+			testBlock->printBlock();
+			Logger::WriteMessage(cout_stream.str().c_str());
 			Assert::IsFalse(testBlock->getBlockCellVal(1, 4) == 8);
 			Assert::AreEqual(testBlock->getBlockCellVal(3, 3), 0);
 			Assert::AreEqual(testBlock->getBlockCellVal(-2, 2), -1);
 
+			// Restore stdout:
+			cout.rdbuf(cout_restore);
 		}
 
 		TEST_METHOD(CellValTest)
 		{
+			// Rerout stdout:
+			streambuf* cout_restore;
+			cout_restore = cout.rdbuf();
+			stringstream cout_stream;
+			cout.rdbuf(cout_stream.rdbuf());
+			
 			SudokuBlock* littleBlock = new SudokuBlock(2);
 			littleBlock->setBlockCellVal(1, 1, 1);
 			littleBlock->setBlockCellVal(0, 0, 1);
 			littleBlock->setBlockCellVal(0, 1, 2);
+			cout << "Set/Get cell value test block:" << endl;
+			littleBlock->printBlock();
+			Logger::WriteMessage(cout_stream.str().c_str());
 
 			Assert::AreEqual(littleBlock->getBlockCellVal(0, 0), 1);
 			Assert::AreNotEqual(littleBlock->getBlockCellVal(1, 1), 3);
 			Assert::AreEqual(littleBlock->getBlockCellVal(0, 1), 2);
 			Assert::AreNotEqual(littleBlock->getBlockCellVal(1, 0), 2);
+
+			// Restore stdout:
+			cout.rdbuf(cout_restore);
 		}
 
 		TEST_METHOD(CellNoteTest)
@@ -224,7 +253,16 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(EmptyBoardTest)
 		{
+			// Reroute stdout:
+			streambuf* cout_restore;
+			cout_restore = cout.rdbuf();
+			stringstream cout_stream;
+			cout.rdbuf(cout_stream.rdbuf());
+			
 			SudokuBoard* emptyBoard = new SudokuBoard();
+			cout << "Default constructor test board:" << endl;
+			emptyBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
 
 			// Check default board size:
 			Assert::AreEqual(9, emptyBoard->getBoardSize());
@@ -236,14 +274,26 @@ namespace SudokuSolverTest
 				}
 			}
 
+			// Restore stdout:
+			cout.rdbuf(cout_restore);
+
 			delete emptyBoard;
 		}
 
 		TEST_METHOD(StartingBoardTest)
 		{
+			// Reroute stdout:
+			streambuf* cout_restore;
+			cout_restore = cout.rdbuf();
+			stringstream cout_stream;
+			cout.rdbuf(cout_stream.rdbuf());
+			
 			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
 			SudokuBoard* startingBoard = new SudokuBoard(filePath.string() + "\\easy1.txt");
+			cout << "Board created from file:" << endl;
+			startingBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
 
 			// Check board size:
 			Assert::AreEqual(9, startingBoard->getBoardSize());
@@ -251,6 +301,9 @@ namespace SudokuSolverTest
 			Assert::AreEqual(4, startingBoard->getCellVal(1, 4));
 			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
 			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
+
+			// Restore stdout:
+			cout.rdbuf(cout_restore);
 
 			delete startingBoard;
 		}
