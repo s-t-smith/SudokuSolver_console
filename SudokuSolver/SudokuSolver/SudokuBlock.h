@@ -56,7 +56,7 @@ SudokuBlock::~SudokuBlock() {
 
 void SudokuBlock::setBlockCellVal(int row, int col, int val) {
 	// Skip invalid ranges:
-	if ((row < 0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
+	if ((row < 0 || row > blockSize) || (col < 0 || col > blockSize)) {
 		return;
 	}
 	// Ignore invalid inputs:
@@ -68,7 +68,7 @@ void SudokuBlock::setBlockCellVal(int row, int col, int val) {
 
 int SudokuBlock::getBlockCellVal(int row, int col) {
 	// Skip invalid ranges:
-	if ((row < 0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
+	if ((row < 0 || row > blockSize) || (col < 0 || col > blockSize)) {
 		return -1;
 	}
 	return blockCells[row][col]->getVal();
@@ -76,7 +76,7 @@ int SudokuBlock::getBlockCellVal(int row, int col) {
 
 void SudokuBlock::setBlockCellNote(int row, int col, int idx, bool set) {
 	// Skip invalid ranges:
-	if ((row<0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
+	if ((row<0 || row > blockSize) || (col < 0 || col > blockSize)) {
 		return;
 	}
 	blockCells[row][col]->setNote(idx, set);
@@ -84,7 +84,7 @@ void SudokuBlock::setBlockCellNote(int row, int col, int idx, bool set) {
 
 bool SudokuBlock::getBlockCellNote(int row, int col, int idx) {
 	// Skip invalid ranges:
-	if ((row<0 || row > (int) blockCells.size()) || (col < 0 || col > (int) blockCells.size())) {
+	if ((row<0 || row > blockSize) || (col < 0 || col > blockSize)) {
 		return false;
 	}
 	return blockCells[row][col]->getNote(idx);
@@ -107,10 +107,10 @@ bool SudokuBlock::blockValPresent(int val) {
 
 bool SudokuBlock::rowValPresent(int row, int val) {
 	// Skip invalid ranges:
-	if (row < 0 || row > (int) blockCells.size()) {
+	if (row < 0 || row > blockSize) {
 		return false;
 	}
-	for (int col = 0; col < (int) blockCells.size(); col++) {
+	for (int col = 0; col < blockSize; col++) {
 		if (blockCells[row][col]->getVal() == val) {
 			return true;
 		}

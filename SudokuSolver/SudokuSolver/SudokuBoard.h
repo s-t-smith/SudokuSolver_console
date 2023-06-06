@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "SudokuBlock.h"
-//	This scalable implementation won't use the block class.
 #include "SudokuBlock.h"
 #include <string>
 #include <iostream>
@@ -43,11 +41,6 @@ public:
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
 
-	/*
-	* Private members:
-	* board - an array of SudokuCell objects.
-	* valMax - the maximum value of cell solutions; also the number of rows and columns.
-	*/
 private:
 	int valMax;
 	int blockSize;
@@ -150,10 +143,12 @@ int SudokuBoard::getBlockSize() {
 
 // Helps dereference a cell from the 1-ref row and col values:
 void SudokuBoard::coordMod(int& row, int& col) {
-	blockRow = (row - 1) % blockSize;
-	blockCol = (col - 1) % blockSize;
-	cellRow = (int)(row / blockSize);
-	cellCol = (int)(col / blockSize);
+	// i%blockSize will give a sequence that can access a cell.
+	// i/blockSize will give a sequence that will dereference a block.
+	cellRow = (row - 1) % blockSize;
+	cellCol = (col - 1) % blockSize;
+	blockRow = (int)((row - 1) / blockSize);
+	blockCol = (int)((col - 1) / blockSize);
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
@@ -177,10 +172,10 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 }
 
 void SudokuBoard::printBoard() {
-	for (int blockRow = 0; blockRow < getBlockSize(); blockRow++) {
-		for (int blockCol = 0; blockCol < getBlockSize(); blockCol++) {
-			for (int cellRow = 0; cellRow < getBlockSize(); cellRow++) {
-				board[blockRow][blockCol]->printRow(cellRow);
+	for (int boardRow = 0; boardRow < blockSize; boardRow++) {
+		for (int cellRow = 0; cellRow < blockSize; cellRow++) {
+			for (int boardCol = 0; boardCol < blockSize; boardCol++) {
+				board[boardRow][boardCol]->printRow(cellRow);
 			}
 			cout << endl;
 		}
