@@ -52,6 +52,12 @@ private:
 	int valMax;
 	int blockSize;
 	vector<vector<SudokuBlock*>> board;
+	
+	// Used for cell dereferencing:
+	int blockRow;
+	int blockCol;
+	int cellRow;
+	int cellCol;
 };
 
 
@@ -126,6 +132,10 @@ void SudokuBoard::initBoard(int max, int block) {
 			board[i][j] = new SudokuBlock(block);
 		}
 	}
+	blockRow = 0;
+	blockCol = 0;
+	cellRow = 0;
+	cellCol = 0;
 }
 
 int SudokuBoard::getBoardSize() {
@@ -140,28 +150,30 @@ int SudokuBoard::getBlockSize() {
 
 // Helps dereference a cell from the 1-ref row and col values:
 void SudokuBoard::coordMod(int& row, int& col) {
-	row = (row - 1) % blockSize;
-	col = (col - 1) % blockSize;
+	blockRow = (row - 1) % blockSize;
+	blockCol = (col - 1) % blockSize;
+	cellRow = (int)(row / blockSize);
+	cellCol = (int)(col / blockSize);
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
 	coordMod(row, col);
-	board[row][col]->setBlockCellVal(row, col, val);
+	board[blockRow][blockCol]->setBlockCellVal(cellRow, cellCol, val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
 	coordMod(row, col);
-	return board[row][col]->getBlockCellVal(row, col);
+	return board[blockRow][blockCol]->getBlockCellVal(cellRow, cellCol);
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
 	coordMod(row, col);
-	board[row][col]->setBlockCellNote(row, col, index, set);
+	board[blockRow][blockCol]->setBlockCellNote(cellRow, cellCol, index, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	coordMod(row, col);
-	return board[row][col]->getBlockCellNote(row, col, index);
+	return board[blockRow][blockCol]->getBlockCellNote(cellRow, cellCol, index);
 }
 
 void SudokuBoard::printBoard() {

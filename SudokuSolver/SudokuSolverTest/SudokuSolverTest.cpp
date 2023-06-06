@@ -289,7 +289,7 @@ namespace SudokuSolverTest
 			cout.rdbuf(cout_stream.rdbuf());
 			
 			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
 			SudokuBoard* startingBoard = new SudokuBoard(filePath.string() + "\\easy1.txt");
 			cout << "Board created from file:" << endl;
 			startingBoard->printBoard();
