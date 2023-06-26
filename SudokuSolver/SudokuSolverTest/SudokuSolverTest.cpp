@@ -322,6 +322,14 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Completed Sudoku class test.\n\n");
 		}
 
+		BEGIN_TEST_METHOD_ATTRIBUTE(DefaultConstructor)
+			TEST_PRIORITY(1)
+		END_TEST_METHOD_ATTRIBUTE()
+
+		BEGIN_TEST_METHOD_ATTRIBUTE(ExplicitConstructor)
+			TEST_PRIORITY(2)
+		END_TEST_METHOD_ATTRIBUTE()
+
 		TEST_METHOD(DefaultConstructor)
 		{
 			Logger::WriteMessage("Testing class without starting file...\n");

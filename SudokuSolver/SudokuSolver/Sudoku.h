@@ -82,21 +82,24 @@ void Sudoku::initGameVals()
 	int maxVal = getBoardSize();
 	
 	// Create an entry for each solution
-	for (int m = 0; m < maxVal; m++) {
-		gameVals->emplace(m + 1);
+	for (int m = 1; m <= maxVal; m++) {
+		gameVals->emplace(m, 0);
 	}
 
 	// Check the starting board for entries:
-	for (int row = 0; row < maxVal; row++) {
-		for (int col = 0; col < maxVal; col++) {
-			gameVals->at(getBoardCellVal(row, col))++;
+	for (int row = 1; row <= maxVal; row++) {
+		for (int col = 1; col <= maxVal; col++) {
+			int refVal = getBoardCellVal(row, col);
+			if(refVal > 0){
+				gameVals->at(refVal)++;
+			}
 		}
 	}
 }
 
 bool Sudoku::boardSolved()
 {
-	auto itr = gameVals->begin();
+	map<int, int>::iterator itr = gameVals->begin();
 	while (itr != gameVals->end()) {
 		if (itr->second != getBoardSize()) {
 			return false;
