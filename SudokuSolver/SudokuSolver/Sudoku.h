@@ -15,10 +15,14 @@ using namespace std;
 class Sudoku
 {
 	/*
-	* TODO: finish overhauling this class.
+	* Class functions:
+	* - initGameVals: Records the board's max value and records the initial values written to the board.
+	* - boardSolved: Checks the log of written values. Returns true if each value has only the maximum number of entries.
+	* - rowValCheck: Checks all cell columns in a given row for a value. Returns true if the value is written to any cell. 
+	* - colValCheck: Checks all cell rows in a given column for a value. Returns true if the value is written to any cell.
+	* - blockValCheck: Uses a block index to check a subarray of cells for a value (1..9 for a 9x9 board). Returns true if the value is written to any cell.
 	* 
-	* Functions left to make:
-	* - block value checker
+	* Board-layer functions simply pass the arguements down to the underlying SudokuBoard object.
 	*/
 public:
 	Sudoku();
@@ -31,6 +35,7 @@ public:
 	bool boardSolved();
 	bool rowValCheck(int row, int val);
 	bool colValCheck(int col, int val);
+	bool blockValCheck(int blk, int val);
 
 	// Board-layer functions:
 	int getBoardSize();
@@ -118,6 +123,32 @@ bool Sudoku::colValCheck(int col, int val)
 		}
 	}
 	return false;
+}
+
+bool Sudoku::blockValCheck(int blk, int val)
+{
+	// Auto-false when receiving a bad block index:
+	if ((blk < 0) || (blk > getBoardSize())) {
+		return false;
+	}
+
+	int rowOffset = 0;
+	int colOffset = 0;
+	int blockLimit = (int)sqrt(getBoardSize());
+
+	// Dereference row and column values from a block index:
+	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
+	colOffset = ((blk - 1) % blockLimit) * blockLimit + 1;
+
+	// Check a block for a value:
+	for (int row = rowOffset; row < rowOffset + blockLimit; row++) {
+		for (int col = colOffset; col < colOffset + blockLimit; col++) {
+			if (getBoardCellVal(row, col) != val) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 int Sudoku::getBoardSize()

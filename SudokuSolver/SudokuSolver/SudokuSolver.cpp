@@ -50,7 +50,7 @@ int main()
         currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
         cout << "Starting board:" << endl;
-        currentGame->printBoard();
+        currentGame->printGameBoard();
         cout << endl;
 
         /*
@@ -60,13 +60,12 @@ int main()
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
         passCount = 0;
-        while (!currentGame->checkGO() && passCount <= currentGame->getBoardSize())
+        while (!currentGame->boardSolved() && passCount <= currentGame->getBoardSize())
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
-            currentGame->checkState();
-            if (currentGame->checkGO()) {
+            if (currentGame->boardSolved()) {
                 cout << "Solution found:" << endl;
-                currentGame->printBoard();
+                currentGame->printGameBoard();
                 break;
             }
             

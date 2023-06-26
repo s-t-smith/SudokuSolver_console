@@ -328,11 +328,12 @@ namespace SudokuSolverTest
 			Sudoku* testGame = new Sudoku();
 
 			// Default board should be 9x9 and all 0s:
-			Assert::AreEqual(0, testGame->getBoardCellVal(1, 1));
-			Assert::AreEqual(0, testGame->getBoardCellVal(3, 3));
-			Assert::AreEqual(0, testGame->getBoardCellVal(9, 9));
-			// Assert::ExpectException<std::out_of_range>([&testGame]() {testGame->getBoardCellVal(11, 2); });
-
+			Assert::AreEqual(9, testGame->getBoardSize());
+			for (int r = 1; r <= testGame->getBoardSize(); r++) {
+				for (int c = 1; c <= testGame->getBoardSize(); c++) {
+					Assert::AreEqual(0, testGame->getBoardCellVal(r, c));
+				}
+			}
 			// Default board should not be "complete":
 			Assert::IsFalse(testGame->boardSolved());
 			
@@ -434,6 +435,11 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testGame->colValCheck(2, 3));
 
 			// Test checkBlock:
+			Assert::IsTrue(testGame->blockValCheck(1, 9));
+			Assert::IsTrue(testGame->blockValCheck(2, 1));
+			Assert::IsTrue(testGame->blockValCheck(9, 8));
+			Assert::IsTrue(testGame->blockValCheck(3, 7));
+			Assert::IsTrue(testGame->blockValCheck(4, 9));
 
 			delete testGame;
 		}
