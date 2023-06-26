@@ -334,11 +334,8 @@ namespace SudokuSolverTest
 			// Assert::ExpectException<std::out_of_range>([&testGame]() {testGame->getBoardCellVal(11, 2); });
 
 			// Default board should not be "complete":
-			Assert::IsFalse(testGame->checkGO());
-			// Re-checking shouldn't change the state:
-			testGame->checkState();
-			Assert::IsFalse(testGame->checkGO());
-
+			Assert::IsFalse(testGame->boardSolved());
+			
 			delete testGame;
 		}
 
@@ -351,11 +348,8 @@ namespace SudokuSolverTest
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 			
 			// Starting board is not solved:
-			Assert::IsFalse(testGame->checkGO());
-			// Re-checking shouldn't change the state:
-			testGame->checkState();
-			Assert::IsFalse(testGame->checkGO());
-
+			Assert::IsFalse(testGame->boardSolved());
+			
 			// Spot check board values:
 			Assert::AreEqual(1, testGame->getBoardCellVal(1, 2));
 			Assert::AreEqual(4, testGame->getBoardCellVal(9, 6));
@@ -373,8 +367,7 @@ namespace SudokuSolverTest
 			}
 
 			// Game state is 'solved' (technically just filled out for this):
-			testGame->checkState();
-			Assert::IsTrue(testGame->checkGO());
+			Assert::IsTrue(testGame->boardSolved());
 
 			delete testGame;
 		}
@@ -425,20 +418,20 @@ namespace SudokuSolverTest
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 			
 			// Test checkRow:
-			Assert::IsTrue(testGame->checkRow(1, 1));
-			Assert::IsTrue(testGame->checkRow(9, 5));
-			Assert::IsTrue(testGame->checkRow(4, 9));
-			Assert::IsFalse(testGame->checkRow(2, 2));
-			Assert::IsFalse(testGame->checkRow(1, 7));
-			Assert::IsFalse(testGame->checkRow(9, 6));
+			Assert::IsTrue(testGame->rowValCheck(1, 1));
+			Assert::IsTrue(testGame->rowValCheck(9, 5));
+			Assert::IsTrue(testGame->rowValCheck(4, 9));
+			Assert::IsFalse(testGame->rowValCheck(2, 2));
+			Assert::IsFalse(testGame->rowValCheck(1, 7));
+			Assert::IsFalse(testGame->rowValCheck(9, 6));
 
 			// Test checkCol:
-			Assert::IsTrue(testGame->checkCol(3, 7));
-			Assert::IsTrue(testGame->checkCol(8, 1));
-			Assert::IsTrue(testGame->checkCol(5, 2));
-			Assert::IsFalse(testGame->checkCol(4, 5));
-			Assert::IsFalse(testGame->checkCol(9, 9));
-			Assert::IsFalse(testGame->checkCol(2, 3));
+			Assert::IsTrue(testGame->colValCheck(3, 7));
+			Assert::IsTrue(testGame->colValCheck(8, 1));
+			Assert::IsTrue(testGame->colValCheck(5, 2));
+			Assert::IsFalse(testGame->colValCheck(4, 5));
+			Assert::IsFalse(testGame->colValCheck(9, 9));
+			Assert::IsFalse(testGame->colValCheck(2, 3));
 
 			// Test checkBlock:
 

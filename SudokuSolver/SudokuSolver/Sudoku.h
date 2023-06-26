@@ -18,9 +18,6 @@ class Sudoku
 	* TODO: finish overhauling this class.
 	* 
 	* Functions left to make:
-	* - something to check the game state; return a bool for game over.
-	* - row value checker
-	* - column value checker
 	* - block value checker
 	*/
 public:
@@ -31,6 +28,9 @@ public:
 
 	// Class functions:
 	void initGameVals();
+	bool boardSolved();
+	bool rowValCheck(int row, int val);
+	bool colValCheck(int col, int val);
 
 	// Board-layer functions:
 	int getBoardSize();
@@ -76,7 +76,7 @@ void Sudoku::initGameVals()
 {
 	int maxVal = getBoardSize();
 	
-	// Create an entry for 
+	// Create an entry for each solution
 	for (int m = 0; m < maxVal; m++) {
 		gameVals->emplace(m + 1);
 	}
@@ -87,6 +87,37 @@ void Sudoku::initGameVals()
 			gameVals->at(getBoardCellVal(row, col))++;
 		}
 	}
+}
+
+bool Sudoku::boardSolved()
+{
+	auto itr = gameVals->begin();
+	while (itr != gameVals->end()) {
+		if (itr->second != getBoardSize()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Sudoku::rowValCheck(int row, int val)
+{
+	for (int col = 0; col < getBoardSize(); col++) {
+		if (getBoardCellVal(row, col) == val) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Sudoku::colValCheck(int col, int val)
+{
+	for (int row = 0; row < getBoardSize(); row++) {
+		if (getBoardCellVal(row, col) == val) {
+			return true;
+		}
+	}
+	return false;
 }
 
 int Sudoku::getBoardSize()
@@ -102,6 +133,7 @@ int Sudoku::getBoardCellVal(int row, int col)
 void Sudoku::setBoardCellVal(int row, int col, int val)
 {
 	gameBoard->setCellVal(row, col, val);
+	gameVals->at(val)++;
 }
 
 bool Sudoku::getBoardCellNote(int row, int col, int idx)
