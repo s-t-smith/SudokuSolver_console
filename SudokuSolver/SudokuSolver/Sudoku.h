@@ -110,7 +110,7 @@ bool Sudoku::boardSolved()
 
 bool Sudoku::rowValCheck(int row, int val)
 {
-	for (int col = 0; col < getBoardSize(); col++) {
+	for (int col = 1; col <= gameVals->size(); col++) {
 		if (getBoardCellVal(row, col) == val) {
 			return true;
 		}
@@ -120,7 +120,7 @@ bool Sudoku::rowValCheck(int row, int val)
 
 bool Sudoku::colValCheck(int col, int val)
 {
-	for (int row = 0; row < getBoardSize(); row++) {
+	for (int row = 1; row <= gameVals->size(); row++) {
 		if (getBoardCellVal(row, col) == val) {
 			return true;
 		}
@@ -131,13 +131,13 @@ bool Sudoku::colValCheck(int col, int val)
 bool Sudoku::blockValCheck(int blk, int val)
 {
 	// Auto-false when receiving a bad block index:
-	if ((blk < 0) || (blk > getBoardSize())) {
+	if ((blk < 0) || (blk > gameVals->size())) {
 		return false;
 	}
 
 	int rowOffset = 0;
 	int colOffset = 0;
-	int blockLimit = (int)sqrt(getBoardSize());
+	int blockLimit = (int)sqrt(gameVals->size());
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
@@ -146,12 +146,12 @@ bool Sudoku::blockValCheck(int blk, int val)
 	// Check a block for a value:
 	for (int row = rowOffset; row < rowOffset + blockLimit; row++) {
 		for (int col = colOffset; col < colOffset + blockLimit; col++) {
-			if (getBoardCellVal(row, col) != val) {
-				return false;
+			if (getBoardCellVal(row, col) == val) {
+				return true;
 			}
 		}
 	}
-	return true;
+	return false;
 }
 
 int Sudoku::getBoardSize()

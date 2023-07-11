@@ -289,7 +289,11 @@ namespace SudokuSolverTest
 			cout.rdbuf(cout_stream.rdbuf());
 			
 			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			
+			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			
 			SudokuBoard* startingBoard = new SudokuBoard(filePath.string() + "\\easy1.txt");
 			cout << "Board created from file:" << endl;
 			startingBoard->printBoard();
@@ -352,7 +356,11 @@ namespace SudokuSolverTest
 		{
 			Logger::WriteMessage("Testing class with starting file...\n");
 			// Get a path to the test files:
+
+			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
 			// Test an unsolved board:
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 			
@@ -398,23 +406,27 @@ namespace SudokuSolverTest
 		{
 			Logger::WriteMessage("Testing cell notes methods...\n");
 			// Get a path to the test files:
+
+			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
 			// Test an unsolved board:
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 			
 			// Spot check note settings for populated cells:
 			Assert::IsFalse(testGame->getBoardCellNote(6, 2, 3));
-			Assert::IsFalse(testGame->getBoardCellNote(9, 2, 3));
+			Assert::IsFalse(testGame->getBoardCellNote(9, 6, 4));
 			Assert::IsFalse(testGame->getBoardCellNote(9, 8, 7));
-			Assert::IsFalse(testGame->getBoardCellNote(1, 8, 7));
-			Assert::IsFalse(testGame->getBoardCellNote(3, 6, 2));
+			Assert::IsFalse(testGame->getBoardCellNote(5, 4, 1));
+			Assert::IsFalse(testGame->getBoardCellNote(3, 7, 3));
 			
 			// Spot check note settings for blank cells:
-			Assert::IsTrue(testGame->getBoardCellNote(6, 7, 5));
+			Assert::IsTrue(testGame->getBoardCellNote(6, 5, 7));
 			Assert::IsTrue(testGame->getBoardCellNote(9, 1, 1));
-			Assert::IsTrue(testGame->getBoardCellNote(9, 6, 8));
-			Assert::IsTrue(testGame->getBoardCellNote(1, 3, 3));
-			Assert::IsTrue(testGame->getBoardCellNote(3, 8, 8));
+			Assert::IsTrue(testGame->getBoardCellNote(6, 9, 8));
+			Assert::IsTrue(testGame->getBoardCellNote(1, 7, 3));
+			Assert::IsTrue(testGame->getBoardCellNote(3, 3, 8));
 
 			delete testGame;
 		}
@@ -422,32 +434,36 @@ namespace SudokuSolverTest
 		TEST_METHOD(ValCheckTest)
 		{
 			Logger::WriteMessage("Testing board check methods...\n");
+
+			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
 			// Test an unsolved board:
 			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
 			
 			// Test checkRow:
 			Assert::IsTrue(testGame->rowValCheck(1, 1));
-			Assert::IsTrue(testGame->rowValCheck(9, 5));
+			Assert::IsTrue(testGame->rowValCheck(9, 4));
 			Assert::IsTrue(testGame->rowValCheck(4, 9));
 			Assert::IsFalse(testGame->rowValCheck(2, 2));
 			Assert::IsFalse(testGame->rowValCheck(1, 7));
 			Assert::IsFalse(testGame->rowValCheck(9, 6));
 
 			// Test checkCol:
-			Assert::IsTrue(testGame->colValCheck(3, 7));
-			Assert::IsTrue(testGame->colValCheck(8, 1));
-			Assert::IsTrue(testGame->colValCheck(5, 2));
+			Assert::IsTrue(testGame->colValCheck(9, 7));
+			Assert::IsTrue(testGame->colValCheck(3, 1));
+			Assert::IsTrue(testGame->colValCheck(2, 2));
 			Assert::IsFalse(testGame->colValCheck(4, 5));
 			Assert::IsFalse(testGame->colValCheck(9, 9));
-			Assert::IsFalse(testGame->colValCheck(2, 3));
+			Assert::IsFalse(testGame->colValCheck(1, 3));
 
 			// Test checkBlock:
 			Assert::IsTrue(testGame->blockValCheck(1, 9));
-			Assert::IsTrue(testGame->blockValCheck(2, 1));
+			Assert::IsTrue(testGame->blockValCheck(2, 5));
 			Assert::IsTrue(testGame->blockValCheck(9, 8));
 			Assert::IsTrue(testGame->blockValCheck(3, 7));
-			Assert::IsTrue(testGame->blockValCheck(4, 9));
+			Assert::IsTrue(testGame->blockValCheck(4, 3));
 
 			delete testGame;
 		}
