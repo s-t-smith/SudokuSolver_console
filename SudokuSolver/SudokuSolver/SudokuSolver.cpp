@@ -83,6 +83,7 @@ int main()
 
         if (passCount >= currentGame->getBoardSize()) {
             cout << "Solution not found." << endl << endl;
+            currentGame->printGameBoard();
         }
 
     } while (userPick < 0 || userPick > (int) boardFiles.size());
