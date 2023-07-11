@@ -104,6 +104,7 @@ bool Sudoku::boardSolved()
 		if (itr->second != getBoardSize()) {
 			return false;
 		}
+		itr++;
 	}
 	return true;
 }
