@@ -38,7 +38,7 @@ public:
 	bool colValCheck(int col, int val);
 	void clearColNotes(int col, int val);
 	bool blockValCheck(int blk, int val);
-	void clearBlockNotes(int blk, int val);
+	void clearBlockNotes(int row, int col, int val);
 
 	// Board-layer functions:
 	int getBoardSize();
@@ -172,11 +172,15 @@ bool Sudoku::blockValCheck(int blk, int val)
 	return false;
 }
 
-void Sudoku::clearBlockNotes(int blk, int val)
+void Sudoku::clearBlockNotes(int row, int col, int val)
 {
 	int rowOffset = 0;
 	int colOffset = 0;
 	int blockLimit = (int)sqrt(getBoardSize());
+	int blk = 0;
+
+	// TODO: Determine which block based on the coordinates:
+	
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
@@ -208,6 +212,7 @@ void Sudoku::setBoardCellVal(int row, int col, int val)
 	// Remove notes that have become invalid:
 	clearRowNotes(row, val);
 	clearColNotes(col, val);
+	clearBlockNotes(row, col, val);
 }
 
 bool Sudoku::getBoardCellNote(int row, int col, int idx)

@@ -428,6 +428,15 @@ namespace SudokuSolverTest
 			Assert::IsTrue(testGame->getBoardCellNote(1, 7, 3));
 			Assert::IsTrue(testGame->getBoardCellNote(3, 3, 8));
 
+			// Test the bulk-clear methods:
+			testGame->clearRowNotes(6, 7);
+			testGame->clearColNotes(1, 1);
+			for (int i = 1; i <= testGame->getBoardSize(); i++) {
+				Assert::IsFalse(testGame->getBoardCellNote(i, 1, 1));
+				Assert::IsFalse(testGame->getBoardCellNote(6, i, 7));
+			}
+			//testGame->clearBlockNotes(3, 3, 8);
+
 			delete testGame;
 		}
 
