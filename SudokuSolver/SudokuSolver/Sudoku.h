@@ -34,8 +34,11 @@ public:
 	void initGameVals();
 	bool boardSolved();
 	bool rowValCheck(int row, int val);
+	void clearRowNotes(int row, int val);
 	bool colValCheck(int col, int val);
+	void clearColNotes(int col, int val);
 	bool blockValCheck(int blk, int val);
+	void clearBlockNotes(int blk, int val);
 
 	// Board-layer functions:
 	int getBoardSize();
@@ -119,6 +122,13 @@ bool Sudoku::rowValCheck(int row, int val)
 	return false;
 }
 
+void Sudoku::clearRowNotes(int row, int val)
+{
+	for (int col = 1; col <= getBoardSize(); col++) {
+		setBoardCellNote(row, col, val, false);
+	}
+}
+
 bool Sudoku::colValCheck(int col, int val)
 {
 	for (int row = 1; row <= gameVals->size(); row++) {
@@ -127,6 +137,13 @@ bool Sudoku::colValCheck(int col, int val)
 		}
 	}
 	return false;
+}
+
+void Sudoku::clearColNotes(int col, int val)
+{
+	for (int row = 1; row <= getBoardSize(); row++) {
+		setBoardCellNote(row, col, val, false);
+	}
 }
 
 bool Sudoku::blockValCheck(int blk, int val)
@@ -138,7 +155,7 @@ bool Sudoku::blockValCheck(int blk, int val)
 
 	int rowOffset = 0;
 	int colOffset = 0;
-	int blockLimit = (int)sqrt(gameVals->size());
+	int blockLimit = (int)sqrt(getBoardSize());
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
@@ -155,6 +172,24 @@ bool Sudoku::blockValCheck(int blk, int val)
 	return false;
 }
 
+void Sudoku::clearBlockNotes(int blk, int val)
+{
+	int rowOffset = 0;
+	int colOffset = 0;
+	int blockLimit = (int)sqrt(getBoardSize());
+
+	// Dereference row and column values from a block index:
+	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
+	colOffset = ((blk - 1) % blockLimit) * blockLimit + 1;
+
+	// Clear notes from a block:
+	for (int row = rowOffset; row < rowOffset + blockLimit; row++) {
+		for (int col = colOffset; col < colOffset + blockLimit; col++) {
+			setBoardCellNote(row, col, val, false);
+		}
+	}
+}
+
 int Sudoku::getBoardSize()
 {
 	return gameBoard->getBoardSize();
@@ -167,8 +202,12 @@ int Sudoku::getBoardCellVal(int row, int col)
 
 void Sudoku::setBoardCellVal(int row, int col, int val)
 {
+	// Place the solution, then mark the solution in the list:
 	gameBoard->setCellVal(row, col, val);
 	gameVals->at(val)++;
+	// Remove notes that have become invalid:
+	clearRowNotes(row, val);
+	clearColNotes(col, val);
 }
 
 bool Sudoku::getBoardCellNote(int row, int col, int idx)
