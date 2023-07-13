@@ -16,6 +16,9 @@
 #include <filesystem>
 using namespace std;
 
+bool intersectionCheck(Sudoku& game, int row, int col, int val);
+bool onlyNote(Sudoku& game, int row, int col, int val);
+
 int main()
 {
         // Take two steps out from the program's working directory, then navigate to the input files:
@@ -69,17 +72,20 @@ int main()
                 break;
             }
             
-            // Check notes for singular values:
-            for (int row = 1; row <= currentGame->getBoardSize(); row++) {
-                for (int col = 1; col <= currentGame->getBoardSize(); col++) {
-                    if (currentGame->getBoardCellVal(row, col) == 0) {
-                        // Write note-isolated solutions:
+            for (int val = 1; val <= currentGame->getBoardSize(); val++) {
+                // Check notes for singular values:
+                for (int row = 1; row <= currentGame->getBoardSize(); row++) {
+                    for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                        if (currentGame->getBoardCellVal(row, col) == 0) {
+                            // Write note-isolated solutions:
 
-                        // Write board-isolated solutions:
-
+                            // Write board-isolated solutions:
+                            
+                        }
                     }
                 }
             }
+            
             // Continue:
             passCount++;
         }
@@ -93,3 +99,7 @@ int main()
 
     return 0;
 }
+
+bool intersectionCheck(Sudoku& game, int row, int col, int val) {}
+
+bool onlyNote(Sudoku& game, int row, int col, int val) {}
