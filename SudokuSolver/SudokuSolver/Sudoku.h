@@ -179,8 +179,10 @@ void Sudoku::clearBlockNotes(int row, int col, int val)
 	int blockLimit = (int)sqrt(getBoardSize());
 	int blk = 0;
 
-	// TODO: Determine which block based on the coordinates:
-	
+	// Determine which block based on the coordinates:
+	int blockRowRef = (int)((row - 1) / blockLimit) * blockLimit;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
+	int blockColRef = (int)((col - 1) / blockLimit) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
+	blk = blockRowRef + blockColRef;
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;

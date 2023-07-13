@@ -69,14 +69,17 @@ int main()
                 break;
             }
             
-            // Clear notes based on written values:
-            
             // Check notes for singular values:
+            for (int row = 1; row <= currentGame->getBoardSize(); row++) {
+                for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                    if (currentGame->getBoardCellVal(row, col) == 0) {
+                        // Write note-isolated solutions:
 
-            // Write note-isolated solutions:
+                        // Write board-isolated solutions:
 
-            // Write board-isolated solutions:
-
+                    }
+                }
+            }
             // Continue:
             passCount++;
         }

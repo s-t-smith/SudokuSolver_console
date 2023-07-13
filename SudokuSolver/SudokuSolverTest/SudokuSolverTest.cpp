@@ -435,7 +435,9 @@ namespace SudokuSolverTest
 				Assert::IsFalse(testGame->getBoardCellNote(i, 1, 1));
 				Assert::IsFalse(testGame->getBoardCellNote(6, i, 7));
 			}
-			//testGame->clearBlockNotes(3, 3, 8);
+			testGame->clearBlockNotes(3, 3, 8);
+			Assert::IsFalse(testGame->getBoardCellNote(2, 1, 8));
+			Assert::IsFalse(testGame->getBoardCellNote(1, 3, 8));
 
 			delete testGame;
 		}
