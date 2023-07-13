@@ -72,15 +72,22 @@ int main()
                 break;
             }
             
+            // Check each value:
             for (int val = 1; val <= currentGame->getBoardSize(); val++) {
-                // Check notes for singular values:
+                // Check each row:
                 for (int row = 1; row <= currentGame->getBoardSize(); row++) {
+                    // Check each column:
                     for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                        // When a cell is empty:
                         if (currentGame->getBoardCellVal(row, col) == 0) {
                             // Write note-isolated solutions:
-
+                            if (onlyNote(*currentGame, row, col, val)) {
+                                currentGame->setBoardCellVal(val);
+                            }
                             // Write board-isolated solutions:
-                            
+                            if (intersectionCheck(*currentGame, row, col, val)) {
+                                currentGame->setBoardCellVal(row, col, val);
+                            }
                         }
                     }
                 }
@@ -100,6 +107,27 @@ int main()
     return 0;
 }
 
-bool intersectionCheck(Sudoku& game, int row, int col, int val) {}
+bool intersectionCheck(Sudoku& game, int row, int col, int val) {
+    bool runningCheck = false;
+    // If the value is present in the row, column or block, the flag will be set 'true':
+    runningCheck = game.rowValCheck(row, val) && game.colValCheck(col, val) && game.blockValCheck(row, col, val);
+    // Only want a 'true' response when the given value does NOT appear in those areas:
+    return !runningCheck;
+}
 
-bool onlyNote(Sudoku& game, int row, int col, int val) {}
+bool onlyNote(Sudoku& game, int row, int col, int val) {
+    // Is the requested value available?
+    bool noteCheck = game.getBoardCellNote(row, col, val);
+    if (noteCheck) {
+        // Check all other values:
+        for (int v = 1; v <= game.getBoardSize(); v++) {
+            if (v != val) {
+                // If any other possibilities exist, given value is not the only note:
+                if (game.getBoardCellNote(row, col, v)) {
+                    noteCheck = false;
+                }
+            }
+        }
+    }
+    return noteCheck;
+}

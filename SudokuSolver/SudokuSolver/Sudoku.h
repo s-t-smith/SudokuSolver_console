@@ -37,7 +37,7 @@ public:
 	void clearRowNotes(int row, int val);
 	bool colValCheck(int col, int val);
 	void clearColNotes(int col, int val);
-	bool blockValCheck(int blk, int val);
+	bool blockValCheck(int row, int col, int val);
 	void clearBlockNotes(int row, int col, int val);
 
 	// Board-layer functions:
@@ -146,16 +146,17 @@ void Sudoku::clearColNotes(int col, int val)
 	}
 }
 
-bool Sudoku::blockValCheck(int blk, int val)
+bool Sudoku::blockValCheck(int row, int col, int val)
 {
-	// Auto-false when receiving a bad block index:
-	if ((blk < 0) || (blk > gameVals->size())) {
-		return false;
-	}
-
 	int rowOffset = 0;
 	int colOffset = 0;
 	int blockLimit = (int)sqrt(getBoardSize());
+
+	// Determine which block based on the coordinates:
+	int blockRowRef = (int)((row - 1) / blockLimit) * blockLimit;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
+	int blockColRef = (int)((col - 1) / blockLimit) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
+	int blk = blockRowRef + blockColRef;
+
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
@@ -177,12 +178,11 @@ void Sudoku::clearBlockNotes(int row, int col, int val)
 	int rowOffset = 0;
 	int colOffset = 0;
 	int blockLimit = (int)sqrt(getBoardSize());
-	int blk = 0;
-
+	
 	// Determine which block based on the coordinates:
 	int blockRowRef = (int)((row - 1) / blockLimit) * blockLimit;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
 	int blockColRef = (int)((col - 1) / blockLimit) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
-	blk = blockRowRef + blockColRef;
+	int blk = blockRowRef + blockColRef;
 
 	// Dereference row and column values from a block index:
 	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
