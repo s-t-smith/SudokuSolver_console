@@ -163,12 +163,12 @@ int SudokuBoard::getCellVal(int row, int col) {
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
 	coordMod(row, col);
-	board[blockRow][blockCol]->setBlockCellNote(cellRow, cellCol, index, set);
+	board[blockRow][blockCol]->setBlockCellNote(cellRow, cellCol, index - 1, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
 	coordMod(row, col);
-	return board[blockRow][blockCol]->getBlockCellNote(cellRow, cellCol, index);
+	return board[blockRow][blockCol]->getBlockCellNote(cellRow, cellCol, index - 1);
 }
 
 void SudokuBoard::printBoard() {

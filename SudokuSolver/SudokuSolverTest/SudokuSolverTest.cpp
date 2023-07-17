@@ -470,11 +470,11 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testGame->colValCheck(1, 3));
 
 			// Test checkBlock:
-			Assert::IsTrue(testGame->blockValCheck(1, 9));
-			Assert::IsTrue(testGame->blockValCheck(2, 5));
-			Assert::IsTrue(testGame->blockValCheck(9, 8));
-			Assert::IsTrue(testGame->blockValCheck(3, 7));
-			Assert::IsTrue(testGame->blockValCheck(4, 3));
+			Assert::IsTrue(testGame->blockValCheck(1, 2, 9));
+			Assert::IsTrue(testGame->blockValCheck(2, 4, 5));
+			Assert::IsTrue(testGame->blockValCheck(9, 5, 8));
+			Assert::IsTrue(testGame->blockValCheck(3, 9, 7));
+			Assert::IsTrue(testGame->blockValCheck(2, 7, 3));
 
 			delete testGame;
 		}

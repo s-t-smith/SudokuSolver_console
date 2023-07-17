@@ -82,12 +82,9 @@ int main()
                         if (currentGame->getBoardCellVal(row, col) == 0) {
                             // Write note-isolated solutions:
                             if (onlyNote(*currentGame, row, col, val)) {
-                                currentGame->setBoardCellVal(val);
+                                currentGame->setBoardCellVal(row, col,val);
                             }
-                            // Write board-isolated solutions:
-                            if (intersectionCheck(*currentGame, row, col, val)) {
-                                currentGame->setBoardCellVal(row, col, val);
-                            }
+                            // TODO: Write board-isolated solutions:
                         }
                     }
                 }
