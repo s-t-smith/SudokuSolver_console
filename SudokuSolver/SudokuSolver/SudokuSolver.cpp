@@ -80,11 +80,16 @@ int main()
                     for (int col = 1; col <= currentGame->getBoardSize(); col++) {
                         // When a cell is empty:
                         if (currentGame->getBoardCellVal(row, col) == 0) {
-                            // Write note-isolated solutions:
-                            if (onlyNote(*currentGame, row, col, val)) {
+                            
+                            // TODO: Write note-isolated solutions:
+                            /*if (onlyNote(*currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col,val);
-                            }
+                            }*/
+
                             // TODO: Write board-isolated solutions:
+                            /*if (intersectionCheck(*currentGame, row, col, val)) {
+                                currentGame->setBoardCellVal(row, col, val);
+                            }*/
                         }
                     }
                 }
