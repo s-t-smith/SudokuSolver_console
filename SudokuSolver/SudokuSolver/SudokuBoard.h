@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SudokuBlock.h"
+#include "SudokuCell.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -13,6 +13,7 @@ using namespace std;
 
 class SudokuBoard
 {
+public:
 	/*
 	* Public functions:
 	* SudokuBoard(int size) - Explicit constructor; makes an empty board with a user-provider number of rows and columns.
@@ -26,27 +27,31 @@ class SudokuBoard
 	* getCellNote - returns the state of the underlying object's 'index' note.
 	* printBoard - outputs the board in a 9x9 format to the console.
 	*/
-public:
+	/* Constructors: */
 	SudokuBoard();
 	SudokuBoard(int size);
 	SudokuBoard(string fileName);
 	~SudokuBoard();
-	void initBoard(int max, int block);
+	void initBoard(int max);
+
+	/* Board functions: */
 	int getBoardSize();
 	int getBlockSize();
-	void coordMod(int& row, int& col);
 	void setCellVal(int row, int col, int val);
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
+	void coordMod(int& row, int& col);
+	void blockRef(int& row, int& col);
 	void printBoard();
 
 private:
+	/* Primary data fields: */
 	int valMax;
-	int blockSize;
-	vector<vector<SudokuBlock*>> board;
+	vector<vector<SudokuCell*>> board;
 	
 	// Used for cell dereferencing:
+	int blockSize;
 	int blockRow;
 	int blockCol;
 	int cellRow;
@@ -55,19 +60,20 @@ private:
 
 
 SudokuBoard::SudokuBoard() {
-	initBoard(9, 3);
+	initBoard(9);
 }
 
 SudokuBoard::SudokuBoard(int size) {
 	// Create a square array of <size>:
 	double checkSR = sqrt(size);
 	if (ceil(checkSR) == floor(checkSR)) {
-		initBoard(size, (int) checkSR);
+		initBoard(size);
 	}
 	else {
 		// If the given size isn't a perfect square, default to a 9x9 board:
-		initBoard(9, 3);
+		initBoard(9);
 	}
+	// Bonus: This could be expanded to adjust to the closest size other than 9x9.
 }
 
 SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
@@ -80,7 +86,7 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 		// Create empty board:
 		double checkSR = sqrt(inputSize);
 		if (ceil(checkSR) == floor(checkSR)) {
-			initBoard(inputSize, (int)checkSR);
+			initBoard(inputSize);
 			// Populate cell values:
 			while (!inputFile.eof()) {
 				inputFile >> inputRow;
@@ -93,7 +99,7 @@ SudokuBoard::SudokuBoard(string fileName) : SudokuBoard(9){
 	}
 	else {
 		// If the file fails, create an empty 9x9:
-		initBoard(9, 3);
+		initBoard(9);
 	}
 }
 
@@ -107,11 +113,7 @@ SudokuBoard::~SudokuBoard() {
 }
 
 // Constructor helper:
-void SudokuBoard::initBoard(int max, int block) {
-	// Set a default board size of 9x9:
-	valMax = max;
-	blockSize = block;
-	board.resize(block);
+void SudokuBoard::initBoard(int max) {
 	// No workie:
 	/*for (auto i : board) {
 		i.resize(valMax);
@@ -119,10 +121,12 @@ void SudokuBoard::initBoard(int max, int block) {
 			j = new SudokuCell();
 		}
 	}*/
-	for (int i = 0; i < block; i++) {
-		board[i].resize(block);
-		for (int j = 0; j < block; j++) {
-			board[i][j] = new SudokuBlock(block);
+	valMax = max;
+	board.resize(max);
+	for (int i = 0; i < max; i++) {
+		board[i].resize(max);
+		for (int j = 0; j < max; j++) {
+			board[i][j] = new SudokuCell();
 		}
 	}
 	blockRow = 0;
@@ -138,7 +142,7 @@ int SudokuBoard::getBoardSize() {
 
 int SudokuBoard::getBlockSize() {
 	// Return the size of a block on the board:
-	return blockSize;
+	return (int) sqrt(valMax);
 }
 
 // Helps dereference a cell from the 1-ref row and col values:
@@ -149,6 +153,11 @@ void SudokuBoard::coordMod(int& row, int& col) {
 	cellCol = (col - 1) % blockSize;
 	blockRow = (int)((row - 1) / blockSize);
 	blockCol = (int)((col - 1) / blockSize);
+}
+
+// Helps section off a block of cells with given coordinates:
+void SudokuBoard::blockRef(int& row, int& col) {
+
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
