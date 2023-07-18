@@ -41,8 +41,8 @@ public:
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
-	void coordMod(int& row, int& col);
-	void blockRef(int& row, int& col);
+	void blockCoord(int& row, int& cal);
+	void blockRef(int blk);
 	void printBoard();
 
 private:
@@ -52,10 +52,10 @@ private:
 	
 	// Used for cell dereferencing:
 	int blockSize;
-	int blockRow;
-	int blockCol;
-	int cellRow;
-	int cellCol;
+	int blockRowStart;
+	int blockColStart;
+	int blockRowEnd;
+	int blockColEnd;
 };
 
 
@@ -121,7 +121,16 @@ void SudokuBoard::initBoard(int max) {
 			j = new SudokuCell();
 		}
 	}*/
+
+	// Set private fields:
 	valMax = max;
+	blockSize = (int)sqrt(max);
+	blockRowStart = 0;
+	blockColStart = 0;
+	blockRowEnd = 0;
+	blockColEnd = 0;
+
+	// Create cell array:
 	board.resize(max);
 	for (int i = 0; i < max; i++) {
 		board[i].resize(max);
@@ -129,10 +138,6 @@ void SudokuBoard::initBoard(int max) {
 			board[i][j] = new SudokuCell();
 		}
 	}
-	blockRow = 0;
-	blockCol = 0;
-	cellRow = 0;
-	cellCol = 0;
 }
 
 int SudokuBoard::getBoardSize() {
@@ -145,48 +150,57 @@ int SudokuBoard::getBlockSize() {
 	return (int) sqrt(valMax);
 }
 
-// Helps dereference a cell from the 1-ref row and col values:
-void SudokuBoard::coordMod(int& row, int& col) {
+// TODO: finish this.
+void SudokuBoard::blockCoord(int& row, int& col) {
+	// Given a set of coordinates, set the cell index limits for looping functions.
 	// i%blockSize will give a sequence that can access a cell.
 	// i/blockSize will give a sequence that will dereference a block.
-	cellRow = (row - 1) % blockSize;
-	cellCol = (col - 1) % blockSize;
-	blockRow = (int)((row - 1) / blockSize);
-	blockCol = (int)((col - 1) / blockSize);
 }
 
-// Helps section off a block of cells with given coordinates:
-void SudokuBoard::blockRef(int& row, int& col) {
-
+// TODO: finish this.
+void SudokuBoard::blockRef(int blk) {
+	// Given a single block number, set the cell index limits for looping functions.
+	// i%blockSize will give a sequence that can access a cell.
+	// i/blockSize will give a sequence that will dereference a block.
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
-	coordMod(row, col);
-	board[blockRow][blockCol]->setBlockCellVal(cellRow, cellCol, val);
+	// Inputs are assumed to be 1-ref, cell arrays are 0-ref:
+	board[row - 1][col - 1]->setVal(val);
 }
 
 int SudokuBoard::getCellVal(int row, int col) {
-	coordMod(row, col);
-	return board[blockRow][blockCol]->getBlockCellVal(cellRow, cellCol);
+	// Inputs are assumed to be 1-ref, cell arrays are 0-ref:
+	return board[row - 1][col - 1]->getVal();
 }
 
 void SudokuBoard::setCellNote(int row, int col, int index, bool set) {
-	coordMod(row, col);
-	board[blockRow][blockCol]->setBlockCellNote(cellRow, cellCol, index - 1, set);
+	// Inputs are assumed to be 1-ref, cell arrays are 0-ref:
+	board[row - 1][col - 1]->setNote(index - 1, set);
 }
 
 bool SudokuBoard::getCellNote(int row, int col, int index) {
-	coordMod(row, col);
-	return board[blockRow][blockCol]->getBlockCellNote(cellRow, cellCol, index - 1);
+	// Inputs are assumed to be 1-ref, cell arrays are 0-ref:
+	return board[row - 1][col - 1]->getNote(index - 1);
 }
 
 void SudokuBoard::printBoard() {
-	for (int boardRow = 0; boardRow < blockSize; boardRow++) {
-		for (int cellRow = 0; cellRow < blockSize; cellRow++) {
-			for (int boardCol = 0; boardCol < blockSize; boardCol++) {
-				board[boardRow][boardCol]->printRow(cellRow);
+	for (int row = 1; row <= valMax; row++) {
+		for (int col = 1; col <= valMax; col++) {
+			cout << getCellVal(row, col);
+			if ((col != valMax) && (col % blockSize == 0)) {
+				cout << "|";
 			}
-			cout << endl;
+			else {
+				cout << " ";
+			}
 		}
+		if ((row != valMax) && (row % blockSize == 0)) {
+			cout << endl;
+			for (int spc = 0; spc < 2*valMax-1; spc++) {
+				cout << "-";
+			}
+		}
+		cout << endl;
 	}
 }
