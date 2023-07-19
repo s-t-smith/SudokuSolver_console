@@ -44,7 +44,7 @@ SudokuCell::SudokuCell() {
 	setVal(0);
 }
 
-SudokuCell::SudokuCell(int val, int size = 9) {
+SudokuCell::SudokuCell(int val, int size) {
 	notes.resize(size);
 	setVal(val);
 }

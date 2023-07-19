@@ -52,10 +52,10 @@ namespace SudokuSolverTest
 		TEST_METHOD(ExplicitConstructor)
 		{
 			Logger::WriteMessage("Testing explicit constructor...\n");
-			SudokuCell* explicitCell = new SudokuCell(5);
+			SudokuCell* explicitCell = new SudokuCell(5, 9);
 			// Cell retains given intial value:
 			Assert::AreEqual(5, explicitCell->getVal());
-			// Notes list retains given size (default 9):
+			// Notes list retains given size:
 			int noteSize = explicitCell->getSize();
 			Assert::AreEqual(9, noteSize);
 			// All notes are written 'false':

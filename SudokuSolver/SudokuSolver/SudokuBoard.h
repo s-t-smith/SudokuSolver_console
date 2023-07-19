@@ -131,11 +131,11 @@ void SudokuBoard::initBoard(int max) {
 	blockColEnd = 0;
 
 	// Create cell array:
-	board.resize(max);
-	for (int i = 0; i < max; i++) {
-		board[i].resize(max);
+	board.resize(valMax);
+	for (int i = 0; i < valMax; i++) {
+		board[i].resize(valMax);
 		for (int j = 0; j < max; j++) {
-			board[i][j] = new SudokuCell();
+			board[i][j] = new SudokuCell(0, valMax);
 		}
 	}
 }
