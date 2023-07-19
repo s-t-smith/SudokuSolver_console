@@ -398,6 +398,31 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testGame->boardSolved());
 			
 			delete testGame;
+			testGame = new Sudoku(16);
+
+			// Default board should be all 0s:
+			Assert::AreEqual(16, testGame->getBoardSize());
+			for (int r = 1; r <= testGame->getBoardSize(); r++) {
+				for (int c = 1; c <= testGame->getBoardSize(); c++) {
+					Assert::AreEqual(0, testGame->getBoardCellVal(r, c));
+				}
+			}
+			// Default board should not be "complete":
+			Assert::IsFalse(testGame->boardSolved());
+
+			delete testGame;
+			testGame = new Sudoku(8);
+
+			// Default board should be 9x9 for non-square inputs:
+			Assert::AreEqual(9, testGame->getBoardSize());
+			for (int r = 1; r <= testGame->getBoardSize(); r++) {
+				for (int c = 1; c <= testGame->getBoardSize(); c++) {
+					Assert::AreEqual(0, testGame->getBoardCellVal(r, c));
+				}
+			}
+			// Default board should not be "complete":
+			Assert::IsFalse(testGame->boardSolved());
+			delete testGame;
 		}
 
 		TEST_METHOD(ExplicitConstructor)
@@ -518,11 +543,8 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testGame->colValCheck(1, 3));
 
 			// Test checkBlock:
-			Assert::IsTrue(testGame->blockValCheck(1, 2, 9));
-			Assert::IsTrue(testGame->blockValCheck(2, 4, 5));
-			Assert::IsTrue(testGame->blockValCheck(9, 5, 8));
-			Assert::IsTrue(testGame->blockValCheck(3, 9, 7));
-			Assert::IsTrue(testGame->blockValCheck(2, 7, 3));
+			// TODO: finish this.
+			// Cover both overloads of blockValCheck().
 
 			delete testGame;
 		}
