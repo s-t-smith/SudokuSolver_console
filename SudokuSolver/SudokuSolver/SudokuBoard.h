@@ -41,8 +41,8 @@ public:
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
-	void blockCoord(int& row, int& col);
-	void blockRef(int& blk);
+	int blockCoord(int& row, int& col);
+	void blockRef(int blk);
 	void printBoard();
 
 private:
@@ -151,17 +151,20 @@ int SudokuBoard::getBlockSize() {
 }
 
 // TODO: finish this.
-void SudokuBoard::blockCoord(int& row, int& col) {
+int SudokuBoard::blockCoord(int& row, int& col) {
 	// Given a set of coordinates, set the cell index limits for looping functions.
-	// i%blockSize will give a sequence that can access a cell.
-	// i/blockSize will give a sequence that will dereference a block.
+	int blockRowRef = (int)((row - 1) / blockSize) * blockSize;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
+	int blockColRef = (int)((col - 1) / blockSize) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
+	return blockRowRef + blockColRef;
 }
 
 // TODO: finish this.
-void SudokuBoard::blockRef(int& blk) {
+void SudokuBoard::blockRef(int blk) {
 	// Given a single block number, set the cell index limits for looping functions.
-	// i%blockSize will give a sequence that can access a cell.
-	// i/blockSize will give a sequence that will dereference a block.
+	blockRowStart = (((int)(blk - 1) / blockSize) * blockSize) + 1;
+	blockRowEnd = blockRowStart + blockSize;
+	blockColStart = (((blk - 1) % blockSize) * blockSize) + 1;
+	blockColEnd = blockColStart + blockSize;
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {

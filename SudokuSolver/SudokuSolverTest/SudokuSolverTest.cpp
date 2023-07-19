@@ -368,6 +368,16 @@ namespace SudokuSolverTest
 			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
 
 			SudokuBoard* startingBoard = new SudokuBoard(filePath.string() + "\\easy1.txt");
+
+			// Test the blockCoord:
+			int testRow = 2;
+			int testCol = 3;
+			Assert::AreEqual(1, startingBoard->blockCoord(testRow, testCol));
+			testRow = 7;
+			testCol = 7;
+			Assert::AreEqual(9, startingBoard->blockCoord(testRow, testCol));
+			// TODO: Test the blockRef:
+
 		}
 	};
 
