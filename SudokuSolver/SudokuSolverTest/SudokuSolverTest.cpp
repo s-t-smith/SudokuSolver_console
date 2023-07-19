@@ -285,7 +285,7 @@ namespace SudokuSolverTest
 			Assert::AreEqual(2, emptyBoard->getBlockSize());
 
 			delete emptyBoard;
-			cout_stream.str("");
+			cout_stream.str("");	// Workaround since flush() and str().clear() wouldn't take.
 			emptyBoard = new SudokuBoard(25);
 			cout << "Big board test:" << endl;
 			emptyBoard->printBoard();
@@ -325,6 +325,34 @@ namespace SudokuSolverTest
 			Assert::AreEqual(4, startingBoard->getCellVal(1, 4));
 			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
 			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
+
+			delete startingBoard;
+			startingBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			cout_stream.str("");
+			cout << "Small board created from file:" << endl;
+			startingBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
+
+			// Check board size:
+			Assert::AreEqual(4, startingBoard->getBoardSize());
+			// Spot-check cell values:
+			Assert::AreEqual(1, startingBoard->getCellVal(1, 1));
+			Assert::AreEqual(3, startingBoard->getCellVal(3, 3));
+
+			delete startingBoard;
+			startingBoard = new SudokuBoard(filePath.string() + "\\bigTest.txt");
+			cout_stream.str("");
+			cout << "Big board created from file:" << endl;
+			startingBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
+
+			// Check board size:
+			Assert::AreEqual(25, startingBoard->getBoardSize());
+			// Spot-check cell values:
+			Assert::AreEqual(10, startingBoard->getCellVal(10, 10));
+			Assert::AreEqual(6, startingBoard->getCellVal(6, 6));
+			Assert::AreEqual(2, startingBoard->getCellVal(2, 2));
+
 
 			// Restore stdout:
 			cout.rdbuf(cout_restore);
