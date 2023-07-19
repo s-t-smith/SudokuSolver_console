@@ -41,8 +41,8 @@ public:
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
-	void blockCoord(int& row, int& cal);
-	void blockRef(int blk);
+	void blockCoord(int& row, int& col);
+	void blockRef(int& blk);
 	void printBoard();
 
 private:
@@ -158,7 +158,7 @@ void SudokuBoard::blockCoord(int& row, int& col) {
 }
 
 // TODO: finish this.
-void SudokuBoard::blockRef(int blk) {
+void SudokuBoard::blockRef(int& blk) {
 	// Given a single block number, set the cell index limits for looping functions.
 	// i%blockSize will give a sequence that can access a cell.
 	// i/blockSize will give a sequence that will dereference a block.
