@@ -275,7 +275,7 @@ namespace SudokuSolverTest
 			}
 
 			delete emptyBoard;
-			cout_stream.str().clear();
+			cout_stream.str("");
 			emptyBoard = new SudokuBoard(4);
 			cout << "Small board test:" << endl;
 			emptyBoard->printBoard();
@@ -285,7 +285,7 @@ namespace SudokuSolverTest
 			Assert::AreEqual(2, emptyBoard->getBlockSize());
 
 			delete emptyBoard;
-			cout_stream.str().clear();
+			cout_stream.str("");
 			emptyBoard = new SudokuBoard(25);
 			cout << "Big board test:" << endl;
 			emptyBoard->printBoard();
