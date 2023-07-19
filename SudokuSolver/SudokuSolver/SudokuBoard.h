@@ -41,21 +41,13 @@ public:
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
-	int blockCoord(int& row, int& col);
-	void blockRef(int blk);
 	void printBoard();
 
 private:
 	/* Primary data fields: */
 	int valMax;
-	vector<vector<SudokuCell*>> board;
-	
-	// Used for cell dereferencing:
 	int blockSize;
-	int blockRowStart;
-	int blockColStart;
-	int blockRowEnd;
-	int blockColEnd;
+	vector<vector<SudokuCell*>> board;
 };
 
 
@@ -125,10 +117,6 @@ void SudokuBoard::initBoard(int max) {
 	// Set private fields:
 	valMax = max;
 	blockSize = (int)sqrt(max);
-	blockRowStart = 0;
-	blockColStart = 0;
-	blockRowEnd = 0;
-	blockColEnd = 0;
 
 	// Create cell array:
 	board.resize(valMax);
@@ -147,24 +135,7 @@ int SudokuBoard::getBoardSize() {
 
 int SudokuBoard::getBlockSize() {
 	// Return the size of a block on the board:
-	return (int) sqrt(valMax);
-}
-
-// TODO: finish this.
-int SudokuBoard::blockCoord(int& row, int& col) {
-	// Given a set of coordinates, set the cell index limits for looping functions.
-	int blockRowRef = (int)((row - 1) / blockSize) * blockSize;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
-	int blockColRef = (int)((col - 1) / blockSize) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
-	return blockRowRef + blockColRef;
-}
-
-// TODO: finish this.
-void SudokuBoard::blockRef(int blk) {
-	// Given a single block number, set the cell index limits for looping functions.
-	blockRowStart = (((int)(blk - 1) / blockSize) * blockSize) + 1;
-	blockRowEnd = blockRowStart + blockSize;
-	blockColStart = (((blk - 1) % blockSize) * blockSize) + 1;
-	blockColEnd = blockColStart + blockSize;
+	return blockSize;
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {

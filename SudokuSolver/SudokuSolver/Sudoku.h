@@ -37,6 +37,9 @@ public:
 	void clearRowNotes(int row, int val);
 	bool colValCheck(int col, int val);
 	void clearColNotes(int col, int val);
+	int blockCoord(int& row, int& col);
+	void blockRef(int blk);
+	bool blockValCheck(int blk, int val);
 	bool blockValCheck(int row, int col, int val);
 	void clearBlockNotes(int row, int col, int val);
 
@@ -51,6 +54,12 @@ public:
 private:
 	SudokuBoard* gameBoard;
 	map<int, int>* gameVals;
+	// Used for cell dereferencing:
+	int blockSize;
+	int blockRowStart;
+	int blockColStart;
+	int blockRowEnd;
+	int blockColEnd;
 };
 
 Sudoku::Sudoku()
@@ -98,6 +107,11 @@ void Sudoku::initGameVals()
 			}
 		}
 	}
+	blockSize = gameBoard->getBlockSize();
+	blockRowStart = 0;
+	blockRowEnd = 0;
+	blockColStart = 0;
+	blockColEnd = 0;
 }
 
 bool Sudoku::boardSolved()
@@ -146,54 +160,36 @@ void Sudoku::clearColNotes(int col, int val)
 	}
 }
 
+int Sudoku::blockCoord(int& row, int& col) {
+	// Given a set of coordinates, set the cell index limits for looping functions.
+	int blockRowRef = (int)((row - 1) / blockSize) * blockSize;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
+	int blockColRef = (int)((col - 1) / blockSize) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
+	return blockRowRef + blockColRef;
+}
+
+void Sudoku::blockRef(int blk) {
+	// Given a single block number, set the cell index limits for looping functions.
+	blockRowStart = (((int)(blk - 1) / blockSize) * blockSize) + 1;
+	blockRowEnd = blockRowStart + blockSize;
+	blockColStart = (((blk - 1) % blockSize) * blockSize) + 1;
+	blockColEnd = blockColStart + blockSize;
+}
+
+bool Sudoku::blockValCheck(int blk, int val)
+{
+	// TODO: finish this.
+	return false;	// placeholder
+}
+
 bool Sudoku::blockValCheck(int row, int col, int val)
 {
-	int rowOffset = 0;
-	int colOffset = 0;
-	int blockLimit = (int)sqrt(getBoardSize());
-
-	// Determine which block based on the coordinates:
-	int blockRowRef = (int)((row - 1) / blockLimit) * blockLimit;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
-	int blockColRef = (int)((col - 1) / blockLimit) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
-	int blk = blockRowRef + blockColRef;
-
-
-	// Dereference row and column values from a block index:
-	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
-	colOffset = ((blk - 1) % blockLimit) * blockLimit + 1;
-
-	// Check a block for a value:
-	for (int row = rowOffset; row < rowOffset + blockLimit; row++) {
-		for (int col = colOffset; col < colOffset + blockLimit; col++) {
-			if (getBoardCellVal(row, col) == val) {
-				return true;
-			}
-		}
-	}
-	return false;
+	// TODO: finish this.
+	return false;	// placeholder
 }
 
 void Sudoku::clearBlockNotes(int row, int col, int val)
 {
-	int rowOffset = 0;
-	int colOffset = 0;
-	int blockLimit = (int)sqrt(getBoardSize());
-	
-	// Determine which block based on the coordinates:
-	int blockRowRef = (int)((row - 1) / blockLimit) * blockLimit;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
-	int blockColRef = (int)((col - 1) / blockLimit) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
-	int blk = blockRowRef + blockColRef;
-
-	// Dereference row and column values from a block index:
-	rowOffset = (int)((blk - 1) / blockLimit) * blockLimit + 1;
-	colOffset = ((blk - 1) % blockLimit) * blockLimit + 1;
-
-	// Clear notes from a block:
-	for (int row = rowOffset; row < rowOffset + blockLimit; row++) {
-		for (int col = colOffset; col < colOffset + blockLimit; col++) {
-			setBoardCellNote(row, col, val, false);
-		}
-	}
+	// TODO: finish this.
 }
 
 int Sudoku::getBoardSize()
