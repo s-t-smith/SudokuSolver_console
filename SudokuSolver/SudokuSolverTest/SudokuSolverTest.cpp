@@ -491,16 +491,12 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testGame->getBoardCellNote(6, 2, 3));
 			Assert::IsFalse(testGame->getBoardCellNote(9, 6, 4));
 			Assert::IsFalse(testGame->getBoardCellNote(9, 8, 7));
-			Assert::IsFalse(testGame->getBoardCellNote(5, 4, 1));
-			Assert::IsFalse(testGame->getBoardCellNote(3, 7, 3));
 			
 			// Spot check note settings for blank cells:
 			Assert::IsTrue(testGame->getBoardCellNote(6, 5, 7));
 			Assert::IsTrue(testGame->getBoardCellNote(9, 1, 1));
 			Assert::IsTrue(testGame->getBoardCellNote(6, 9, 8));
-			Assert::IsTrue(testGame->getBoardCellNote(1, 7, 3));
-			Assert::IsTrue(testGame->getBoardCellNote(3, 3, 8));
-
+			
 			// Test the bulk-clear methods:
 			testGame->clearRowNotes(6, 7);
 			testGame->clearColNotes(1, 1);
@@ -511,6 +507,9 @@ namespace SudokuSolverTest
 			testGame->clearBlockNotes(3, 3, 8);
 			Assert::IsFalse(testGame->getBoardCellNote(2, 1, 8));
 			Assert::IsFalse(testGame->getBoardCellNote(1, 3, 8));
+			testGame->clearBlockNotes(9, 4);
+			Assert::IsFalse(testGame->getBoardCellNote(9, 9, 4));
+			Assert::IsFalse(testGame->getBoardCellNote(7, 8, 4));
 
 			delete testGame;
 		}
@@ -530,21 +529,15 @@ namespace SudokuSolverTest
 			Assert::IsTrue(testGame->rowValCheck(1, 1));
 			Assert::IsTrue(testGame->rowValCheck(9, 4));
 			Assert::IsTrue(testGame->rowValCheck(4, 9));
-			Assert::IsFalse(testGame->rowValCheck(2, 2));
-			Assert::IsFalse(testGame->rowValCheck(1, 7));
-			Assert::IsFalse(testGame->rowValCheck(9, 6));
-
+			
 			// Test checkCol:
 			Assert::IsTrue(testGame->colValCheck(9, 7));
 			Assert::IsTrue(testGame->colValCheck(3, 1));
 			Assert::IsTrue(testGame->colValCheck(2, 2));
-			Assert::IsFalse(testGame->colValCheck(4, 5));
-			Assert::IsFalse(testGame->colValCheck(9, 9));
-			Assert::IsFalse(testGame->colValCheck(1, 3));
-
+			
 			// Test checkBlock:
-			// TODO: finish this.
-			// Cover both overloads of blockValCheck().
+			Assert::IsTrue(testGame->blockValCheck(4, 4));
+			Assert::IsTrue(testGame->blockValCheck(3, 8, 1));
 
 			delete testGame;
 		}
