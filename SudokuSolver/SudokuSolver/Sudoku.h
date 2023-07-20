@@ -32,6 +32,7 @@ public:
 
 	// Class functions:
 	void initGameVals();
+	void initNoteClear();
 	bool boardSolved();
 	bool rowValCheck(int row, int val);
 	void clearRowNotes(int row, int val);
@@ -82,6 +83,7 @@ Sudoku::Sudoku(std::string startingFile)
 	gameBoard = new SudokuBoard(startingFile);
 	gameVals = new map<int, int>;
 	initGameVals();
+	initNoteClear();
 }
 
 Sudoku::~Sudoku()
@@ -113,6 +115,19 @@ void Sudoku::initGameVals()
 	blockRowEnd = 0;
 	blockColStart = 0;
 	blockColEnd = 0;
+}
+
+void Sudoku::initNoteClear()
+{
+	for (int row = 1; row <= getBoardSize(); row++) {
+		for (int col = 1; col <= getBoardSize(); col++) {
+			if (getBoardCellVal(row, col) != 0) {
+				clearRowNotes(row, getBoardCellVal(row, col));
+				clearColNotes(col, getBoardCellVal(row, col));
+				clearBlockNotes(row, col, getBoardCellVal(row, col));
+			}
+		}
+	}
 }
 
 bool Sudoku::boardSolved()

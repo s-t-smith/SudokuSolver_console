@@ -90,7 +90,16 @@ int main()
                             /*if (intersectionCheck(*currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col, val);
                             }*/
+
                         }
+
+                        /*Debugging: REMOVE*/
+                        /*cout << "Cell: " << currentGame->getBoardCellVal(row, col) << endl;
+                        cout << "Notes: [ ";
+                        for (int n = 1; n < currentGame->getBoardSize(); n++) {
+                            cout << currentGame->getBoardCellNote(row, col, n) << " ";
+                        }
+                        cout << " ]" << endl;*/
                     }
                 }
             }
@@ -110,11 +119,10 @@ int main()
 }
 
 bool intersectionCheck(Sudoku& game, int row, int col, int val) {
-    bool runningCheck = false;
-    // If the value is present in the row, column or block, the flag will be set 'true':
-    runningCheck = game.rowValCheck(row, val) && game.colValCheck(col, val) && game.blockValCheck(row, col, val);
-    // Only want a 'true' response when the given value does NOT appear in those areas:
-    return !runningCheck;
+    bool rowCheck = game.rowValCheck(row, val);
+    bool colCheck = game.colValCheck(col, val);
+    bool blkCheck = game.blockValCheck(row, col, val);
+    return (rowCheck && colCheck && blkCheck);
 }
 
 bool onlyNote(Sudoku& game, int row, int col, int val) {
