@@ -41,6 +41,7 @@ public:
 	void blockRef(int blk);
 	bool blockValCheck(int blk, int val);
 	bool blockValCheck(int row, int col, int val);
+	void clearBlockNotes(int blk, int val);
 	void clearBlockNotes(int row, int col, int val);
 
 	// Board-layer functions:
@@ -177,19 +178,34 @@ void Sudoku::blockRef(int blk) {
 
 bool Sudoku::blockValCheck(int blk, int val)
 {
-	// TODO: finish this.
-	return false;	// placeholder
+	blockRef(blk);
+	for (int r = blockRowStart; r <= blockRowEnd; r++) {
+		for (int c = blockColStart; c <= blockColEnd; c++) {
+			if (getBoardCellVal(r, c) == val)
+				return true;
+		}
+	}
+	return false;
 }
 
 bool Sudoku::blockValCheck(int row, int col, int val)
 {
-	// TODO: finish this.
-	return false;	// placeholder
+	return blockValCheck(blockCoord(row, col), val);
+}
+
+void Sudoku::clearBlockNotes(int blk, int val)
+{
+	blockRef(blk);
+	for (int r = blockRowStart; r <= blockRowEnd; r++) {
+		for (int c = blockColStart; c <= blockColEnd; c++) {
+			setBoardCellNote(r, c, val, false);
+		}
+	}
 }
 
 void Sudoku::clearBlockNotes(int row, int col, int val)
 {
-	// TODO: finish this.
+	clearBlockNotes(blockCoord(row, col), val);
 }
 
 int Sudoku::getBoardSize()
