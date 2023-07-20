@@ -179,8 +179,8 @@ void Sudoku::blockRef(int blk) {
 bool Sudoku::blockValCheck(int blk, int val)
 {
 	blockRef(blk);
-	for (int r = blockRowStart; r <= blockRowEnd; r++) {
-		for (int c = blockColStart; c <= blockColEnd; c++) {
+	for (int r = blockRowStart; r < blockRowEnd; r++) {
+		for (int c = blockColStart; c < blockColEnd; c++) {
 			if (getBoardCellVal(r, c) == val)
 				return true;
 		}
@@ -196,8 +196,8 @@ bool Sudoku::blockValCheck(int row, int col, int val)
 void Sudoku::clearBlockNotes(int blk, int val)
 {
 	blockRef(blk);
-	for (int r = blockRowStart; r <= blockRowEnd; r++) {
-		for (int c = blockColStart; c <= blockColEnd; c++) {
+	for (int r = blockRowStart; r < blockRowEnd; r++) {
+		for (int c = blockColStart; c < blockColEnd; c++) {
 			setBoardCellNote(r, c, val, false);
 		}
 	}
