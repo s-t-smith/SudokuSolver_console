@@ -81,14 +81,14 @@ int main()
                         // Check each value:
                         for (int val = 1; val <= currentGame->getBoardSize(); val++) {
                             // TODO: Write note-isolated solutions:
-                            if (onlyNote(currentGame, row, col, val)) {
+                            /*if (onlyNote(currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col, val);
-                            }
+                            }*/
 
                             // TODO: Write board-isolated solutions:
-                            if (intersectionCheck(currentGame, row, col, val)) {
+                            /*if (intersectionCheck(currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col, val);
-                            }
+                            }*/
                         }
                     }
 
