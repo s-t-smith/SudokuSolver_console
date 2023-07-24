@@ -527,17 +527,27 @@ namespace SudokuSolverTest
 			
 			// Test checkRow:
 			Assert::IsTrue(testGame->rowValCheck(1, 1));
+			Assert::IsFalse(testGame->rowValCheck(1, 5));
 			Assert::IsTrue(testGame->rowValCheck(9, 4));
+			Assert::IsFalse(testGame->rowValCheck(6, 1));
 			Assert::IsTrue(testGame->rowValCheck(4, 9));
+			Assert::IsFalse(testGame->rowValCheck(4, 2));
 			
 			// Test checkCol:
 			Assert::IsTrue(testGame->colValCheck(9, 7));
+			Assert::IsFalse(testGame->colValCheck(9, 1));
 			Assert::IsTrue(testGame->colValCheck(3, 1));
+			Assert::IsFalse(testGame->colValCheck(4, 6));
 			Assert::IsTrue(testGame->colValCheck(2, 2));
+			Assert::IsFalse(testGame->colValCheck(1, 1));
 			
 			// Test checkBlock:
 			Assert::IsTrue(testGame->blockValCheck(4, 1));
+			Assert::IsTrue(testGame->blockValCheck(7, 2));
+			Assert::IsFalse(testGame->blockValCheck(3, 2));
+			Assert::IsTrue(testGame->blockValCheck(5, 5, 1));
 			Assert::IsTrue(testGame->blockValCheck(3, 8, 1));
+			Assert::IsFalse(testGame->blockValCheck(8, 5, 6));
 
 			delete testGame;
 		}
