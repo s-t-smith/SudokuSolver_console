@@ -76,14 +76,15 @@ int main()
             for (int row = 1; row <= currentGame->getBoardSize(); row++) {
                 // Check each column:
                 for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                    
                     // When a cell is empty:
                     if (currentGame->getBoardCellVal(row, col) == 0) {
                         // Check each value:
                         for (int val = 1; val <= currentGame->getBoardSize(); val++) {
                             // TODO: Write note-isolated solutions:
-                            /*if (onlyNote(currentGame, row, col, val)) {
+                            if (onlyNote(currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col, val);
-                            }*/
+                            }
 
                             // TODO: Write board-isolated solutions:
                             /*if (intersectionCheck(currentGame, row, col, val)) {
@@ -91,14 +92,6 @@ int main()
                             }*/
                         }
                     }
-
-                    /*Debugging: REMOVE*/
-                    /*cout << "Cell: " << currentGame->getBoardCellVal(row, col) << endl;
-                    cout << "Notes: [ ";
-                    for (int n = 1; n <= currentGame->getBoardSize(); n++) {
-                        cout << currentGame->getBoardCellNote(row, col, n) << " ";
-                    }
-                    cout << " ]" << endl;*/
                 }
             }
             // Continue:
@@ -123,18 +116,15 @@ bool intersectionCheck(Sudoku* game, int row, int col, int val) {
 }
 
 bool onlyNote(Sudoku* game, int row, int col, int val) {
-    // Is the requested value available?
-    bool noteCheck = game->getBoardCellNote(row, col, val);
-    if (noteCheck) {
-        // Check all other values:
-        for (int v = 1; v <= game->getBoardSize(); v++) {
-            if (v != val) {
-                // If any other possibilities exist, given value is not the only note:
-                if (game->getBoardCellNote(row, col, v)) {
-                    noteCheck = false;
-                }
+    if (!game->getBoardCellNote(row, col, val)) {
+        return false;
+    }
+    for (int n = 1; n <= game->getBoardSize(); n++) {
+        if (n != val) {
+            if (game->getBoardCellNote(row, col, n)) {
+                return false;
             }
         }
     }
-    return noteCheck;
+    return true;
 }
