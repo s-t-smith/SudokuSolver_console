@@ -84,12 +84,18 @@ int main()
                             // TODO: Write note-isolated solutions:
                             if (onlyNote(currentGame, row, col, val)) {
                                 currentGame->setBoardCellVal(row, col, val);
+
+                                /*DEBUG:*/
+                                //cout << "Only note found at (" << row << ", " << col << ")" << endl;
                             }
 
                             // TODO: Write board-isolated solutions:
-                            /*if (intersectionCheck(currentGame, row, col, val)) {
-                                currentGame->setBoardCellVal(row, col, val);
-                            }*/
+                            //if (!intersectionCheck(currentGame, row, col, val)) {
+                            //    currentGame->setBoardCellVal(row, col, val);
+                            //    
+                            //    /*DEBUG:*/
+                            //    //cout << "Instersection found at (" << row << ", " << col << ")" << endl;
+                            //}
                         }
                     }
                 }

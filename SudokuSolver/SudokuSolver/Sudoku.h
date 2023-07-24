@@ -144,7 +144,7 @@ bool Sudoku::boardSolved()
 
 bool Sudoku::rowValCheck(int row, int val)
 {
-	for (int col = 1; col <= gameVals->size(); col++) {
+	for (int col = 1; col <= getBoardSize(); col++) {
 		if (getBoardCellVal(row, col) == val) {
 			return true;
 		}
@@ -161,7 +161,7 @@ void Sudoku::clearRowNotes(int row, int val)
 
 bool Sudoku::colValCheck(int col, int val)
 {
-	for (int row = 1; row <= gameVals->size(); row++) {
+	for (int row = 1; row <= getBoardSize(); row++) {
 		if (getBoardCellVal(row, col) == val) {
 			return true;
 		}
