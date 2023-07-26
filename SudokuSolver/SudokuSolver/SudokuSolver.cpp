@@ -44,12 +44,17 @@ int main()
         
         // Select a file to create the working board object:
         cin >> userPick;
-        // Sanitize input:
-        userPick = (int)userPick - 1;
-        if (userPick < 0 || userPick > (int) boardFiles.size()) {
+        if (userPick == 0) {
             break;
         }
-
+        // Sanitize input:
+        if (userPick != 0) {
+            userPick = (int)userPick - 1;
+            if (userPick < 0 || userPick >(int) boardFiles.size()) {
+                break;
+            }
+        }
+        
         // Pick starting file:
         currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
@@ -76,9 +81,15 @@ int main()
                     
                     // When a cell is empty:
                     if (currentGame->getBoardCellVal(row, col) == 0) {
-                        // TODO: check each value note:
                         for (int n = 1; n <= gameMax; n++) {
+                            // Check each value note, write solution when a single note is found:
                             if (onlyNote(currentGame, row, col, n)) {
+                                currentGame->setBoardCellVal(row, col, n);
+                                continue;
+                            }
+
+                            // TODO: validate this algorithm step:
+                            if (intersectionCheck(currentGame, row, col, n)) {
                                 currentGame->setBoardCellVal(row, col, n);
                                 continue;
                             }
@@ -110,15 +121,15 @@ int main()
             currentGame->printGameBoard();
         }
 
-    } while (userPick < 0 || userPick > (int) boardFiles.size());
+    } while (userPick != 0 || userPick > (int) boardFiles.size());
 
     return 0;
 }
 
 bool intersectionCheck(Sudoku* game, int row, int col, int val) {
-    bool rowCheck = game->rowValCheck(row, val);
-    bool colCheck = game->colValCheck(col, val);
-    bool blkCheck = game->blockValCheck(row, col, val);
+    bool rowCheck = !game->rowValCheck(row, val);
+    bool colCheck = !game->colValCheck(col, val);
+    bool blkCheck = !game->blockValCheck(row, col, val);
     
     // Intersection is available if and only if all three checks return available.
     return (rowCheck && colCheck && blkCheck);
