@@ -83,7 +83,6 @@ Sudoku::Sudoku(std::string startingFile)
 	gameBoard = new SudokuBoard(startingFile);
 	gameVals = new map<int, int>;
 	initGameVals();
-	initNoteClear();
 }
 
 Sudoku::~Sudoku()

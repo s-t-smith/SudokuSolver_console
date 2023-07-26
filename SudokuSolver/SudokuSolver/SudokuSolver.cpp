@@ -16,14 +16,16 @@
 #include <filesystem>
 using namespace std;
 
-bool intersectionCheck(Sudoku* game, int row, int col, int val) {
-    bool rowCheck = !game->rowValCheck(row, val);
-    bool colCheck = !game->colValCheck(col, val);
-    bool blkCheck = !game->blockValCheck(row, col, val);
+//bool intersectionCheck(Sudoku* game, int row, int col, int val) {
+//    bool rowCheck = !game->rowValCheck(row, val);
+//    bool colCheck = !game->colValCheck(col, val);
+//    bool blkCheck = !game->blockValCheck(row, col, val);
+//
+//    // Intersection is available if and only if all three checks return 'value not present':
+//    return (rowCheck && colCheck && blkCheck);
+//}
 
-    // Intersection is available if and only if all three checks return 'value not present':
-    return (rowCheck && colCheck && blkCheck);
-}
+// TODO: create a method for ID-ing a 'hanging note'; where a row/column only has one instance of a note.
 
 bool onlyNote(Sudoku* game, int row, int col, int val) {
     if (!game->getBoardCellNote(row, col, val)) {
@@ -122,11 +124,7 @@ int main()
                                 continue;
                             }
 
-                            // TODO: validate this algorithm step:
-                            if (intersectionCheck(currentGame, row, col, n)) {
-                                currentGame->setBoardCellVal(row, col, n);
-                                continue;
-                            }
+                            // TODO: insert additional steps.
                         }
 
                         // Debugging:
