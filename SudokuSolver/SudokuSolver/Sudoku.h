@@ -33,6 +33,7 @@ public:
 	// Class functions:
 	void initGameVals();
 	void initNoteClear();
+	void updateGameVals(int val);
 	bool boardSolved();
 	bool rowValCheck(int row, int val);
 	void clearRowNotes(int row, int val);
@@ -104,9 +105,9 @@ void Sudoku::initGameVals()
 	// Check the starting board for entries:
 	for (int row = 1; row <= maxVal; row++) {
 		for (int col = 1; col <= maxVal; col++) {
-			int refVal = getBoardCellVal(row, col);
-			if(refVal > 0){
-				gameVals->at(refVal)++;
+			int startVal = getBoardCellVal(row, col);
+			if(startVal != 0){
+				updateGameVals(startVal);
 			}
 		}
 	}
@@ -126,6 +127,17 @@ void Sudoku::initNoteClear()
 				clearColNotes(col, getBoardCellVal(row, col));
 				clearBlockNotes(row, col, getBoardCellVal(row, col));
 			}
+		}
+	}
+}
+
+void Sudoku::updateGameVals(int val)
+{
+	// This is probably over-written, try simplifying later:
+	map<int, int>::iterator value = gameVals->begin();
+	while (value != gameVals->end()) {
+		if (value->first() == val) {
+			value->second() += 1;
 		}
 	}
 }
@@ -237,7 +249,10 @@ void Sudoku::setBoardCellVal(int row, int col, int val)
 {
 	// Place the solution, then mark the solution in the list:
 	gameBoard->setCellVal(row, col, val);
-	gameVals->at(val)++;
+
+	// Mark the value on the tracker map:
+	updateGameVals(val);
+	
 	// Remove notes that have become invalid:
 	clearRowNotes(row, val);
 	clearColNotes(col, val);

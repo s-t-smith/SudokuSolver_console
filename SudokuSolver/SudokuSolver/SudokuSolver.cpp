@@ -30,6 +30,7 @@ int main()
         boardFiles.push_back(itr);
     }
 
+    int gameMax = 0;
     int userPick = 0;
     int passCount = 0;
     Sudoku* currentGame = NULL;
@@ -55,6 +56,7 @@ int main()
         cout << "Starting board:" << endl;
         currentGame->printGameBoard();
         cout << endl;
+        gameMax = currentGame->getBoardSize();
 
         /*
         * IMPORTANT!
@@ -63,7 +65,7 @@ int main()
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
         passCount = 0;
-        while (!currentGame->boardSolved() && passCount <= currentGame->getBoardSize())
+        while (!currentGame->boardSolved() && passCount <= gameMax)
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             if (currentGame->boardSolved()) {
@@ -73,30 +75,29 @@ int main()
             }
             
             // Check each row:
-            for (int row = 1; row <= currentGame->getBoardSize(); row++) {
+            for (int row = 1; row <= gameMax; row++) {
                 // Check each column:
-                for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                for (int col = 1; col <= gameMax; col++) {
                     
                     // When a cell is empty:
                     if (currentGame->getBoardCellVal(row, col) == 0) {
-                        // Check each value:
-                        for (int val = 1; val <= currentGame->getBoardSize(); val++) {
-                            // TODO: Write note-isolated solutions:
-                            if (onlyNote(currentGame, row, col, val)) {
-                                currentGame->setBoardCellVal(row, col, val);
-
-                                /*DEBUG:*/
-                                //cout << "Only note found at (" << row << ", " << col << ")" << endl;
+                        // TODO: check each value note:
+                        for (int n = 1; n <= gameMax; n++) {
+                            if (onlyNote(currentGame, row, col, n)) {
+                                currentGame->setBoardCellVal(row, col, n);
+                                break;
                             }
-
-                            // TODO: Write board-isolated solutions:
-                            //if (!intersectionCheck(currentGame, row, col, val)) {
-                            //    currentGame->setBoardCellVal(row, col, val);
-                            //    
-                            //    /*DEBUG:*/
-                            //    //cout << "Instersection found at (" << row << ", " << col << ")" << endl;
-                            //}
                         }
+
+                        // Debugging:
+                        /*printf("(%i, %i) Val: %i \n", row, col, currentGame->getBoardCellVal(row, col));
+                        cout << "Notes: (";
+                        for (int n = 1; n <= gameMax; n++) {
+                            if (currentGame->getBoardCellNote(row, col, n)) {
+                                cout << n << " ";
+                            }
+                        }
+                        cout << ")" << endl;*/
                     }
                 }
             }
@@ -104,7 +105,7 @@ int main()
             passCount++;
         }
 
-        if (passCount >= currentGame->getBoardSize()) {
+        if (passCount >= gameMax) {
             cout << "Solution not found." << endl << endl;
             currentGame->printGameBoard();
         }
@@ -118,6 +119,8 @@ bool intersectionCheck(Sudoku* game, int row, int col, int val) {
     bool rowCheck = game->rowValCheck(row, val);
     bool colCheck = game->colValCheck(col, val);
     bool blkCheck = game->blockValCheck(row, col, val);
+    
+    // Intersection is available if and only if all three checks return available.
     return (rowCheck && colCheck && blkCheck);
 }
 
@@ -125,11 +128,10 @@ bool onlyNote(Sudoku* game, int row, int col, int val) {
     if (!game->getBoardCellNote(row, col, val)) {
         return false;
     }
+    int noteCheck = val;
     for (int n = 1; n <= game->getBoardSize(); n++) {
-        if (n != val) {
-            if (game->getBoardCellNote(row, col, n)) {
-                return false;
-            }
+        if (game->getBoardCellNote(row, col, n) && n != noteCheck) {
+            return false;
         }
     }
     return true;
