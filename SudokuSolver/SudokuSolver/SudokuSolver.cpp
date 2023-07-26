@@ -112,6 +112,7 @@ int main()
             if (currentGame->boardSolved()) {
                 cout << "Solution found:" << endl;
                 currentGame->printGameBoard();
+                cout << endl;
                 break;
             }
         }
@@ -119,6 +120,7 @@ int main()
         if (passCount >= gameMax) {
             cout << "Solution not found." << endl << endl;
             currentGame->printGameBoard();
+            cout << endl;
         }
 
     } while (userPick != 0 || userPick > (int) boardFiles.size());
