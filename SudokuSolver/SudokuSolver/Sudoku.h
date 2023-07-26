@@ -38,7 +38,7 @@ public:
 	void clearRowNotes(int row, int val);
 	bool colValCheck(int col, int val);
 	void clearColNotes(int col, int val);
-	int blockCoord(int& row, int& col);
+	int blockCoord(int row, int col);
 	void blockRef(int blk);
 	bool blockValCheck(int blk, int val);
 	bool blockValCheck(int row, int col, int val);
@@ -167,7 +167,7 @@ void Sudoku::clearColNotes(int col, int val)
 	}
 }
 
-int Sudoku::blockCoord(int& row, int& col) {
+int Sudoku::blockCoord(int row, int col) {
 	// Given a set of coordinates, set the cell index limits for looping functions.
 	int blockRowRef = (int)((row - 1) / blockSize) * blockSize;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
 	int blockColRef = (int)((col - 1) / blockSize) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.

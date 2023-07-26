@@ -25,9 +25,29 @@ using namespace std;
 //    return (rowCheck && colCheck && blkCheck);
 //}
 
-// TODO: create a method for ID-ing a 'hanging note'; where a row/column only has one instance of a note.
+bool hangingNoteRow(Sudoku* game, int row, int col, int val) {
+    for (int c = 1; c <= game->getBoardSize(); c++) {
+        if (c != col && game->getBoardCellNote(row, c, val)) {
+            return false;
+        }
+    }
+    return true;
+}
 
-bool onlyNote(Sudoku* game, int row, int col, int val) {
+bool hangingNoteCol(Sudoku* game, int row, int col, int val) {
+    for (int r = 1; r <= game->getBoardSize(); r++) {
+        if (r != row && game->getBoardCellNote(r, col, val)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool hangingNoteBlock(Sudoku* game, int row, int col, int val) {
+    return false;   // placeholder
+}
+
+bool onlyNoteVal(Sudoku* game, int row, int col, int val) {
     if (!game->getBoardCellNote(row, col, val)) {
         return false;
     }
@@ -119,12 +139,14 @@ int main()
                     if (currentGame->getBoardCellVal(row, col) == 0) {
                         for (int n = 1; n <= gameMax; n++) {
                             // Check each value note, write solution when a single note is found:
-                            if (onlyNote(currentGame, row, col, n)) {
-                                currentGame->setBoardCellVal(row, col, n);
-                                continue;
+                            if (currentGame->getBoardCellNote(row, col, n)) {
+                                if (onlyNoteVal(currentGame, row, col, n)
+                                    || hangingNoteRow(currentGame, row, col, n)
+                                    || hangingNoteCol(currentGame, row, col, n)) {
+                                    currentGame->setBoardCellVal(row, col, n);
+                                    continue;
+                                }
                             }
-
-                            // TODO: insert additional steps.
                         }
 
                         // Debugging:
