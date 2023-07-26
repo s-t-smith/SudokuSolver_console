@@ -133,13 +133,7 @@ void Sudoku::initNoteClear()
 
 void Sudoku::updateGameVals(int val)
 {
-	// This is probably over-written, try simplifying later:
-	map<int, int>::iterator value = gameVals->begin();
-	while (value != gameVals->end()) {
-		if (value->first() == val) {
-			value->second() += 1;
-		}
-	}
+	gameVals->at(val) += 1;
 }
 
 bool Sudoku::boardSolved()
