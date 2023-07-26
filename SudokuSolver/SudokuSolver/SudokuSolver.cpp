@@ -68,11 +68,6 @@ int main()
         while (!currentGame->boardSolved() && passCount <= gameMax)
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
-            if (currentGame->boardSolved()) {
-                cout << "Solution found:" << endl;
-                currentGame->printGameBoard();
-                break;
-            }
             
             // Check each row:
             for (int row = 1; row <= gameMax; row++) {
@@ -85,7 +80,7 @@ int main()
                         for (int n = 1; n <= gameMax; n++) {
                             if (onlyNote(currentGame, row, col, n)) {
                                 currentGame->setBoardCellVal(row, col, n);
-                                break;
+                                continue;
                             }
                         }
 
@@ -103,6 +98,11 @@ int main()
             }
             // Continue:
             passCount++;
+            if (currentGame->boardSolved()) {
+                cout << "Solution found:" << endl;
+                currentGame->printGameBoard();
+                break;
+            }
         }
 
         if (passCount >= gameMax) {
