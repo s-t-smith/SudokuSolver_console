@@ -16,8 +16,27 @@
 #include <filesystem>
 using namespace std;
 
-bool intersectionCheck(Sudoku* game, int row, int col, int val);
-bool onlyNote(Sudoku* game, int row, int col, int val);
+bool intersectionCheck(Sudoku* game, int row, int col, int val) {
+    bool rowCheck = !game->rowValCheck(row, val);
+    bool colCheck = !game->colValCheck(col, val);
+    bool blkCheck = !game->blockValCheck(row, col, val);
+
+    // Intersection is available if and only if all three checks return 'value not present':
+    return (rowCheck && colCheck && blkCheck);
+}
+
+bool onlyNote(Sudoku* game, int row, int col, int val) {
+    if (!game->getBoardCellNote(row, col, val)) {
+        return false;
+    }
+    int noteCheck = val;
+    for (int n = 1; n <= game->getBoardSize(); n++) {
+        if (game->getBoardCellNote(row, col, n) && n != noteCheck) {
+            return false;
+        }
+    }
+    return true;
+}
 
 int main()
 {
@@ -74,6 +93,21 @@ int main()
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             
+            // Clear notes:
+            // Check each row:
+            for (int row = 1; row <= gameMax; row++) {
+                // Check each column:
+                for (int col = 1; col <= gameMax; col++) {
+                    int cellVal = currentGame->getBoardCellVal(row, col);
+                    if (cellVal != 0) {
+                        currentGame->clearRowNotes(row, cellVal);
+                        currentGame->clearColNotes(col, cellVal);
+                        currentGame->clearBlockNotes(row, col, cellVal);
+                    }
+                }
+            }
+
+            // Write solutions:
             // Check each row:
             for (int row = 1; row <= gameMax; row++) {
                 // Check each column:
@@ -126,26 +160,4 @@ int main()
     } while (userPick != 0 || userPick > (int) boardFiles.size());
 
     return 0;
-}
-
-bool intersectionCheck(Sudoku* game, int row, int col, int val) {
-    bool rowCheck = !game->rowValCheck(row, val);
-    bool colCheck = !game->colValCheck(col, val);
-    bool blkCheck = !game->blockValCheck(row, col, val);
-    
-    // Intersection is available if and only if all three checks return available.
-    return (rowCheck && colCheck && blkCheck);
-}
-
-bool onlyNote(Sudoku* game, int row, int col, int val) {
-    if (!game->getBoardCellNote(row, col, val)) {
-        return false;
-    }
-    int noteCheck = val;
-    for (int n = 1; n <= game->getBoardSize(); n++) {
-        if (game->getBoardCellNote(row, col, n) && n != noteCheck) {
-            return false;
-        }
-    }
-    return true;
 }

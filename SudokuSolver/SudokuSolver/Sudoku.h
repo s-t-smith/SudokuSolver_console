@@ -32,7 +32,6 @@ public:
 
 	// Class functions:
 	void initGameVals();
-	void initNoteClear();
 	void updateGameVals(int val);
 	bool boardSolved();
 	bool rowValCheck(int row, int val);
@@ -116,19 +115,6 @@ void Sudoku::initGameVals()
 	blockRowEnd = 0;
 	blockColStart = 0;
 	blockColEnd = 0;
-}
-
-void Sudoku::initNoteClear()
-{
-	for (int row = 1; row <= getBoardSize(); row++) {
-		for (int col = 1; col <= getBoardSize(); col++) {
-			if (getBoardCellVal(row, col) != 0) {
-				clearRowNotes(row, getBoardCellVal(row, col));
-				clearColNotes(col, getBoardCellVal(row, col));
-				clearBlockNotes(row, col, getBoardCellVal(row, col));
-			}
-		}
-	}
 }
 
 void Sudoku::updateGameVals(int val)
@@ -246,11 +232,6 @@ void Sudoku::setBoardCellVal(int row, int col, int val)
 
 	// Mark the value on the tracker map:
 	updateGameVals(val);
-	
-	// Remove notes that have become invalid:
-	clearRowNotes(row, val);
-	clearColNotes(col, val);
-	clearBlockNotes(row, col, val);
 }
 
 bool Sudoku::getBoardCellNote(int row, int col, int idx)
