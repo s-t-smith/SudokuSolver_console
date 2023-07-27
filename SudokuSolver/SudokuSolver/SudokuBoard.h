@@ -13,6 +13,9 @@ using namespace std;
 
 class SudokuBoard
 {
+	// To expose functions to the upper-layer class:
+	friend class Sudoku;
+
 public:
 	/*
 	* Public functions:
@@ -43,10 +46,26 @@ public:
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
 
+	/* Note functions: */
+	bool rowValCheck(int row, int val);
+	void clearRowNotes(int row, int val);
+	bool colValCheck(int col, int val);
+	void clearColNotes(int col, int val);
+	int blockCoord(int row, int col);
+	void blockRef(int blk);
+	bool blockValCheck(int blk, int val);
+	bool blockValCheck(int row, int col, int val);
+	void clearBlockNotes(int blk, int val);
+	void clearBlockNotes(int row, int col, int val);
+
 private:
 	/* Primary data fields: */
 	int valMax;
 	int blockSize;
+	int blockRowStart;
+	int blockColStart;
+	int blockRowEnd;
+	int blockColEnd;
 	vector<vector<SudokuCell*>> board;
 };
 
