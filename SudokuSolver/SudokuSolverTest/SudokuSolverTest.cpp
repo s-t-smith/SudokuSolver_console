@@ -310,7 +310,7 @@ namespace SudokuSolverTest
 			
 			// Get a path to the test files:
 			
-			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
+			// This path will have to be adjusted for the host machine's directory tree:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
 			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
 			
@@ -358,6 +358,29 @@ namespace SudokuSolverTest
 			cout.rdbuf(cout_restore);
 
 			delete startingBoard;
+		}
+
+		TEST_METHOD(ValueCheckTests)
+		{
+			// Create small board:
+			// This path will have to be adjusted for the host machine's directory tree:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			Assert::AreEqual(4, testBoard->getBoardSize());
+			Assert::AreEqual(2, testBoard->getBlockSize());
+
+			// Create big board:
+			delete testBoard;
+			// This path will have to be adjusted for the host machine's directory tree:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\bigTest.txt");
+			Assert::AreEqual(25, testBoard->getBoardSize());
+			Assert::AreEqual(5, testBoard->getBlockSize());
+
 		}
 	};
 

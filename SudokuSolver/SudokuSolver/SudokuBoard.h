@@ -52,7 +52,7 @@ public:
 
 private:
 	/* Primary data fields: */
-	int valMax;
+	int boardSize;
 	int blockSize;
 	int blockRowStart;
 	int blockColStart;
@@ -119,29 +119,29 @@ SudokuBoard::~SudokuBoard() {
 void SudokuBoard::initBoard(int max) {
 	// No workie:
 	/*for (auto i : board) {
-		i.resize(valMax);
+		i.resize(boardSize);
 		for (auto j : i) {
 			j = new SudokuCell();
 		}
 	}*/
 
 	// Set private fields:
-	valMax = max;
+	boardSize = max;
 	blockSize = (int)sqrt(max);
 
 	// Create cell array:
-	board.resize(valMax);
-	for (int i = 0; i < valMax; i++) {
-		board[i].resize(valMax);
+	board.resize(boardSize);
+	for (int i = 0; i < boardSize; i++) {
+		board[i].resize(boardSize);
 		for (int j = 0; j < max; j++) {
-			board[i][j] = new SudokuCell(0, valMax);
+			board[i][j] = new SudokuCell(0, boardSize);
 		}
 	}
 }
 
 int SudokuBoard::getBoardSize() {
 	// Returns the board's maximum value/row size:
-	return valMax;
+	return boardSize;
 }
 
 int SudokuBoard::getBlockSize() {
@@ -170,19 +170,19 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 }
 
 void SudokuBoard::printBoard() {
-	for (int row = 1; row <= valMax; row++) {
-		for (int col = 1; col <= valMax; col++) {
+	for (int row = 1; row <= boardSize; row++) {
+		for (int col = 1; col <= boardSize; col++) {
 			cout << getCellVal(row, col);
-			if ((col != valMax) && (col % blockSize == 0)) {
+			if ((col != boardSize) && (col % blockSize == 0)) {
 				cout << "|";
 			}
 			else {
 				cout << " ";
 			}
 		}
-		if ((row != valMax) && (row % blockSize == 0)) {
+		if ((row != boardSize) && (row % blockSize == 0)) {
 			cout << endl;
-			for (int spc = 0; spc < 2*valMax-1; spc++) {
+			for (int spc = 0; spc < 2*boardSize-1; spc++) {
 				cout << "-";
 			}
 		}
@@ -193,7 +193,7 @@ void SudokuBoard::printBoard() {
 bool SudokuBoard::rowValCheck(int row, int val)
 {
 	// Returns true when a value is written to a board cell in a given row.
-	/*for (int col = 1; col <= valMax; col++) {
+	/*for (int col = 1; col <= boardSize; col++) {
 		if (getCellVal(row, col) == val) {
 			return true;
 		}
@@ -211,7 +211,7 @@ void SudokuBoard::clearRowNotes(int row, int val)
 	for (auto c : board[row - 1]) {
 		c->setNote(val - 1, false);
 	}
-	/*for (int col = 1; col <= valMax; col++) {
+	/*for (int col = 1; col <= boardSize; col++) {
 		setCellNote(row, col, val, false);
 	}*/
 }
@@ -219,7 +219,7 @@ void SudokuBoard::clearRowNotes(int row, int val)
 bool SudokuBoard::colValCheck(int col, int val)
 {
 	// Returns true when a value is written to a board cell in a given column.
-	for (int row = 1; row <= valMax; row++) {
+	for (int row = 1; row <= boardSize; row++) {
 		if (board[row - 1][col - 1]->getVal() == val) {
 			return true;
 		}
@@ -229,7 +229,7 @@ bool SudokuBoard::colValCheck(int col, int val)
 
 void SudokuBoard::clearColNotes(int col, int val)
 {
-	for (int row = 1; row <= valMax; row++) {
+	for (int row = 1; row <= boardSize; row++) {
 		board[row - 1][col - 1]->setNote(val - 1, false);
 	}
 }
