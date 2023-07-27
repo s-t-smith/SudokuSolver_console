@@ -371,6 +371,24 @@ namespace SudokuSolverTest
 			Assert::AreEqual(4, testBoard->getBoardSize());
 			Assert::AreEqual(2, testBoard->getBlockSize());
 
+			// Row value check:
+			Assert::IsTrue(testBoard->rowValCheck(1, 1));
+			Assert::IsFalse(testBoard->rowValCheck(4, 1));
+			Assert::IsTrue(testBoard->rowValCheck(3, 3));
+			Assert::IsFalse(testBoard->rowValCheck(4, 2));
+
+			// Col value check:
+			Assert::IsTrue(testBoard->colValCheck(2, 2));
+			Assert::IsFalse(testBoard->colValCheck(2, 3));
+			Assert::IsTrue(testBoard->colValCheck(4, 4));
+			Assert::IsFalse(testBoard->colValCheck(2, 1));
+
+			// Block value checks:
+			Assert::IsTrue(testBoard->blockValCheck(1, 2));
+			Assert::IsTrue(testBoard->blockValCheck(1, 1, 2));
+			Assert::IsFalse(testBoard->blockValCheck(1, 4));
+			Assert::IsFalse(testBoard->blockValCheck(3, 2, 2));
+
 			// Create big board:
 			delete testBoard;
 			// This path will have to be adjusted for the host machine's directory tree:
@@ -381,6 +399,23 @@ namespace SudokuSolverTest
 			Assert::AreEqual(25, testBoard->getBoardSize());
 			Assert::AreEqual(5, testBoard->getBlockSize());
 
+			// Row value checks:
+			Assert::IsTrue(testBoard->rowValCheck(3, 3));
+			Assert::IsFalse(testBoard->rowValCheck(10, 1));
+
+			// Col value checks:
+			Assert::IsTrue(testBoard->colValCheck(12, 12));
+			Assert::IsFalse(testBoard->colValCheck(2, 20));
+
+			// Block value checks:
+			Assert::IsTrue(testBoard->blockValCheck(7, 9));
+			Assert::IsTrue(testBoard->blockValCheck(25, 25));
+			Assert::IsTrue(testBoard->blockValCheck(6, 8, 6));
+			Assert::IsTrue(testBoard->blockValCheck(13, 16));
+			Assert::IsFalse(testBoard->blockValCheck(1, 11));
+			Assert::IsFalse(testBoard->blockValCheck(21, 23, 15));
+
+			delete testBoard;
 		}
 	};
 
