@@ -27,41 +27,28 @@ class Sudoku
 public:
 	Sudoku();
 	Sudoku(int size);
-	Sudoku(std::string startingFile);
+	// Sudoku(std::string startingFile);
 	~Sudoku();
 
 	// Class functions:
 	void initGameVals();
 	void updateGameVals(int val);
 	bool boardSolved();
-	bool rowValCheck(int row, int val);
-	void clearRowNotes(int row, int val);
-	bool colValCheck(int col, int val);
-	void clearColNotes(int col, int val);
-	int blockCoord(int row, int col);
-	void blockRef(int blk);
-	bool blockValCheck(int blk, int val);
-	bool blockValCheck(int row, int col, int val);
-	void clearBlockNotes(int blk, int val);
-	void clearBlockNotes(int row, int col, int val);
-
+	
+	/* These should be accessible directly */
 	// Board-layer functions:
-	int getBoardSize();
+	/*int getBoardSize();
 	int getBoardCellVal(int row, int col);
 	void setBoardCellVal(int row, int col, int val);
 	bool getBoardCellNote(int row, int col, int idx);
 	void setBoardCellNote(int row, int col, int idx, bool set);
-	void printGameBoard();
+	void printGameBoard();*/
 
 private:
-	SudokuBoard* gameBoard;
+	/* Game state monitors:*/
 	map<int, int>* gameVals;
-	// Used for cell dereferencing:
-	int blockSize;
-	int blockRowStart;
-	int blockColStart;
-	int blockRowEnd;
-	int blockColEnd;
+	// SudokuBoard* gameBoard;
+
 };
 
 Sudoku::Sudoku()
