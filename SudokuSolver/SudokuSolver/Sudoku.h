@@ -2,6 +2,7 @@
 
 #include "SudokuBoard.h"
 #include <map>
+#include <string>
 
 using namespace std;
 
@@ -18,11 +19,11 @@ class Sudoku
 public:
 	Sudoku();
 	Sudoku(int size);
-	Sudoku(std::string startingFile);
+	Sudoku(SudokuBoard& board);
 	~Sudoku();
 
 	// Class functions:
-	void initGameVals();
+	void initGameVals(int size);
 	void updateGameVals(int val);
 	bool boardSolved();
 	
@@ -38,60 +39,38 @@ public:
 private:
 	/* Game state monitors:*/
 	map<int, int>* gameVals;
-	// SudokuBoard* gameBoard;
-
+	SudokuBoard* gameBoard;
 };
 
 Sudoku::Sudoku()
 {
-	gameBoard = new SudokuBoard();
-	gameVals = new map<int, int>;
-	initGameVals();
+	gameVals = NULL;
+	gameBoard = NULL;
 }
 
 Sudoku::Sudoku(int size)
 {
-	gameBoard = new SudokuBoard(size);
-	gameVals = new map<int, int>;
-	initGameVals();
+	gameBoard = NULL;
+	initGameVals(size);
 }
 
-Sudoku::Sudoku(std::string startingFile)
+Sudoku::Sudoku(SudokuBoard& board)
 {
-	gameBoard = new SudokuBoard(startingFile);
-	gameVals = new map<int, int>;
-	initGameVals();
+	gameBoard = &board;
+	initGameVals(board.getBoardSize());
 }
 
 Sudoku::~Sudoku()
 {
-	delete gameBoard;
 	delete gameVals;
+	delete gameBoard;
 }
 
-void Sudoku::initGameVals()
+void Sudoku::initGameVals(int size)
 {
-	int maxVal = getBoardSize();
-	
-	// Create an entry for each solution
-	for (int m = 1; m <= maxVal; m++) {
-		gameVals->emplace(m, 0);
+	for (int i = 1; i <= size; i++) {
+		gameVals->emplace(i, 0);
 	}
-
-	// Check the starting board for entries:
-	for (int row = 1; row <= maxVal; row++) {
-		for (int col = 1; col <= maxVal; col++) {
-			int startVal = getBoardCellVal(row, col);
-			if(startVal != 0){
-				updateGameVals(startVal);
-			}
-		}
-	}
-	blockSize = gameBoard->getBlockSize();
-	blockRowStart = 0;
-	blockRowEnd = 0;
-	blockColStart = 0;
-	blockColEnd = 0;
 }
 
 void Sudoku::updateGameVals(int val)
@@ -101,46 +80,13 @@ void Sudoku::updateGameVals(int val)
 
 bool Sudoku::boardSolved()
 {
-	map<int, int>::iterator itr = gameVals->begin();
-	while (itr != gameVals->end()) {
-		if (itr->second != getBoardSize()) {
+	map<int, int>::iterator val = gameVals->begin();
+	int max = gameBoard->getBoardSize();
+	while (val != gameVals->end()) {
+		if (val->second != max) {
 			return false;
 		}
-		itr++;
+		val++;
 	}
 	return true;
-}
-
-int Sudoku::getBoardSize()
-{
-	return gameBoard->getBoardSize();
-}
-
-int Sudoku::getBoardCellVal(int row, int col)
-{
-	return gameBoard->getCellVal(row, col);
-}
-
-void Sudoku::setBoardCellVal(int row, int col, int val)
-{
-	// Place the solution, then mark the solution in the list:
-	gameBoard->setCellVal(row, col, val);
-
-	// Mark the value on the tracker map:
-	updateGameVals(val);
-}
-
-bool Sudoku::getBoardCellNote(int row, int col, int idx)
-{
-	return gameBoard->getCellNote(row, col, idx);
-}
-
-void Sudoku::setBoardCellNote(int row, int col, int idx, bool set)
-{
-	gameBoard->setCellNote(row, col, idx, set);
-}
-
-void Sudoku::printGameBoard()
-{
-	gameBoard->printBoard();
 }

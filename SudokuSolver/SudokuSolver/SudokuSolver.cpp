@@ -12,6 +12,7 @@
 */
 
 #include "Sudoku.h"
+#include "SudokuBoard.h"
 #include <iostream>
 #include <filesystem>
 using namespace std;
@@ -25,35 +26,18 @@ using namespace std;
 //    return (rowCheck && colCheck && blkCheck);
 //}
 
-bool hangingNoteRow(Sudoku* game, int row, int col, int val) {
-    for (int c = 1; c <= game->getBoardSize(); c++) {
-        if (c != col && game->getBoardCellNote(row, c, val)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool hangingNoteCol(Sudoku* game, int row, int col, int val) {
-    for (int r = 1; r <= game->getBoardSize(); r++) {
-        if (r != row && game->getBoardCellNote(r, col, val)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool hangingNoteBlock(Sudoku* game, int row, int col, int val) {
+bool hangingNote(SudokuBoard* board, int row, int col, int val) {
+    // TODO: finish this.
     return false;   // placeholder
 }
 
-bool onlyNoteVal(Sudoku* game, int row, int col, int val) {
-    if (!game->getBoardCellNote(row, col, val)) {
+bool onlyNoteVal(SudokuBoard* board, int row, int col, int val) {
+    if (!board->getCellNote(row, col, val)) {
         return false;
     }
     int noteCheck = val;
-    for (int n = 1; n <= game->getBoardSize(); n++) {
-        if (game->getBoardCellNote(row, col, n) && n != noteCheck) {
+    for (int n = 1; n <= board->getBoardSize(); n++) {
+        if (board->getCellNote(row, col, n) && n != noteCheck) {
             return false;
         }
     }
@@ -75,6 +59,7 @@ int main()
     int userPick = 0;
     int passCount = 0;
     Sudoku* currentGame = NULL;
+    SudokuBoard* currentBoard = NULL;
     do {
         // List available files:
         cout << "Select starting board:" << endl;
@@ -97,12 +82,12 @@ int main()
         }
         
         // Pick starting file:
-        currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
+        currentBoard = new SudokuBoard(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
         cout << "Starting board:" << endl;
-        currentGame->printGameBoard();
+        currentBoard->printBoard();
         cout << endl;
-        gameMax = currentGame->getBoardSize();
+        gameMax = currentBoard->getBoardSize();
 
         /*
         * IMPORTANT!
@@ -120,11 +105,11 @@ int main()
             for (int row = 1; row <= gameMax; row++) {
                 // Check each column:
                 for (int col = 1; col <= gameMax; col++) {
-                    int cellVal = currentGame->getBoardCellVal(row, col);
+                    int cellVal = currentBoard->getCellVal(row, col);
                     if (cellVal != 0) {
-                        currentGame->clearRowNotes(row, cellVal);
-                        currentGame->clearColNotes(col, cellVal);
-                        currentGame->clearBlockNotes(row, col, cellVal);
+                        currentBoard->clearRowNotes(row, cellVal);
+                        currentBoard->clearColNotes(col, cellVal);
+                        currentBoard->clearBlockNotes(row, col, cellVal);
                     }
                 }
             }
@@ -136,24 +121,22 @@ int main()
                 for (int col = 1; col <= gameMax; col++) {
                     
                     // When a cell is empty:
-                    if (currentGame->getBoardCellVal(row, col) == 0) {
+                    if (currentBoard->getCellVal(row, col) == 0) {
                         for (int n = 1; n <= gameMax; n++) {
                             // Check each value note, write solution when a single note is found:
-                            if (currentGame->getBoardCellNote(row, col, n)) {
-                                if (onlyNoteVal(currentGame, row, col, n)
-                                    || hangingNoteRow(currentGame, row, col, n)
-                                    || hangingNoteCol(currentGame, row, col, n)) {
-                                    currentGame->setBoardCellVal(row, col, n);
+                            if (currentBoard->getCellNote(row, col, n)) {
+                                if (onlyNoteVal(currentBoard, row, col, n)
+                                    || hangingNote(currentBoard, row, col, n)) {
                                     continue;
                                 }
                             }
                         }
 
                         // Debugging:
-                        /*printf("(%i, %i) Val: %i \n", row, col, currentGame->getBoardCellVal(row, col));
+                        /*printf("(%i, %i) Val: %i \n", row, col, currentBoard->getBoardCellVal(row, col));
                         cout << "Notes: (";
                         for (int n = 1; n <= gameMax; n++) {
-                            if (currentGame->getBoardCellNote(row, col, n)) {
+                            if (currentBoard->getBoardCellNote(row, col, n)) {
                                 cout << n << " ";
                             }
                         }
@@ -165,7 +148,7 @@ int main()
             passCount++;
             if (currentGame->boardSolved()) {
                 cout << "Solution found:" << endl;
-                currentGame->printGameBoard();
+                currentBoard->printBoard();
                 cout << endl;
                 break;
             }
@@ -173,7 +156,7 @@ int main()
 
         if (passCount >= gameMax) {
             cout << "Solution not found." << endl << endl;
-            currentGame->printGameBoard();
+            currentBoard->printBoard();
             cout << endl;
         }
 
