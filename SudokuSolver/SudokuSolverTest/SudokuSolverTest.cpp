@@ -407,7 +407,7 @@ namespace SudokuSolverTest
 			Assert::IsTrue(testBoard->blockValCheck(7, 9));
 			Assert::IsTrue(testBoard->blockValCheck(25, 25));
 			Assert::IsTrue(testBoard->blockValCheck(6, 8, 6));
-			Assert::IsTrue(testBoard->blockValCheck(13, 16));
+			Assert::IsTrue(testBoard->blockValCheck(19, 16));
 			Assert::IsFalse(testBoard->blockValCheck(1, 11));
 			Assert::IsFalse(testBoard->blockValCheck(21, 23, 15));
 
