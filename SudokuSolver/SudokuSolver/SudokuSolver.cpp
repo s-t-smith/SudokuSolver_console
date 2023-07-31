@@ -27,18 +27,41 @@ using namespace std;
 //}
 
 bool hangingNote(SudokuBoard* board, int row, int col, int val) {
-    // TODO: finish this.
-    return false;   // placeholder
+    /* Given a note at a board coordinate;
+    if no other cells in that row share the note,
+    or if no other cells in that column share the note, value can be written. */
+    
+    bool startNote = board->getCellNote(row, col, val);
+    bool rowNote = false;
+    bool colNote = false;
+
+    if (startNote) {
+        for (int r = 1; r <= board->getBoardSize(); r++) {
+            if (r != row && board->getCellNote(r, col, val)) {
+                rowNote = false;
+            }
+        }
+        rowNote = true;
+        for (int c = 1; c <= board->getBoardSize(); c++) {
+            if (c != col && board->getCellNote(row, c, val)) {
+                colNote = false;
+            }
+        }
+        colNote = true;
+    }
+
+    return (rowNote || colNote);
 }
 
 bool onlyNoteVal(SudokuBoard* board, int row, int col, int val) {
-    if (!board->getCellNote(row, col, val)) {
-        return false;
-    }
-    int noteCheck = val;
-    for (int n = 1; n <= board->getBoardSize(); n++) {
-        if (board->getCellNote(row, col, n) && n != noteCheck) {
-            return false;
+    /* Given a note at a board cooredinate;
+    if that note is the only note in the cell, the value can be written. */
+    
+    if (board->getCellNote(row, col, val)) {
+        for (int n = 1; n <= board->getBoardSize(); n++) {
+            if (board->getCellNote(row, col, n) && n != val) {
+                return false;
+            }
         }
     }
     return true;
@@ -58,7 +81,7 @@ int main()
     int gameMax = 0;
     int userPick = 0;
     int passCount = 0;
-    Sudoku* currentGame = NULL;
+    Sudoku* gameState = NULL;
     SudokuBoard* currentBoard = NULL;
     do {
         // List available files:
@@ -84,6 +107,7 @@ int main()
         // Pick starting file:
         currentBoard = new SudokuBoard(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
+        gameState = new Sudoku(*currentBoard);
         cout << "Starting board:" << endl;
         currentBoard->printBoard();
         cout << endl;
@@ -96,7 +120,7 @@ int main()
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
         passCount = 0;
-        while (!currentGame->boardSolved() && passCount <= gameMax)
+        while (!gameState->boardSolved() && passCount <= gameMax)
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             
@@ -124,32 +148,45 @@ int main()
                     if (currentBoard->getCellVal(row, col) == 0) {
                         for (int n = 1; n <= gameMax; n++) {
                             // Check each value note, write solution when a single note is found:
-                            if (currentBoard->getCellNote(row, col, n)) {
+                            /*if (currentBoard->getCellNote(row, col, n)) {
                                 if (onlyNoteVal(currentBoard, row, col, n)
                                     || hangingNote(currentBoard, row, col, n)) {
-                                    continue;
+                                    currentBoard->setCellVal(row, col, n);
+                                    break;
+                                }
+                            }*/
+
+                            // Debugging:
+                            /*printf("(%i, %i) Val: %i \n", row, col, currentBoard->getBoardCellVal(row, col));
+                            cout << "Notes: (";
+                            for (int n = 1; n <= gameMax; n++) {
+                                if (currentBoard->getBoardCellNote(row, col, n)) {
+                                    cout << n << " ";
                                 }
                             }
-                        }
-
-                        // Debugging:
-                        /*printf("(%i, %i) Val: %i \n", row, col, currentBoard->getBoardCellVal(row, col));
-                        cout << "Notes: (";
-                        for (int n = 1; n <= gameMax; n++) {
-                            if (currentBoard->getBoardCellNote(row, col, n)) {
-                                cout << n << " ";
+                            cout << ")" << endl;*/
+                            if (hangingNote(currentBoard, row, col, n)) {
+                                printf("(%i, %i)\n", row, col);
+                                cout << "Notes: (";
+                                for (int n = 1; n <= gameMax; n++) {
+                                    if (currentBoard->getCellNote(row, col, n)) {
+                                        cout << n << " ";
+                                    }
+                                }
+                                cout << ")" << endl;
                             }
                         }
-                        cout << ")" << endl;*/
                     }
                 }
             }
             // Continue:
             passCount++;
-            if (currentGame->boardSolved()) {
+            if (gameState->boardSolved()) {
                 cout << "Solution found:" << endl;
                 currentBoard->printBoard();
                 cout << endl;
+                delete currentBoard;
+                delete gameState;
                 break;
             }
         }
@@ -158,6 +195,9 @@ int main()
             cout << "Solution not found." << endl << endl;
             currentBoard->printBoard();
             cout << endl;
+            delete currentBoard;
+            delete gameState;
+            break;
         }
 
     } while (userPick != 0 || userPick > (int) boardFiles.size());

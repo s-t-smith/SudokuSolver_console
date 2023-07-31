@@ -445,6 +445,11 @@ namespace SudokuSolverTest
 		{
 			// TODO: rewrite this.
 		}
+
+		TEST_METHOD(UpdateTest)
+		{
+			// TODO: write this.
+		}
 		
 		// Tested in the ExplicitConstructor method.
 		/*TEST_METHOD(CellValTest)
@@ -458,11 +463,6 @@ namespace SudokuSolverTest
 
 			delete testGame;
 		}*/
-
-		TEST_METHOD(CellNoteTest)
-		{
-			// TODO: rewrite this for board class.
-		}
 
 		// Tested in the ExplicitConstructor method.
 		/*TEST_METHOD(CheckStateTest)
