@@ -428,60 +428,25 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Completed Sudoku class test.\n\n");
 		}
 
-		BEGIN_TEST_METHOD_ATTRIBUTE(DefaultConstructor)
-			TEST_PRIORITY(1)
-		END_TEST_METHOD_ATTRIBUTE()
-
-		BEGIN_TEST_METHOD_ATTRIBUTE(ExplicitConstructor)
-			TEST_PRIORITY(2)
-		END_TEST_METHOD_ATTRIBUTE()
-
-		TEST_METHOD(DefaultConstructor)
-		{
-			// TODO: rewrite this.
-		}
-
 		TEST_METHOD(ExplicitConstructor)
 		{
-			// TODO: rewrite this.
+			// TODO: test (int) constructor:
+			Sudoku* testGame = new Sudoku(9);
+
+			delete testGame;
+			testGame = new Sudoku(10);
+
+			// TODO: test (board) constructor:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			delete testGame;
+			testGame = new Sudoku(*testBoard);
 		}
 
 		TEST_METHOD(UpdateTest)
 		{
-			// TODO: write this.
+			// TODO: test updateVals method:
+
 		}
-		
-		// Tested in the ExplicitConstructor method.
-		/*TEST_METHOD(CellValTest)
-		{
-			Logger::WriteMessage("Testing cell access methods...\n");
-			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-				// To do: spot check cell values.
-
-			delete testGame;
-		}*/
-
-		// Tested in the ExplicitConstructor method.
-		/*TEST_METHOD(CheckStateTest)
-		{
-			Logger::WriteMessage("Testing solution check method...\n");
-			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-			testGame->checkState();
-			Assert::IsFalse(testGame->checkGO());
-
-			// Test a solved board:
-			delete testGame;
-			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
-			testGame->checkState();
-			Assert::IsTrue(testGame->checkGO());
-
-			delete testGame;
-		}*/
 	};
 }
