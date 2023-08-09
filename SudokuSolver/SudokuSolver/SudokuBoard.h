@@ -14,7 +14,7 @@ using namespace std;
 class SudokuBoard
 {
 	// To expose functions to the upper-layer class:
-	friend class SudokuBoard;
+	friend class Sudoku;
 
 public:
 	/*
