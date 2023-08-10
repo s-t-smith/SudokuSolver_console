@@ -20,11 +20,13 @@ public:
 	Sudoku();
 	Sudoku(int size);
 	Sudoku(SudokuBoard& board);
+	Sudoku(string filename);
 	~Sudoku();
 
 	// Class functions:
 	void initGameVals(int size);
-	void updateGameVals(int val);
+	void updateGameVals();
+	// void updateGameVals(int val);
 	bool boardSolved();
 	
 	/* These should be accessible directly */
@@ -38,19 +40,18 @@ public:
 
 private:
 	/* Game state monitors:*/
-	map<int, int>* gameVals;
+	map<const int, int> gameVals;
 	SudokuBoard* gameBoard;
 };
 
 Sudoku::Sudoku()
 {
-	gameVals = NULL;
 	gameBoard = NULL;
 }
 
 Sudoku::Sudoku(int size)
 {
-	gameBoard = NULL;
+	gameBoard = new SudokuBoard(size);
 	initGameVals(size);
 }
 
@@ -60,29 +61,39 @@ Sudoku::Sudoku(SudokuBoard& board)
 	initGameVals(board.getBoardSize());
 }
 
+Sudoku::Sudoku(string filename)
+{
+	gameBoard = new SudokuBoard(filename);
+	initGameVals(gameBoard->getBoardSize());
+}
+
 Sudoku::~Sudoku()
 {
-	delete gameVals;
 	delete gameBoard;
 }
 
 void Sudoku::initGameVals(int size)
 {
-	for (int i = 1; i <= size; i++) {
-		gameVals->emplace(i, 0);
+	for (int i = 0; i < size; i++) {
+		gameVals.emplace(i+1, 0);
 	}
 }
 
-void Sudoku::updateGameVals(int val)
+void Sudoku::updateGameVals()
 {
-	gameVals->at(val) += 1;
+	for (int r = 1; r <= gameBoard->getBoardSize(); r++) {
+		for (int c = 1; c <= gameBoard->getBoardSize(); c++) {
+			try { gameVals.at(gameBoard->getCellVal(r, c)) += 1; }
+			catch (...) { return; }
+		}
+	}
 }
 
 bool Sudoku::boardSolved()
 {
-	map<int, int>::iterator val = gameVals->begin();
+	map<int, int>::iterator val = gameVals.begin();
 	int max = gameBoard->getBoardSize();
-	while (val != gameVals->end()) {
+	while (val != gameVals.end()) {
 		if (val->second != max) {
 			return false;
 		}

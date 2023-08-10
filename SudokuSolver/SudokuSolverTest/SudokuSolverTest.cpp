@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../SudokuSolver/SudokuCell.h"
-#include "../SudokuSolver/SudokuBlock.h"
 #include "../SudokuSolver/SudokuBoard.h"
 #include "../SudokuSolver/Sudoku.h"
 #include <filesystem>
@@ -430,23 +429,47 @@ namespace SudokuSolverTest
 
 		TEST_METHOD(ExplicitConstructor)
 		{
-			// TODO: test (int) constructor:
-			Sudoku* testGame = new Sudoku(9);
+			// Test (int) constructor:
+			try {
+				Sudoku* intGame = new Sudoku(9);
+				delete intGame;
+				intGame = new Sudoku(10);
+			}
+			catch (...) {
+				Logger::WriteMessage("Sudoku(int) contructor failed.");
+			}
 
-			delete testGame;
-			testGame = new Sudoku(10);
-
-			// TODO: test (board) constructor:
+			// Test (board) constructor:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
 			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
-			delete testGame;
-			testGame = new Sudoku(*testBoard);
+			try { Sudoku* testGame = new Sudoku(*testBoard); }
+			catch (...) {
+				Logger::WriteMessage("Sudoku(board) constructor failed.");
+			}
+
+			// Test (string) constructor:
+			try { Sudoku* stringGame = new Sudoku(filePath.string() + "\\smallTest_full.txt"); }
+			catch (...) {
+				Logger::WriteMessage("Sudoku(srting) constructor failed.");
+			}
 		}
 
 		TEST_METHOD(UpdateTest)
 		{
-			// TODO: test updateVals method:
+			// Test updateVals method:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			Sudoku* testGame = new Sudoku(*testBoard);
+			testGame->updateGameVals();
+			Assert::IsFalse(testGame->boardSolved());
 
+			delete testBoard;
+			delete testGame;
+
+			testBoard = new SudokuBoard(filePath.string() + "\\smallTest_full.txt");
+			testGame = new Sudoku(*testBoard);
+			testGame->updateGameVals();
+			Assert::IsTrue(testGame->boardSolved());
 		}
 	};
 }
