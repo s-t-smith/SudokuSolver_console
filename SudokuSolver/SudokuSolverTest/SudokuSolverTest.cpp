@@ -465,6 +465,15 @@ namespace SudokuSolverTest
 			testGame->updateGameVals();
 			Assert::IsFalse(testGame->boardSolved());
 
+			for (int num = 1; num <= testBoard->getBoardSize(); num++) {
+				for (int round = 0; round <= 2; round++) {
+					testGame->updateGameVals(num);
+				}
+			}
+			Assert::IsTrue(testGame->boardSolved());
+			testGame->updateGameVals(3);
+			Assert::IsFalse(testGame->boardSolved());
+
 			delete testBoard;
 			delete testGame;
 

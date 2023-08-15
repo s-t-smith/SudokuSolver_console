@@ -26,7 +26,7 @@ public:
 	// Class functions:
 	void initGameVals(int size);
 	void updateGameVals();
-	// void updateGameVals(int val);
+	void updateGameVals(int val);
 	bool boardSolved();
 	
 	/* These should be accessible directly */
@@ -58,13 +58,15 @@ Sudoku::Sudoku(int size)
 Sudoku::Sudoku(SudokuBoard& board)
 {
 	gameBoard = &board;
-	initGameVals(board.getBoardSize());
+	initGameVals(gameBoard->getBoardSize());
+	updateGameVals();
 }
 
 Sudoku::Sudoku(string filename)
 {
 	gameBoard = new SudokuBoard(filename);
 	initGameVals(gameBoard->getBoardSize());
+	updateGameVals();
 }
 
 Sudoku::~Sudoku()
@@ -84,9 +86,16 @@ void Sudoku::updateGameVals()
 	for (int r = 1; r <= gameBoard->getBoardSize(); r++) {
 		for (int c = 1; c <= gameBoard->getBoardSize(); c++) {
 			try { gameVals.at(gameBoard->getCellVal(r, c)) += 1; }
+			// Cells with a "0" value won't trigger a map change;
 			catch (...) { return; }
 		}
 	}
+}
+
+void Sudoku::updateGameVals(int val)
+{
+	try { gameVals.at(val) += 1; }
+	catch (...) { return; }
 }
 
 bool Sudoku::boardSolved()
