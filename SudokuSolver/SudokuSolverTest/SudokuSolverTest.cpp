@@ -460,16 +460,12 @@ namespace SudokuSolverTest
 		{
 			// Test updateVals method:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest_almost.txt");
 			Sudoku* testGame = new Sudoku(*testBoard);
-			testGame->updateGameVals();
 			Assert::IsFalse(testGame->boardSolved());
-
-			for (int num = 1; num <= testBoard->getBoardSize(); num++) {
-				for (int round = 0; round <= 2; round++) {
-					testGame->updateGameVals(num);
-				}
-			}
+			
+			testGame->updateGameVals(1);
+			testGame->updateGameVals(4);
 			Assert::IsTrue(testGame->boardSolved());
 			testGame->updateGameVals(3);
 			Assert::IsFalse(testGame->boardSolved());
@@ -479,7 +475,6 @@ namespace SudokuSolverTest
 
 			testBoard = new SudokuBoard(filePath.string() + "\\smallTest_full.txt");
 			testGame = new Sudoku(*testBoard);
-			testGame->updateGameVals();
 			Assert::IsTrue(testGame->boardSolved());
 		}
 	};

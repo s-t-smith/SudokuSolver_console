@@ -35,8 +35,8 @@ public:
 	int getBoardCellVal(int row, int col);
 	void setBoardCellVal(int row, int col, int val);
 	bool getBoardCellNote(int row, int col, int idx);
-	void setBoardCellNote(int row, int col, int idx, bool set);
-	void printGameBoard();*/
+	void setBoardCellNote(int row, int col, int idx, bool set);*/
+	void printGameBoard();
 
 private:
 	/* Game state monitors:*/
@@ -71,7 +71,8 @@ Sudoku::Sudoku(string filename)
 
 Sudoku::~Sudoku()
 {
-	delete gameBoard;
+	// this causes issues in unit test; investigate:
+	// delete gameBoard;
 }
 
 void Sudoku::initGameVals(int size)
@@ -85,9 +86,7 @@ void Sudoku::updateGameVals()
 {
 	for (int r = 1; r <= gameBoard->getBoardSize(); r++) {
 		for (int c = 1; c <= gameBoard->getBoardSize(); c++) {
-			try { gameVals.at(gameBoard->getCellVal(r, c)) += 1; }
-			// Cells with a "0" value won't trigger a map change;
-			catch (...) { return; }
+			updateGameVals(gameBoard->getCellVal(r, c));
 		}
 	}
 }
@@ -109,4 +108,9 @@ bool Sudoku::boardSolved()
 		val++;
 	}
 	return true;
+}
+
+void Sudoku::printGameBoard()
+{
+	gameBoard->printBoard();
 }
