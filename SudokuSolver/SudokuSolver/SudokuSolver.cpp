@@ -124,61 +124,11 @@ int main()
         {
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             
-            // Clear notes:
-            // Check each row:
-            for (int row = 1; row <= gameMax; row++) {
-                // Check each column:
-                for (int col = 1; col <= gameMax; col++) {
-                    int cellVal = currentBoard->getCellVal(row, col);
-                    if (cellVal != 0) {
-                        currentBoard->clearRowNotes(row, cellVal);
-                        currentBoard->clearColNotes(col, cellVal);
-                        currentBoard->clearBlockNotes(row, col, cellVal);
-                    }
-                }
-            }
+            // For each unsolved value...
+                // For each row...
+                    // For each column...
+                        // If value in (row || col || block): remove note
 
-            // Write solutions:
-            // Check each row:
-            for (int row = 1; row <= gameMax; row++) {
-                // Check each column:
-                for (int col = 1; col <= gameMax; col++) {
-                    
-                    // When a cell is empty:
-                    if (currentBoard->getCellVal(row, col) == 0) {
-                        for (int n = 1; n <= gameMax; n++) {
-                            // Check each value note, write solution when a single note is found:
-                            /*if (currentBoard->getCellNote(row, col, n)) {
-                                if (onlyNoteVal(currentBoard, row, col, n)
-                                    || hangingNote(currentBoard, row, col, n)) {
-                                    currentBoard->setCellVal(row, col, n);
-                                    break;
-                                }
-                            }*/
-
-                            // Debugging:
-                            /*printf("(%i, %i) Val: %i \n", row, col, currentBoard->getBoardCellVal(row, col));
-                            cout << "Notes: (";
-                            for (int n = 1; n <= gameMax; n++) {
-                                if (currentBoard->getBoardCellNote(row, col, n)) {
-                                    cout << n << " ";
-                                }
-                            }
-                            cout << ")" << endl;*/
-                            if (hangingNote(currentBoard, row, col, n)) {
-                                printf("(%i, %i)\n", row, col);
-                                cout << "Notes: (";
-                                for (int n = 1; n <= gameMax; n++) {
-                                    if (currentBoard->getCellNote(row, col, n)) {
-                                        cout << n << " ";
-                                    }
-                                }
-                                cout << ")" << endl;
-                            }
-                        }
-                    }
-                }
-            }
             // Continue:
             passCount++;
             if (gameState->boardSolved()) {

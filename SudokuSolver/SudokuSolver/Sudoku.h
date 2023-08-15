@@ -29,13 +29,7 @@ public:
 	void updateGameVals(int val);
 	bool boardSolved();
 	
-	/* These should be accessible directly */
 	// Board-layer functions:
-	/*int getBoardSize();
-	int getBoardCellVal(int row, int col);
-	void setBoardCellVal(int row, int col, int val);
-	bool getBoardCellNote(int row, int col, int idx);
-	void setBoardCellNote(int row, int col, int idx, bool set);*/
 	void printGameBoard();
 
 private:
