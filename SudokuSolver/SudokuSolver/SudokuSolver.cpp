@@ -125,9 +125,37 @@ int main()
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             
             // For each unsolved value...
-                // For each row...
-                    // For each column...
-                        // If value in (row || col || block): remove note
+            auto val = gameState->lowest();
+            while (val != gameState->highest()) {
+                if (val.second() != currentBoard->getBoardSize()) {
+                    // For each row...
+                    for (int row = 1; row <= currentBoard->getBoardSize(); row++) {
+                        // For each column...
+                        for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
+                            
+                            // If value in (row || col || block): remove note
+                            if (currentBoard->rowValCheck(row, val.second())) {
+                                currentBoard->clearRowNotes(row, val.second());
+                            }
+                            if (currentBoard->colValCheck(col, val.second())) {
+                                currentBoard->clearColNotes(col, val.second());
+                            }
+                            if (currentBoard->blockValCheck(row, col, val.second())) {
+                                currentBoard->clearBlockNotes(row, col, val.second());
+                            }
+
+                            // Write cells with only one note
+                            if (onlyNoteVal(currentBoard, row, col, val.second()) || hangingNote(currentBoard, row, col, val.second())) {
+                                currentBoard->setCellVal(row, col, val.second());
+                                gameState->updateGameVals(val.second());
+                            }
+
+                        }
+                    }
+                }
+                // Go to next value...
+                val++;
+            }
 
             // Continue:
             passCount++;

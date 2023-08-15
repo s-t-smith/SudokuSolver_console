@@ -32,6 +32,10 @@ public:
 	// Board-layer functions:
 	void printGameBoard();
 
+	// Map accessors:
+	map<const int, int>::iterator lowest() { return gameVals.begin(); }
+	map<const int, int>::iterator highest() { return gameVals.end(); }
+
 private:
 	/* Game state monitors:*/
 	map<const int, int> gameVals;
