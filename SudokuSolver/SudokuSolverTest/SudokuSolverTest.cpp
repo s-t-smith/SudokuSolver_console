@@ -383,10 +383,12 @@ namespace SudokuSolverTest
 			Assert::IsFalse(testBoard->colValCheck(2, 1));
 
 			// Block value checks:
-			Assert::IsTrue(testBoard->blockValCheck(1, 2));
-			Assert::IsTrue(testBoard->blockValCheck(1, 1, 2));
-			Assert::IsFalse(testBoard->blockValCheck(1, 4));
-			Assert::IsFalse(testBoard->blockValCheck(3, 2, 2));
+			delete testBoard;
+			testBoard = new SudokuBoard(filePath.string() + "\\blockCheck.txt");
+			Assert::IsTrue(testBoard->blockValCheck(2, 2));
+			Assert::IsFalse(testBoard->blockValCheck(9, 8));
+			Assert::IsTrue(testBoard->blockValCheck(3, 3, 1));
+			Assert::IsFalse(testBoard->blockValCheck(7, 8, 4));
 
 			// Create big board:
 			delete testBoard;
