@@ -165,7 +165,7 @@ int main()
                 cout << endl;
                 delete currentBoard;
                 delete gameState;
-                break;
+                continue;
             }
         }
 
@@ -175,7 +175,7 @@ int main()
             cout << endl;
             delete currentBoard;
             delete gameState;
-            break;
+            continue;
         }
 
     } while (userPick != 0 || userPick > (int) boardFiles.size());
