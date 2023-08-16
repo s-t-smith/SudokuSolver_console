@@ -32,25 +32,25 @@ bool hangingNote(SudokuBoard* board, int row, int col, int val) {
     or if no other cells in that column share the note, value can be written. */
     
     bool startNote = board->getCellNote(row, col, val);
-    bool rowNote = false;
-    bool colNote = false;
+    bool rowClear = true;
+    bool colClear = true;
 
     if (startNote) {
         for (int r = 1; r <= board->getBoardSize(); r++) {
             if (r != row && board->getCellNote(r, col, val)) {
-                rowNote = false;
+                rowClear = false;
+                break;
             }
         }
-        rowNote = true;
         for (int c = 1; c <= board->getBoardSize(); c++) {
             if (c != col && board->getCellNote(row, c, val)) {
-                colNote = false;
+                colClear = false;
+                break;
             }
         }
-        colNote = true;
     }
 
-    return (rowNote || colNote);
+    return (rowClear || colClear);
 }
 
 bool onlyNoteVal(SudokuBoard* board, int row, int col, int val) {
@@ -122,7 +122,9 @@ int main()
         passCount = 0;
         while (!gameState->boardSolved() && passCount <= gameMax)
         {
+            /*DEBUG*/
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
+            /*DEBUG*/
             
             // For each unsolved value...
             auto val = gameState->lowest();
@@ -130,7 +132,7 @@ int main()
                 if (val->second < currentBoard->getBoardSize()) {
                     
                     /*DEBUG*/
-                    cout << "Testing " << val->first << ":" << endl;
+                    cout << "Checking " << val->first << ":" << endl;
                     /*DEBUG*/
 
                     // For each row...
@@ -143,10 +145,12 @@ int main()
                                 if (hangingNote(currentBoard, row, col, val->first)
                                     || onlyNoteVal(currentBoard, row, col, val->first)) {
                                     currentBoard->setCellVal(row, col, val->first);
+                                    gameState->updateGameVals(val->first);
 
                                     /*DEBUG*/
                                     //currentBoard->printBoard();
                                     gameState->printGameBoard();
+                                    cout << endl;
                                     /*DEBUG*/
 
                                     // Remove notes:
