@@ -134,20 +134,20 @@ int main()
                         for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
                             
                             // If value in (row || col || block): remove note
-                            if (currentBoard->rowValCheck(row, val->second)) {
-                                currentBoard->clearRowNotes(row, val->second);
+                            if (currentBoard->rowValCheck(row, val->first)) {
+                                currentBoard->clearRowNotes(row, val->first);
                             }
-                            if (currentBoard->colValCheck(col, val->second)) {
-                                currentBoard->clearColNotes(col, val->second);
+                            if (currentBoard->colValCheck(col, val->first)) {
+                                currentBoard->clearColNotes(col, val->first);
                             }
-                            if (currentBoard->blockValCheck(row, col, val->second)) {
-                                currentBoard->clearBlockNotes(row, col, val->second);
+                            if (currentBoard->blockValCheck(row, col, val->first)) {
+                                currentBoard->clearBlockNotes(row, col, val->first);
                             }
 
                             // Write cells with only one note
-                            if (onlyNoteVal(currentBoard, row, col, val->second) || hangingNote(currentBoard, row, col, val->second)) {
-                                currentBoard->setCellVal(row, col, val->second);
-                                gameState->updateGameVals(val->second);
+                            if (onlyNoteVal(currentBoard, row, col, val->first) || hangingNote(currentBoard, row, col, val->first)) {
+                                currentBoard->setCellVal(row, col, val->first);
+                                gameState->updateGameVals(val->first);
                             }
 
                         }
