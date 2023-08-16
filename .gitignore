@@ -1,9 +1,9 @@
 # Ignore .vs thingy
-SudokuSolver/.vs
+SudokuSolver/.vs/
 
 # Ignore unnecessary directories
-*/x64
-*/Debug
+*/x64/
+*/Debug/
 
 # Ignore test images
 images/*
