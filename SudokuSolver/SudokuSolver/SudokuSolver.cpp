@@ -126,13 +126,12 @@ int main()
             cout << "Solution pass #" << passCount + 1 << "..." << endl;
             /*DEBUG*/
             
-            // For each unsolved value...
             auto val = gameState->lowest();
             while (val != gameState->highest()) {
+                // For unsolved values...
                 if (val->second < currentBoard->getBoardSize()) {
-                    
                     /*DEBUG*/
-                    cout << "Checking " << val->first << ":" << endl;
+                    // cout << "Checking " << val->first << ":" << endl;
                     /*DEBUG*/
 
                     // For each row...
@@ -140,12 +139,18 @@ int main()
                         // For each column...
                         for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
                             // For empty cells...
-                            if (currentBoard->getCellVal(row, col) == 0) {
+                            if ((currentBoard->getCellVal(row, col) == 0)
+                            && (val->second<currentBoard->getBoardSize())) {
+                                
+                                // Clear notes:
+                                // TODO: add a step to clear notes.
+                                
                                 // Write solutions for note-isolated values:
                                 if (hangingNote(currentBoard, row, col, val->first)
                                     || onlyNoteVal(currentBoard, row, col, val->first)) {
+                                    
+                                    // Write solution:
                                     currentBoard->setCellVal(row, col, val->first);
-                                    gameState->updateGameVals(val->first);
 
                                     /*DEBUG*/
                                     //currentBoard->printBoard();
@@ -157,6 +162,9 @@ int main()
                                     currentBoard->clearRowNotes(row, val->first);
                                     currentBoard->clearColNotes(col, val->first);
                                     currentBoard->clearBlockNotes(row, col, val->first);
+
+                                    // Update game state:
+                                    gameState->updateGameVals(val->first);
                                 }
                             }
                         }
@@ -174,7 +182,7 @@ int main()
                 cout << endl;
                 delete currentBoard;
                 delete gameState;
-                continue;
+                break;
             }
         }
 
@@ -184,7 +192,7 @@ int main()
             cout << endl;
             delete currentBoard;
             delete gameState;
-            continue;
+            break;
         }
 
     } while (userPick != 0 || userPick > (int) boardFiles.size());
