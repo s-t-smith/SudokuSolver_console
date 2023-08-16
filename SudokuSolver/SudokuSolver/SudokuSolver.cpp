@@ -128,28 +128,33 @@ int main()
             auto val = gameState->lowest();
             while (val != gameState->highest()) {
                 if (val->second < currentBoard->getBoardSize()) {
+                    
+                    /*DEBUG*/
+                    cout << "Testing " << val->first << ":" << endl;
+                    /*DEBUG*/
+
                     // For each row...
                     for (int row = 1; row <= currentBoard->getBoardSize(); row++) {
                         // For each column...
                         for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
-                            
-                            // If value in (row || col || block): remove note
-                            if (currentBoard->rowValCheck(row, val->first)) {
-                                currentBoard->clearRowNotes(row, val->first);
-                            }
-                            if (currentBoard->colValCheck(col, val->first)) {
-                                currentBoard->clearColNotes(col, val->first);
-                            }
-                            if (currentBoard->blockValCheck(row, col, val->first)) {
-                                currentBoard->clearBlockNotes(row, col, val->first);
-                            }
+                            // For empty cells...
+                            if (currentBoard->getCellVal(row, col) == 0) {
+                                // Write solutions for note-isolated values:
+                                if (hangingNote(currentBoard, row, col, val->first)
+                                    || onlyNoteVal(currentBoard, row, col, val->first)) {
+                                    currentBoard->setCellVal(row, col, val->first);
 
-                            // Write cells with only one note
-                            if (onlyNoteVal(currentBoard, row, col, val->first) || hangingNote(currentBoard, row, col, val->first)) {
-                                currentBoard->setCellVal(row, col, val->first);
-                                gameState->updateGameVals(val->first);
-                            }
+                                    /*DEBUG*/
+                                    //currentBoard->printBoard();
+                                    gameState->printGameBoard();
+                                    /*DEBUG*/
 
+                                    // Remove notes:
+                                    currentBoard->clearRowNotes(row, val->first);
+                                    currentBoard->clearColNotes(col, val->first);
+                                    currentBoard->clearBlockNotes(row, col, val->first);
+                                }
+                            }
                         }
                     }
                 }
