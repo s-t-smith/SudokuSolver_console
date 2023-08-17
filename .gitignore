@@ -39,5 +39,4 @@ images/*
 
 # Ignore test programs
 fileInputTest.cpp
-SudokuSolver/Debug/**
-SudokuSolver/SudokuSolver/Debug/**
+*/Debug/**
