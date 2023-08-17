@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../SudokuSolver/SudokuCell.h"
-#include "../SudokuSolver/SudokuBlock.h"
 #include "../SudokuSolver/SudokuBoard.h"
 #include "../SudokuSolver/Sudoku.h"
 #include <filesystem>
@@ -52,10 +51,10 @@ namespace SudokuSolverTest
 		TEST_METHOD(ExplicitConstructor)
 		{
 			Logger::WriteMessage("Testing explicit constructor...\n");
-			SudokuCell* explicitCell = new SudokuCell(5);
+			SudokuCell* explicitCell = new SudokuCell(5, 9);
 			// Cell retains given intial value:
 			Assert::AreEqual(5, explicitCell->getVal());
-			// Notes list retains given size (default 9):
+			// Notes list retains given size:
 			int noteSize = explicitCell->getSize();
 			Assert::AreEqual(9, noteSize);
 			// All notes are written 'false':
@@ -275,7 +274,7 @@ namespace SudokuSolverTest
 			}
 
 			delete emptyBoard;
-			cout_stream.str().clear();
+			cout_stream.str("");
 			emptyBoard = new SudokuBoard(4);
 			cout << "Small board test:" << endl;
 			emptyBoard->printBoard();
@@ -285,7 +284,7 @@ namespace SudokuSolverTest
 			Assert::AreEqual(2, emptyBoard->getBlockSize());
 
 			delete emptyBoard;
-			cout_stream.str().clear();
+			cout_stream.str("");	// Workaround since flush() and str().clear() wouldn't take.
 			emptyBoard = new SudokuBoard(25);
 			cout << "Big board test:" << endl;
 			emptyBoard->printBoard();
@@ -310,7 +309,7 @@ namespace SudokuSolverTest
 			
 			// Get a path to the test files:
 			
-			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
+			// This path will have to be adjusted for the host machine's directory tree:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
 			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
 			
@@ -326,10 +325,94 @@ namespace SudokuSolverTest
 			Assert::AreEqual(9, startingBoard->getCellVal(3, 6));
 			Assert::AreEqual(8, startingBoard->getCellVal(9, 7));
 
+			delete startingBoard;
+			startingBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			cout_stream.str("");
+			cout << "Small board created from file:" << endl;
+			startingBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
+
+			// Check board size:
+			Assert::AreEqual(4, startingBoard->getBoardSize());
+			// Spot-check cell values:
+			Assert::AreEqual(1, startingBoard->getCellVal(1, 1));
+			Assert::AreEqual(3, startingBoard->getCellVal(3, 3));
+
+			delete startingBoard;
+			startingBoard = new SudokuBoard(filePath.string() + "\\bigTest.txt");
+			cout_stream.str("");
+			cout << "Big board created from file:" << endl;
+			startingBoard->printBoard();
+			Logger::WriteMessage(cout_stream.str().c_str());
+
+			// Check board size:
+			Assert::AreEqual(25, startingBoard->getBoardSize());
+			// Spot-check cell values:
+			Assert::AreEqual(10, startingBoard->getCellVal(10, 10));
+			Assert::AreEqual(6, startingBoard->getCellVal(6, 6));
+			Assert::AreEqual(2, startingBoard->getCellVal(2, 2));
+
+
 			// Restore stdout:
 			cout.rdbuf(cout_restore);
 
 			delete startingBoard;
+		}
+
+		TEST_METHOD(ValueCheckTests)
+		{
+			// Create small board:
+			// This path will have to be adjusted for the host machine's directory tree:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			Assert::AreEqual(4, testBoard->getBoardSize());
+			Assert::AreEqual(2, testBoard->getBlockSize());
+
+			// Row value check:
+			Assert::IsTrue(testBoard->rowValCheck(1, 1));
+			Assert::IsFalse(testBoard->rowValCheck(4, 1));
+			Assert::IsTrue(testBoard->rowValCheck(3, 3));
+			Assert::IsFalse(testBoard->rowValCheck(4, 2));
+
+			// Col value check:
+			Assert::IsTrue(testBoard->colValCheck(2, 2));
+			Assert::IsFalse(testBoard->colValCheck(2, 3));
+			Assert::IsTrue(testBoard->colValCheck(4, 4));
+			Assert::IsFalse(testBoard->colValCheck(2, 1));
+
+			// Block value checks:
+			delete testBoard;
+			testBoard = new SudokuBoard(filePath.string() + "\\blockCheck.txt");
+			Assert::IsTrue(testBoard->blockValCheck(2, 2));
+			Assert::IsFalse(testBoard->blockValCheck(9, 8));
+			Assert::IsTrue(testBoard->blockValCheck(3, 3, 1));
+			Assert::IsFalse(testBoard->blockValCheck(7, 8, 4));
+
+			// Create big board:
+			delete testBoard;
+			testBoard = new SudokuBoard(filePath.string() + "\\bigTest.txt");
+			Assert::AreEqual(25, testBoard->getBoardSize());
+			Assert::AreEqual(5, testBoard->getBlockSize());
+
+			// Row value checks:
+			Assert::IsTrue(testBoard->rowValCheck(3, 3));
+			Assert::IsFalse(testBoard->rowValCheck(10, 1));
+
+			// Col value checks:
+			Assert::IsTrue(testBoard->colValCheck(12, 12));
+			Assert::IsFalse(testBoard->colValCheck(2, 20));
+
+			// Block value checks:
+			Assert::IsTrue(testBoard->blockValCheck(7, 9));
+			Assert::IsTrue(testBoard->blockValCheck(25, 25));
+			Assert::IsTrue(testBoard->blockValCheck(6, 8, 6));
+			Assert::IsTrue(testBoard->blockValCheck(19, 16));
+			Assert::IsFalse(testBoard->blockValCheck(1, 11));
+			Assert::IsFalse(testBoard->blockValCheck(21, 23, 15));
+
+			delete testBoard;
 		}
 	};
 
@@ -346,177 +429,53 @@ namespace SudokuSolverTest
 			Logger::WriteMessage("Completed Sudoku class test.\n\n");
 		}
 
-		BEGIN_TEST_METHOD_ATTRIBUTE(DefaultConstructor)
-			TEST_PRIORITY(1)
-		END_TEST_METHOD_ATTRIBUTE()
-
-		BEGIN_TEST_METHOD_ATTRIBUTE(ExplicitConstructor)
-			TEST_PRIORITY(2)
-		END_TEST_METHOD_ATTRIBUTE()
-
-		TEST_METHOD(DefaultConstructor)
-		{
-			Logger::WriteMessage("Testing class without starting file...\n");
-			Sudoku* testGame = new Sudoku();
-
-			// Default board should be 9x9 and all 0s:
-			Assert::AreEqual(9, testGame->getBoardSize());
-			for (int r = 1; r <= testGame->getBoardSize(); r++) {
-				for (int c = 1; c <= testGame->getBoardSize(); c++) {
-					Assert::AreEqual(0, testGame->getBoardCellVal(r, c));
-				}
-			}
-			// Default board should not be "complete":
-			Assert::IsFalse(testGame->boardSolved());
-			
-			delete testGame;
-		}
-
 		TEST_METHOD(ExplicitConstructor)
 		{
-			Logger::WriteMessage("Testing class with starting file...\n");
-			// Get a path to the test files:
+			// Test (int) constructor:
+			try {
+				Sudoku* intGame = new Sudoku(9);
+				delete intGame;
+				intGame = new Sudoku(10);
+			}
+			catch (...) {
+				Logger::WriteMessage("Sudoku(int) contructor failed.");
+			}
 
-			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
+			// Test (board) constructor:
 			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest.txt");
+			try { Sudoku* testGame = new Sudoku(*testBoard); }
+			catch (...) {
+				Logger::WriteMessage("Sudoku(board) constructor failed.");
+			}
 
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-			
-			// Starting board is not solved:
+			// Test (string) constructor:
+			try { Sudoku* stringGame = new Sudoku(filePath.string() + "\\smallTest_full.txt"); }
+			catch (...) {
+				Logger::WriteMessage("Sudoku(srting) constructor failed.");
+			}
+		}
+
+		TEST_METHOD(UpdateTest)
+		{
+			// Test updateVals method:
+			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
+			SudokuBoard* testBoard = new SudokuBoard(filePath.string() + "\\smallTest_almost.txt");
+			Sudoku* testGame = new Sudoku(*testBoard);
 			Assert::IsFalse(testGame->boardSolved());
 			
-			// Spot check board values:
-			Assert::AreEqual(1, testGame->getBoardCellVal(1, 2));
-			Assert::AreEqual(4, testGame->getBoardCellVal(9, 6));
-			Assert::AreEqual(9, testGame->getBoardCellVal(5, 1));
-
-			// Test a solved board:
-			delete testGame;
-			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
-			
-			// No values should be blank:
-			for (int r = 1; r <= testGame->getBoardSize(); r++) {
-				for (int c = 1; c <= testGame->getBoardSize(); c++) {
-					Assert::AreNotEqual(0, testGame->getBoardCellVal(r, c));
-				}
-			}
-
-			// Game state is 'solved' (technically just filled out for this):
+			testGame->updateGameVals(1);
+			testGame->updateGameVals(4);
 			Assert::IsTrue(testGame->boardSolved());
+			testGame->updateGameVals(3);
+			Assert::IsFalse(testGame->boardSolved());
 
+			delete testBoard;
 			delete testGame;
+
+			testBoard = new SudokuBoard(filePath.string() + "\\smallTest_full.txt");
+			testGame = new Sudoku(*testBoard);
+			Assert::IsTrue(testGame->boardSolved());
 		}
-
-		// Tested in the ExplicitConstructor method.
-		/*TEST_METHOD(CellValTest)
-		{
-			Logger::WriteMessage("Testing cell access methods...\n");
-			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-				// To do: spot check cell values.
-
-			delete testGame;
-		}*/
-
-		TEST_METHOD(CellNoteTest)
-		{
-			Logger::WriteMessage("Testing cell notes methods...\n");
-			// Get a path to the test files:
-
-			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
-
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-			
-			// Spot check note settings for populated cells:
-			Assert::IsFalse(testGame->getBoardCellNote(6, 2, 3));
-			Assert::IsFalse(testGame->getBoardCellNote(9, 6, 4));
-			Assert::IsFalse(testGame->getBoardCellNote(9, 8, 7));
-			Assert::IsFalse(testGame->getBoardCellNote(5, 4, 1));
-			Assert::IsFalse(testGame->getBoardCellNote(3, 7, 3));
-			
-			// Spot check note settings for blank cells:
-			Assert::IsTrue(testGame->getBoardCellNote(6, 5, 7));
-			Assert::IsTrue(testGame->getBoardCellNote(9, 1, 1));
-			Assert::IsTrue(testGame->getBoardCellNote(6, 9, 8));
-			Assert::IsTrue(testGame->getBoardCellNote(1, 7, 3));
-			Assert::IsTrue(testGame->getBoardCellNote(3, 3, 8));
-
-			// Test the bulk-clear methods:
-			testGame->clearRowNotes(6, 7);
-			testGame->clearColNotes(1, 1);
-			for (int i = 1; i <= testGame->getBoardSize(); i++) {
-				Assert::IsFalse(testGame->getBoardCellNote(i, 1, 1));
-				Assert::IsFalse(testGame->getBoardCellNote(6, i, 7));
-			}
-			testGame->clearBlockNotes(3, 3, 8);
-			Assert::IsFalse(testGame->getBoardCellNote(2, 1, 8));
-			Assert::IsFalse(testGame->getBoardCellNote(1, 3, 8));
-
-			delete testGame;
-		}
-
-		TEST_METHOD(ValCheckTest)
-		{
-			Logger::WriteMessage("Testing board check methods...\n");
-
-			// For some reason, testing on different computers seems to change the working directory, so uncomment the statement that works:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			// std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path() += "\\inputFiles";
-
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-			
-			// Test checkRow:
-			Assert::IsTrue(testGame->rowValCheck(1, 1));
-			Assert::IsTrue(testGame->rowValCheck(9, 4));
-			Assert::IsTrue(testGame->rowValCheck(4, 9));
-			Assert::IsFalse(testGame->rowValCheck(2, 2));
-			Assert::IsFalse(testGame->rowValCheck(1, 7));
-			Assert::IsFalse(testGame->rowValCheck(9, 6));
-
-			// Test checkCol:
-			Assert::IsTrue(testGame->colValCheck(9, 7));
-			Assert::IsTrue(testGame->colValCheck(3, 1));
-			Assert::IsTrue(testGame->colValCheck(2, 2));
-			Assert::IsFalse(testGame->colValCheck(4, 5));
-			Assert::IsFalse(testGame->colValCheck(9, 9));
-			Assert::IsFalse(testGame->colValCheck(1, 3));
-
-			// Test checkBlock:
-			Assert::IsTrue(testGame->blockValCheck(1, 2, 9));
-			Assert::IsTrue(testGame->blockValCheck(2, 4, 5));
-			Assert::IsTrue(testGame->blockValCheck(9, 5, 8));
-			Assert::IsTrue(testGame->blockValCheck(3, 9, 7));
-			Assert::IsTrue(testGame->blockValCheck(2, 7, 3));
-
-			delete testGame;
-		}
-
-		// Tested in the ExplicitConstructor method.
-		/*TEST_METHOD(CheckStateTest)
-		{
-			Logger::WriteMessage("Testing solution check method...\n");
-			// Get a path to the test files:
-			std::filesystem::path filePath = filesystem::current_path().parent_path().parent_path().parent_path() += "\\inputFiles";
-			// Test an unsolved board:
-			Sudoku* testGame = new Sudoku(filePath.string() + "\\easy1.txt");
-			testGame->checkState();
-			Assert::IsFalse(testGame->checkGO());
-
-			// Test a solved board:
-			delete testGame;
-			testGame = new Sudoku(filePath.string() + "\\easy1solved.txt");
-			testGame->checkState();
-			Assert::IsTrue(testGame->checkGO());
-
-			delete testGame;
-		}*/
 	};
 }

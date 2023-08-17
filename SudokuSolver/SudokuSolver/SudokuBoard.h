@@ -13,20 +13,15 @@ using namespace std;
 
 class SudokuBoard
 {
+	// To expose functions to the upper-layer class:
+	friend class Sudoku;
+
 public:
 	/*
 	* Public functions:
-	* SudokuBoard(int size) - Explicit constructor; makes an empty board with a user-provider number of rows and columns.
-	* SudokuBoard(string fileName) - Explicit consturctor; makes a board using a text file to populate cell values.
-	* ~SudokuBoard() - Default desctructor; frees pointer memory from cell objects.
-	* getBoardSize() - returns the row/column/max value for the board.
-	* setCellVal - writes a solution to a cell by way of the underlying object's function.
-	* getCellVal - returns a solution written in a cell by way of the underlying object's function.
-	* setCellNote - sets the 'index' note on a cell to true, uses the underlying object's function.
-	* clearCellNote - sets the 'index' note on a cell to false, uses the underlying object's function.
-	* getCellNote - returns the state of the underlying object's 'index' note.
-	* printBoard - outputs the board in a 9x9 format to the console.
+	* TODO: re-document these...
 	*/
+
 	/* Constructors: */
 	SudokuBoard();
 	SudokuBoard(int size);
@@ -41,21 +36,29 @@ public:
 	int getCellVal(int row, int col);
 	void setCellNote(int row, int col, int index, bool set);
 	bool getCellNote(int row, int col, int index);
-	void blockCoord(int& row, int& cal);
-	void blockRef(int blk);
 	void printBoard();
+
+	/* Note and value functions: */
+	bool rowValCheck(int row, int val);
+	void clearRowNotes(int row, int val);
+	bool colValCheck(int col, int val);
+	void clearColNotes(int col, int val);
+	int blockCoord(int row, int col);
+	void blockRef(int blk);
+	bool blockValCheck(int blk, int val);
+	bool blockValCheck(int row, int col, int val);
+	void clearBlockNotes(int blk, int val);
+	void clearBlockNotes(int row, int col, int val);
 
 private:
 	/* Primary data fields: */
-	int valMax;
-	vector<vector<SudokuCell*>> board;
-	
-	// Used for cell dereferencing:
+	int boardSize;
 	int blockSize;
 	int blockRowStart;
 	int blockColStart;
 	int blockRowEnd;
 	int blockColEnd;
+	vector<vector<SudokuCell*>> board;
 };
 
 
@@ -116,52 +119,34 @@ SudokuBoard::~SudokuBoard() {
 void SudokuBoard::initBoard(int max) {
 	// No workie:
 	/*for (auto i : board) {
-		i.resize(valMax);
+		i.resize(boardSize);
 		for (auto j : i) {
 			j = new SudokuCell();
 		}
 	}*/
 
 	// Set private fields:
-	valMax = max;
+	boardSize = max;
 	blockSize = (int)sqrt(max);
-	blockRowStart = 0;
-	blockColStart = 0;
-	blockRowEnd = 0;
-	blockColEnd = 0;
 
 	// Create cell array:
-	board.resize(max);
-	for (int i = 0; i < max; i++) {
-		board[i].resize(max);
+	board.resize(boardSize);
+	for (int i = 0; i < boardSize; i++) {
+		board[i].resize(boardSize);
 		for (int j = 0; j < max; j++) {
-			board[i][j] = new SudokuCell();
+			board[i][j] = new SudokuCell(0, boardSize);
 		}
 	}
 }
 
 int SudokuBoard::getBoardSize() {
 	// Returns the board's maximum value/row size:
-	return valMax;
+	return boardSize;
 }
 
 int SudokuBoard::getBlockSize() {
 	// Return the size of a block on the board:
-	return (int) sqrt(valMax);
-}
-
-// TODO: finish this.
-void SudokuBoard::blockCoord(int& row, int& col) {
-	// Given a set of coordinates, set the cell index limits for looping functions.
-	// i%blockSize will give a sequence that can access a cell.
-	// i/blockSize will give a sequence that will dereference a block.
-}
-
-// TODO: finish this.
-void SudokuBoard::blockRef(int blk) {
-	// Given a single block number, set the cell index limits for looping functions.
-	// i%blockSize will give a sequence that can access a cell.
-	// i/blockSize will give a sequence that will dereference a block.
+	return blockSize;
 }
 
 void SudokuBoard::setCellVal(int row, int col, int val) {
@@ -185,22 +170,114 @@ bool SudokuBoard::getCellNote(int row, int col, int index) {
 }
 
 void SudokuBoard::printBoard() {
-	for (int row = 1; row <= valMax; row++) {
-		for (int col = 1; col <= valMax; col++) {
+	for (int row = 1; row <= boardSize; row++) {
+		for (int col = 1; col <= boardSize; col++) {
 			cout << getCellVal(row, col);
-			if ((col != valMax) && (col % blockSize == 0)) {
+			if ((col != boardSize) && (col % blockSize == 0)) {
 				cout << "|";
 			}
 			else {
 				cout << " ";
 			}
 		}
-		if ((row != valMax) && (row % blockSize == 0)) {
+		if ((row != boardSize) && (row % blockSize == 0)) {
 			cout << endl;
-			for (int spc = 0; spc < 2*valMax-1; spc++) {
+			for (int spc = 0; spc < 2*boardSize-1; spc++) {
 				cout << "-";
 			}
 		}
 		cout << endl;
 	}
+}
+
+bool SudokuBoard::rowValCheck(int row, int val)
+{
+	// Returns true when a value is written to a board cell in a given row.
+	/*for (int col = 1; col <= boardSize; col++) {
+		if (getCellVal(row, col) == val) {
+			return true;
+		}
+	}*/
+	for (auto c : board[row - 1]) {
+		if (c->getVal() == val) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void SudokuBoard::clearRowNotes(int row, int val)
+{
+	for (auto c : board[row - 1]) {
+		c->setNote(val - 1, false);
+	}
+	/*for (int col = 1; col <= boardSize; col++) {
+		setCellNote(row, col, val, false);
+	}*/
+}
+
+bool SudokuBoard::colValCheck(int col, int val)
+{
+	// Returns true when a value is written to a board cell in a given column.
+	for (int row = 1; row <= boardSize; row++) {
+		if (board[row - 1][col - 1]->getVal() == val) {
+			return true;
+		}
+	}	// should try to streamline this like the row method.
+	return false;
+}
+
+void SudokuBoard::clearColNotes(int col, int val)
+{
+	for (int row = 1; row <= boardSize; row++) {
+		board[row - 1][col - 1]->setNote(val - 1, false);
+	}
+}
+
+int SudokuBoard::blockCoord(int row, int col) {
+	// Given a set of coordinates, set the cell index limits for looping functions.
+	int blockRowRef = (int)((row - 1) / blockSize) * blockSize;	// for 9x9, this recontextualizes the row as 0, 3 or 6.
+	int blockColRef = (int)((col - 1) / blockSize) + 1;	// for 9x9, this recontextualizes the col as 1, 2 or 3.
+	return blockRowRef + blockColRef;
+}
+
+void SudokuBoard::blockRef(int blk) {
+	// Given a single block number, set the cell index limits for looping functions.
+	blockRowStart = (((int)(blk - 1) / blockSize) * blockSize) + 1;
+	blockRowEnd = blockRowStart + blockSize;
+	blockColStart = (((blk - 1) % blockSize) * blockSize) + 1;
+	blockColEnd = blockColStart + blockSize;
+}
+
+bool SudokuBoard::blockValCheck(int blk, int val)
+{
+	blockRef(blk);
+	for (int r = blockRowStart; r < blockRowEnd; r++) {
+		for (int c = blockColStart; c < blockColEnd; c++) {
+			if (board[r - 1][c - 1]->getVal() == val) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool SudokuBoard::blockValCheck(int row, int col, int val)
+{
+	return blockValCheck(blockCoord(row, col), val);
+}
+
+void SudokuBoard::clearBlockNotes(int blk, int val)
+{
+	blockRef(blk);
+	for (int r = blockRowStart; r < blockRowEnd; r++) {
+		for (int c = blockColStart; c < blockColEnd; c++) {
+			board[r - 1][c - 1]->setNote(val - 1, false);
+		}
+	}
+}
+
+void SudokuBoard::clearBlockNotes(int row, int col, int val)
+{
+	clearBlockNotes(blockCoord(row, col), val);
 }
