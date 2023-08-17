@@ -108,7 +108,9 @@ int main()
         currentBoard = new SudokuBoard(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
         gameState = new Sudoku(*currentBoard);
-        cout << "Starting board:" << endl;
+        gameMax = currentBoard->getBoardSize();
+
+        cout << "\nStarting board:" << endl;
         currentBoard->printBoard();
         cout << endl;
         gameMax = currentBoard->getBoardSize();
@@ -129,27 +131,28 @@ int main()
             auto val = gameState->lowest();
             while (val != gameState->highest()) {
                 // For unsolved values...
-                if (val->second < currentBoard->getBoardSize()) {
+                if (val->second < gameMax) {
                     /*DEBUG*/
                     // cout << "Checking " << val->first << ":" << endl;
                     /*DEBUG*/
 
                     // For each row...
-                    for (int row = 1; row <= currentBoard->getBoardSize(); row++) {
+                    for (int row = 1; row <= gameMax; row++) {
                         // For each column...
-                        for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
+                        for (int col = 1; col <= gameMax; col++) {
+                            int cellVal = currentBoard->getCellVal(row, col);
 
                             // Clear notes:
-                            if (currentBoard->getCellVal(row, col) != 0) {
-                                currentBoard->clearRowNotes(row, currentBoard->getCellVal(row, col));
-                                currentBoard->clearColNotes(col, currentBoard->getCellVal(row, col));
-                                currentBoard->clearBlockNotes(row, col, currentBoard->getCellVal(row, col));
+                            if (cellVal != 0) {
+                                currentBoard->clearRowNotes(row, cellVal);
+                                currentBoard->clearColNotes(col, cellVal);
+                                currentBoard->clearBlockNotes(row, col, cellVal);
                                 continue;
                             }
                             
                             // For empty cells...
-                            if ((currentBoard->getCellVal(row, col) == 0)
-                            && (val->second<currentBoard->getBoardSize())) {
+                            if ((cellVal == 0)
+                            && (val->second < gameMax)) {
                                 
                                 // Write solutions for note-isolated values:
                                 if (hangingNote(currentBoard, row, col, val->first)
@@ -193,12 +196,12 @@ int main()
         }
 
         if (passCount >= gameMax) {
-            cout << "Solution not found." << endl << endl;
+            cout << "\nSolution not found." << endl;
             currentBoard->printBoard();
             cout << endl;
             delete currentBoard;
             delete gameState;
-            break;
+            continue;
         }
 
     } while (userPick != 0 || userPick > (int) boardFiles.size());
