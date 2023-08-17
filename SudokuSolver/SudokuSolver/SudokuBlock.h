@@ -4,7 +4,6 @@
 
 /*
 * This is an intermediate class intended to help the higher layers organize and dereference a full board array.
-* A "block" will consist of 9 SudokuCell objects in a 3x3 array.
 */
 
 class SudokuBlock
