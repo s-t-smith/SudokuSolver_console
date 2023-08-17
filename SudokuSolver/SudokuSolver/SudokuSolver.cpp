@@ -48,9 +48,10 @@ bool hangingNote(SudokuBoard* board, int row, int col, int val) {
                 break;
             }
         }
-    }
 
-    return (rowClear || colClear);
+        return (rowClear || colClear);
+    }
+    return false;
 }
 
 bool onlyNoteVal(SudokuBoard* board, int row, int col, int val) {
@@ -63,8 +64,9 @@ bool onlyNoteVal(SudokuBoard* board, int row, int col, int val) {
                 return false;
             }
         }
+        return true;
     }
-    return true;
+    return false;
 }
 
 int main()
@@ -125,7 +127,7 @@ int main()
         while (!gameState->boardSolved() && passCount <= gameMax)
         {
             /*DEBUG*/
-            cout << "Solution pass #" << passCount + 1 << "..." << endl;
+            //cout << "Solution pass #" << passCount + 1 << "..." << endl;
             /*DEBUG*/
             
             auto val = gameState->lowest();
@@ -133,7 +135,7 @@ int main()
                 // For unsolved values...
                 if (val->second < gameMax) {
                     /*DEBUG*/
-                    // cout << "Checking " << val->first << ":" << endl;
+                    //cout << "Checking " << val->first << ":" << endl;
                     /*DEBUG*/
 
                     // For each row...
@@ -175,6 +177,17 @@ int main()
                                     // Update game state:
                                     gameState->updateGameVals(val->first);
                                 }
+
+                                /*DEBUG*/
+                                /*if (hangingNote(currentBoard, row, col, val->first)) {
+                                    cout << "Found hanging note:" << endl;
+                                    printf("%i at (%i, %i)\n", val->first, row, col);
+                                }
+                                if (onlyNoteVal(currentBoard, row, col, val->first)) {
+                                    cout << "Found only note:" << endl;
+                                    printf("%i at (%i, %i)\n", val->first, row, col);
+                                }*/
+                                /*DEBUG*/
                             }
                         }
                     }
