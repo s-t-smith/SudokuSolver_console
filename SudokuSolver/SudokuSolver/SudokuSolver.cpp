@@ -138,12 +138,18 @@ int main()
                     for (int row = 1; row <= currentBoard->getBoardSize(); row++) {
                         // For each column...
                         for (int col = 1; col <= currentBoard->getBoardSize(); col++) {
+
+                            // Clear notes:
+                            if (currentBoard->getCellVal(row, col) != 0) {
+                                currentBoard->clearRowNotes(row, currentBoard->getCellVal(row, col));
+                                currentBoard->clearColNotes(col, currentBoard->getCellVal(row, col));
+                                currentBoard->clearBlockNotes(row, col, currentBoard->getCellVal(row, col));
+                                continue;
+                            }
+                            
                             // For empty cells...
                             if ((currentBoard->getCellVal(row, col) == 0)
                             && (val->second<currentBoard->getBoardSize())) {
-                                
-                                // Clear notes:
-                                // TODO: add a step to clear notes.
                                 
                                 // Write solutions for note-isolated values:
                                 if (hangingNote(currentBoard, row, col, val->first)
@@ -153,9 +159,9 @@ int main()
                                     currentBoard->setCellVal(row, col, val->first);
 
                                     /*DEBUG*/
-                                    //currentBoard->printBoard();
-                                    gameState->printGameBoard();
-                                    cout << endl;
+                                    ////currentBoard->printBoard();
+                                    //gameState->printGameBoard();
+                                    //cout << endl;
                                     /*DEBUG*/
 
                                     // Remove notes:
