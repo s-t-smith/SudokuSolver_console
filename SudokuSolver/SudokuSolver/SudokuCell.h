@@ -51,7 +51,7 @@ SudokuCell::SudokuCell(int val, int size = 9) {
 
 void SudokuCell::setVal(int val) {
 	// Write a solution digit to the cellVal, prevent out-of-range values:
-	if (val < 0 || val > notes.size())
+	if (val < 0 || val > (int) notes.size())
 		throw std::out_of_range("Value not accepted");
 	// Set valid value to private member:
 	cellVal = val;
@@ -78,14 +78,14 @@ int SudokuCell::getSize() {
 
 void SudokuCell::setNote(int index, bool set) {
 	// Record a possible solution, prevent out-of-bounds access.
-	if (index < 0 || index > notes.size())
+	if (index < 0 || index > (int) notes.size())
 		throw std::out_of_range("Index invalid");
 	notes[index] = set;
 }
 
 bool SudokuCell::getNote(int index) {
 	// Report a possible solution, prevent out-of-range access.
-	if (index < 0 || index > notes.size())
+	if (index < 0 || index > (int) notes.size())
 		throw std::out_of_range("Note unavailable");
 	return notes[index];
 }

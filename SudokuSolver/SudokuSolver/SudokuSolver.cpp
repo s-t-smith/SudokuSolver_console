@@ -16,6 +16,9 @@
 #include <filesystem>
 using namespace std;
 
+bool intersectionCheck(Sudoku& game, int row, int col, int val);
+bool onlyNote(Sudoku& game, int row, int col, int val);
+
 int main()
 {
         // Take two steps out from the program's working directory, then navigate to the input files:
@@ -33,7 +36,7 @@ int main()
     do {
         // List available files:
         cout << "Select starting board:" << endl;
-        for (int i = 0; i < boardFiles.size(); i++) {
+        for (int i = 0; i < (int) boardFiles.size(); i++) {
             cout << i + 1 << ": " << boardFiles.at(i).filename() << endl;
         }
         cout << "0: Quit" << endl << endl;
@@ -42,13 +45,16 @@ int main()
         cin >> userPick;
         // Sanitize input:
         userPick = (int)userPick - 1;
-        if (userPick < 0 || userPick > boardFiles.size()) {
+        if (userPick < 0 || userPick > (int) boardFiles.size()) {
             break;
         }
 
         // Pick starting file:
         currentGame = new Sudoku(boardFiles.at(userPick).string()); // stringify the directory for the chosen starting board.
             // Maybe I should adjust the class to construct from a directory instead of a string.
+        cout << "Starting board:" << endl;
+        currentGame->printGameBoard();
+        cout << endl;
 
         /*
         * IMPORTANT!
@@ -57,30 +63,73 @@ int main()
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
         passCount = 0;
-        while (!currentGame->checkGO() && passCount <= currentGame->getBoardSize())
+        while (!currentGame->boardSolved() && passCount <= currentGame->getBoardSize())
         {
-            currentGame->checkState();
-            if (currentGame->checkGO()) {
+            cout << "Solution pass #" << passCount + 1 << "..." << endl;
+            if (currentGame->boardSolved()) {
                 cout << "Solution found:" << endl;
-                currentGame->printBoard();
+                currentGame->printGameBoard();
                 break;
             }
             
-            // Check notes for singular values:
+            // Check each value:
+            for (int val = 1; val <= currentGame->getBoardSize(); val++) {
+                // Check each row:
+                for (int row = 1; row <= currentGame->getBoardSize(); row++) {
+                    // Check each column:
+                    for (int col = 1; col <= currentGame->getBoardSize(); col++) {
+                        // When a cell is empty:
+                        if (currentGame->getBoardCellVal(row, col) == 0) {
+                            
+                            // TODO: Write note-isolated solutions:
+                            /*if (onlyNote(*currentGame, row, col, val)) {
+                                currentGame->setBoardCellVal(row, col,val);
+                            }*/
 
-            // Write singular solutions:
-
-            // Clear notes:
-
+                            // TODO: Write board-isolated solutions:
+                            /*if (intersectionCheck(*currentGame, row, col, val)) {
+                                currentGame->setBoardCellVal(row, col, val);
+                            }*/
+                        }
+                    }
+                }
+            }
+            
             // Continue:
             passCount++;
         }
 
         if (passCount >= currentGame->getBoardSize()) {
             cout << "Solution not found." << endl << endl;
+            currentGame->printGameBoard();
         }
 
-    } while (userPick < 0 || userPick > boardFiles.size());
+    } while (userPick < 0 || userPick > (int) boardFiles.size());
 
     return 0;
+}
+
+bool intersectionCheck(Sudoku& game, int row, int col, int val) {
+    bool runningCheck = false;
+    // If the value is present in the row, column or block, the flag will be set 'true':
+    runningCheck = game.rowValCheck(row, val) && game.colValCheck(col, val) && game.blockValCheck(row, col, val);
+    // Only want a 'true' response when the given value does NOT appear in those areas:
+    return !runningCheck;
+}
+
+bool onlyNote(Sudoku& game, int row, int col, int val) {
+    // Is the requested value available?
+    bool noteCheck = game.getBoardCellNote(row, col, val);
+    if (noteCheck) {
+        // Check all other values:
+        for (int v = 1; v <= game.getBoardSize(); v++) {
+            if (v != val) {
+                // If any other possibilities exist, given value is not the only note:
+                if (game.getBoardCellNote(row, col, v)) {
+                    noteCheck = false;
+                }
+            }
+        }
+    }
+    return noteCheck;
 }
