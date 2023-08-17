@@ -32,12 +32,12 @@
 *.app
 
 # Ignore .vs thingy
-SudokuSolver/.vs
+SudokuSolver/.vs/**
 
 # Ignore test images
 images/*
 
 # Ignore test programs
 fileInputTest.cpp
-SudokuSolver/Debug/*
-SudokuSolver/SudokuSolver/Debug/*
+SudokuSolver/Debug/**
+SudokuSolver/SudokuSolver/Debug/**
