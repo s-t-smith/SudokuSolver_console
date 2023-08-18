@@ -9,29 +9,35 @@
 */
 
 class SudokuCell {
+
+private:
 /*
 * Private members:
 * cellVal- Where the cell solution can be written. Can be a digit 0..<max>.
 * notes- Where the possible solutions can be recorded. A 'true' value at an index represents a possible solution of <index>+1.
 */
-private:
 	int cellVal;
 	std::vector<bool> notes;
-/*
-* Public functions:
-* SudokuCell() - Default constructor; initializes the cell to "0" with all notes 'true'.
-* SudokuCell(int val, int size) - Explicit constructor; initializes the cell with the given digit and sets the number of notes.
-* setVal - Records a digit in the cell's cellVal field.
-* getVal - Returns the digit recorded in the cell's cellVal field.
-* setNote - Marks a possible solution index as 'true'.
-* getNote - Un-marks a possible solution index as 'false'.
-* getNote - Returns the solution index requested.
-*/
+
 public:
-	// Default constructor assumes 9x9 board:
+	/* CONSTRUCTORS:
+	* SudokuCEll(int val, int size)-
+	*	creates a cell object with the given value written and a list of notes of the given size.
+	*/
 	SudokuCell();
-	// Explicit constructor allocates for maximum board size (default to 9x9):
 	SudokuCell(int val, int size);
+	/* CELL FUNCTIONS:
+	* setVal(int val)-
+	*	writes the value to the cell.
+	* getVal()-
+	*	returns the value writte to the cell.
+	* getSize()-
+	*	returns the length of the notes list.
+	* setNote(int index, bool set)-
+	*	sets the notes list item at the given index to true or false.
+	* getNote(int index)-
+	*	returns the note list at the given index.
+	*/
 	void setVal(int val);
 	int getVal();
 	int getSize();

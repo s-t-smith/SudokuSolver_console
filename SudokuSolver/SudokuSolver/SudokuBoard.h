@@ -17,19 +17,36 @@ class SudokuBoard
 	friend class Sudoku;
 
 public:
-	/*
-	* Public functions:
-	* TODO: re-document these...
+	/* CONSTRUCTORS:
+	* SudokuBoard(int size)-
+	*	creates a blank board, square in the given size.
+	* SudokuBoard(string filename)-
+	*	creates a board with the values specified in the input file.
+	* initBoard(int max)-
+	*	sets private member variables based on the maximum solution value.
 	*/
-
-	/* Constructors: */
 	SudokuBoard();
 	SudokuBoard(int size);
 	SudokuBoard(string fileName);
 	~SudokuBoard();
 	void initBoard(int max);
 
-	/* Board functions: */
+	/* BOARD FUNCTIONS:
+	* getBoardSize()-
+	*	returns the length of a board side, which coincides with the maximum solution value.
+	* getBlockSize()-
+	*	returns the length of a side of a subarray of the board; for a 9x9 board, returns 3.
+	* setCellVall(int row, int col, val)-
+	*	writes a given value to the cell at board coordinates [row, col].
+	* getCellVal(int row, int col)-
+	*	returns the value written to a cell at board coordinates [row, col].
+	* setCellNote(int row, int col, int index, bool set)-
+	*	sets or clears a note on a cell at board coordinates [row, col].
+	* getCellNote(int row, int col, int index)-
+	*	returns the note list item from a cell at board coordinates [row, col].
+	* printBoard()-
+	*	displays the array of cells on the board; only shows written values, not notes.
+	*/
 	int getBoardSize();
 	int getBlockSize();
 	void setCellVal(int row, int col, int val);
@@ -38,7 +55,28 @@ public:
 	bool getCellNote(int row, int col, int index);
 	void printBoard();
 
-	/* Note and value functions: */
+	/* NOTE AND VALUE FUNCTIONS:
+	* rowValCheck(int row, int val)-
+	*	checks all cells in a given row, returns true if any one of those cells has the given value written.
+	* clearRowNotes(int row, int val)-
+	*	removes a given value from the note lists of all cells in a given row.
+	* colValCheck(int col, int val)-
+	*	checks all cells in a given column, renturns true if any one of those cells has the given value written.
+	* clearColNotes(int col, int val)-
+	*	removes a given value from the note lists of all cells in a given column.
+	* blockCoord(int row, int col)-
+	*	returns a single integer representation of a subarrya from a given set of coordinates; subarrays can be thought of as numbered on the same series as solution values, left-to-right then top-to-bottom.
+	* blockRef(int blk)-
+	*	sets the private fields for dereferencing subarrays from a given subarray index.
+	* blockValCheck(int blk, int val)-
+	*	checks all cells in a given subarray, returns true if any one of those cells has the given value written.
+	* blockValCheck(int row, int col, int val)-
+	*	checks all cells in a given subarray, returns true if any one of those cells has the given value written; uses board coordinates instead of subarray index.
+	* clearBlockNotes(int blk, int val)-
+	*	removes a given value from the note lists of all cells in a given subarray. 
+	* clearBlockNotes(int row, int col, int val)-
+	*	removes a given value from the note lists of all cells in a given subarray; uses board coordinates instead of subarray index.
+	*/
 	bool rowValCheck(int row, int val);
 	void clearRowNotes(int row, int val);
 	bool colValCheck(int col, int val);
@@ -51,13 +89,15 @@ public:
 	void clearBlockNotes(int row, int col, int val);
 
 private:
-	/* Primary data fields: */
+	/* Board info fields: */
 	int boardSize;
 	int blockSize;
+	/* Board reference points: */
 	int blockRowStart;
 	int blockColStart;
 	int blockRowEnd;
 	int blockColEnd;
+	/* Board: */
 	vector<vector<SudokuCell*>> board;
 };
 

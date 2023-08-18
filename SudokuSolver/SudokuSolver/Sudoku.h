@@ -7,32 +7,50 @@
 using namespace std;
 
 /*
-* This class will define the game state for a session of Sudoku.
+* This class will define and monitor the game state for a session of Sudoku.
 */
 
 
 class Sudoku
 {
-	/*
-	* TODO: re-document the classes...
-	*/
+	
 public:
+	/* CONSTRUCTORS:
+	* Sudoku(int size)-
+	*	starts the game state monitor with a given board size and maximum solution value.
+	* Sudoku(SudokuBoard& board)-
+	*	used when a board object already exists; sets the monitor for a given game board.
+	* Sudoku(string filename)-
+	*	used when a board objest does NOT already exist; creates a board object from a starting file and sets the monitor.
+	*/
 	Sudoku();
 	Sudoku(int size);
 	Sudoku(SudokuBoard& board);
 	Sudoku(string filename);
 	~Sudoku();
 
-	// Class functions:
+	/* CLASS FUNCTIONS:
+	* initGameVals(int size)-
+	*	initializes the monitor values with a given maximum solution value.
+	* updateGameVals()-
+	*	only to be used with constructors; makes an initial pass over the starting board to record the prepopulated values.
+	* updateGameVals(int val)-
+	*	used to increment a solution value in the monitor when it is written to the game board.
+	* boardSolved()-
+	*	checks the solution values to determine if the game has been completed.
+	*/
 	void initGameVals(int size);
 	void updateGameVals();
 	void updateGameVals(int val);
 	bool boardSolved();
 	
-	// Board-layer functions:
-	void printGameBoard();
-
-	// Map accessors:
+	/* MAP ACCESSORS:
+	These expose a little of the value tracking map to other classes.
+	* lowest()-
+	*	points to the lowest solution values, usually the "1" position.
+	* highest()-
+	*	points to the game's maximum solution values, "9" postion for standard games.
+	*/
 	map<const int, int>::const_iterator lowest() { return gameVals.begin(); }
 	map<const int, int>::const_iterator highest() { return gameVals.end(); }
 
@@ -69,7 +87,8 @@ Sudoku::Sudoku(string filename)
 
 Sudoku::~Sudoku()
 {
-	// this causes issues in unit test; investigate:
+	// this causes issues in unit test; investigate...
+	// presumably becuase the user should be able to destroy the Sudoku object without destroying the board object.
 	// delete gameBoard;
 }
 
@@ -106,9 +125,4 @@ bool Sudoku::boardSolved()
 		val++;
 	}
 	return true;
-}
-
-void Sudoku::printGameBoard()
-{
-	gameBoard->printBoard();
 }
