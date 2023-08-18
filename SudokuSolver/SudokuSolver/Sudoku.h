@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SudokuBoard.h"
+#include "SudokuLogger.h"
 #include <map>
 #include <string>
 
