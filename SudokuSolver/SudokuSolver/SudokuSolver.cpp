@@ -124,7 +124,7 @@ int main()
         * Idea: loop through each value and clear notes. If that doesn't create a singular option in a number of passes equal to the number of values, give up.
         */
         passCount = 0;
-        while (!gameState->boardSolved() && passCount <= gameMax)
+        while (!gameState->boardSolved() && passCount <= 2*gameMax)
         {
             /*DEBUG*/
             //cout << "Solution pass #" << passCount + 1 << "..." << endl;
@@ -208,7 +208,7 @@ int main()
             }
         }
 
-        if (passCount >= gameMax) {
+        if (passCount >= 2*gameMax) {
             cout << "\nSolution not found." << endl;
             currentBoard->printBoard();
             cout << endl;
