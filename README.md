@@ -35,3 +35,4 @@ Some features I would like to add, but only after the core function is achieved:
 - Branching solve: instead of the brute force note-taking method, I'll change the algorithm to take branches on possibilities and find a solution through trial-and error. This might be a fun way to compare performance between my human method and the computer's method.
 - Logging function to show the process the computer takes to solve the puzzle, along with error logging.
 - GUI- take this out of console space and create a window to show the board while the program works.
+- Events; make the solver respond to note conditions instead of iterating over the entire board.
